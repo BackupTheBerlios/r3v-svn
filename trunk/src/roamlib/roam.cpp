@@ -10,8 +10,6 @@
 #include "GL/gl.h"
 #include "GL/glu.h"
 
-#include <qfile.h>
-
 #include "diamond.h"
 #include "map.h"
 #include "node.h"
@@ -19,20 +17,19 @@
 #include "observer.h"
 #include "parser.h"
 
-ROAM::ROAM(const QString &file)
+ROAM::ROAM(const std::string &file)
 {
 	diamond *d;
-	QFile f(file);
 	
-	if (file.right(4) == ".dem")
+	if (file.substr(file.length() - 4, 4) == ".dem")
 	{
 		DEMParser dp;
-		m_map = dp.parse(f);
+		m_map = dp.parse(file);
 	}
 	else
 	{
-		myParser mp;
-		m_map = mp.parse(f);
+		printf("ERORRRRRRRRRRO\n");
+		// TODO give an error ?
 	}
 	
 	m_map->square();
@@ -56,8 +53,8 @@ ROAM::ROAM(const QString &file)
 	m_splitQueue = new triangleList();
 	m_mergeQueue = new diamondList();
 	
-	qDebug("El observador està en %f %f %f", ox, oy, oz);
-	qDebug("El observador mira a %f %f %f", vrpx, vrpy, vrpz);
+/*	qDebug("El observador està en %f %f %f", ox, oy, oz);
+	qDebug("El observador mira a %f %f %f", vrpx, vrpy, vrpz);*/
 	double modelViewMatrix[16];
 	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
 	d -> t1() -> calcPriority(modelViewMatrix);

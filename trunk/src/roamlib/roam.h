@@ -20,7 +20,7 @@ class triangleList;
 class ROAM
 {
 	public:
-		ROAM(const QString &file);
+		ROAM(const std::string &file);
 		~ROAM();
 	
 		void paint();

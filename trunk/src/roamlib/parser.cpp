@@ -7,149 +7,148 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#include <stdlib.h>
+// #include <stdlib.h>
+#include <fstream>
 
-#include <qfile.h>
-#include <qtextstream.h>
-
-//#include "geopoint.h"
 #include "parser.h"
 #include "map.h"
 
-r3vMap *DEMParser::parse(QFile &file)
+r3vMap *DEMParser::parse(const std::string &file)
 {
-	if (file.open(IO_ReadOnly))
+	printf("HOLA\n");
+	m_file = new std::ifstream(file.c_str());
+	printf("ADEU\n");
+	/*if (file.open(IO_ReadOnly))
 	{
-		char aux[1025];
-		QChar processCode;
-		QString name, descriptorField, originCode, sectionalIndicator;
-		//geoPoint *SE;
+	*/	char aux[1025];
+		char processCode;
+		std::string name, descriptorField, originCode, sectionalIndicator;
 		int DEMLevel, elevationPattern, groundPlanimetricReferenceSystem, zoneCode, groundCoordsUnit, elevationCoordsUnit, polygonSides;
 		
 		r3vMap *m = new r3vMap();
 		
 		/* name */
-		name = readString(file, 40, aux);
-		// qDebug("Nombre:%s", name.latin1());
+		name = readString(40, aux);
+		// printf("Nombre:%s", name.latin1());
 		
 		/* description */
-		descriptorField = readString(file, 40, aux);;
-		// qDebug("Descripci�:%s", descriptorField.latin1());
+		descriptorField = readString(40, aux);;
+		// printf("Descripci�:%s", descriptorField.latin1());
 		
 		/* filler */
-		file.readBlock(aux, 29);
+		m_file -> read(aux, 29);
 		
 		/* SE geographic quadrangle corner */
 		int dx, mx, dy, my;
 		double sx, sy;
-		dx = readInt(file, 4, aux);
-		mx = readInt(file, 2, aux);
-		sx = readDouble(file, 7, aux);
+		dx = readInt(4, aux);
+		mx = readInt(2, aux);
+		sx = readDouble(7, aux);
 		
-		dy = readInt(file, 4, aux);
-		my = readInt(file, 2, aux);
-		sy = readDouble(file, 7, aux);
+		dy = readInt(4, aux);
+		my = readInt(2, aux);
+		sy = readDouble(7, aux);
 		
 		//SE = new geoPoint(dx, mx, sx, dy, my, sy);
-		// qDebug("Punto SE:%s", SE->asString().latin1());
+		// printf("Punto SE:%s", SE->asString().latin1());
 		
 		/* process code */
-		processCode = readChar(file);
-		// qDebug("Process code:%c", processCode.latin1());
+		processCode = readChar();
+		// printf("Process code:%c", processCode.latin1());
 		
 		/* filler */
-		file.readBlock(aux, 1);
+		m_file -> read(aux, 1);
 		
 		/* sectionalIndicator */
-		sectionalIndicator = readString(file, 3, aux);
-		// qDebug("sectionalIndicator:%s", sectionalIndicator.latin1());
+		sectionalIndicator = readString(3, aux);
+		// printf("sectionalIndicator:%s", sectionalIndicator.latin1());
 		
 		/* origin code */
-		originCode = readString(file, 4, aux);
-		// qDebug("Origin Code:%s", originCode.latin1());
+		originCode = readString(4, aux);
+		// printf("Origin Code:%s", originCode.latin1());
 		
 		/* DEM LEVEL */
-		DEMLevel = readInt(file, 6, aux);
-		// qDebug("Nivel DEM:%d", DEMLevel);
+		DEMLevel = readInt(6, aux);
+		// printf("Nivel DEM:%d", DEMLevel);
 		
 		/* Elevetion Pattern */
-		elevationPattern = readInt(file, 6, aux);
-		// qDebug("Patr� de elevaci�:%d", elevationPattern);
+		elevationPattern = readInt(6, aux);
+		// printf("Patr� de elevaci�:%d", elevationPattern);
 		
 		/* ground planimetric reference system */
-		groundPlanimetricReferenceSystem = readInt(file, 6, aux);
-		// qDebug("groundPlanimetricReferenceSystem:%d", groundPlanimetricReferenceSystem);
+		groundPlanimetricReferenceSystem = readInt(6, aux);
+		// printf("groundPlanimetricReferenceSystem:%d", groundPlanimetricReferenceSystem);
 		
 		/* zone code */
-		zoneCode = readInt(file, 6, aux);
-		// qDebug("zoneCode:%d", zoneCode);
+		zoneCode = readInt(6, aux);
+		// printf("zoneCode:%d", zoneCode);
 		
 		if (groundPlanimetricReferenceSystem >= 0 && groundPlanimetricReferenceSystem <= 2)
 		{
-			file.readBlock(aux, 360);
+			m_file -> read(aux, 360);
 		}
 		else
 		{
-			qFatal("No tratamos groundPlanimetricReferenceSystem diferentes de 0, 1, o 2");
+			perror("No tratamos groundPlanimetricReferenceSystem diferentes de 0, 1, o 2");
 		}
 		
 		/* groundCoordsUnit */
-		groundCoordsUnit = readInt(file, 6, aux);
-		qDebug("groundCoordsUnit:%d", groundCoordsUnit);
-		if (groundCoordsUnit == 0 || groundCoordsUnit == 3) qFatal("No soportamos radians ni arc-segundos como unidad de medida");
+		groundCoordsUnit = readInt(6, aux);
+		printf("groundCoordsUnit:%d", groundCoordsUnit);
+		if (groundCoordsUnit == 0 || groundCoordsUnit == 3) perror("No soportamos radians ni arc-segundos como unidad de medida");
 		
 		/* elevationCoordsUnit */
-		elevationCoordsUnit = readInt(file, 6, aux);
-		qDebug("elevationCoordsUnit:%d", elevationCoordsUnit);
+		elevationCoordsUnit = readInt(6, aux);
+		printf("elevationCoordsUnit:%d", elevationCoordsUnit);
 		
 		/* polygonSides */
-		polygonSides = readInt(file, 6, aux);
-		// qDebug("polygonSides:%d", polygonSides);
-		if (polygonSides != 4) qFatal("No tratamos polygonSides diferentes de 4");
+		polygonSides = readInt(6, aux);
+		// printf("polygonSides:%d", polygonSides);
+		if (polygonSides != 4) perror("No tratamos polygonSides diferentes de 4");
 		
 		/* coordenadas ? */
 		double SEx, SEy, SWx, SWy, NWx, NWy, NEx, NEy;
-		SEx = readDouble(file, 24, aux);
-		SEy = readDouble(file, 24, aux);
-		SWx = readDouble(file, 24, aux);
-		SWy = readDouble(file, 24, aux);
-		NWx = readDouble(file, 24, aux);
-		NWy = readDouble(file, 24, aux);
-		NEx = readDouble(file, 24, aux);
-		NEy = readDouble(file, 24, aux);
+		SEx = readDouble(24, aux);
+		SEy = readDouble(24, aux);
+		SWx = readDouble(24, aux);
+		SWy = readDouble(24, aux);
+		NWx = readDouble(24, aux);
+		NWy = readDouble(24, aux);
+		NEx = readDouble(24, aux);
+		NEy = readDouble(24, aux);
 		
-		// qDebug("SE:%f %f", SEx, SEy);
-		// qDebug("SW:%f %f", SWx, SWy);
-		// qDebug("NW:%f %f", NWx, NWy);
-		// qDebug("NE:%f %f", NEx, NEy);
+		// printf("SE:%f %f", SEx, SEy);
+		// printf("SW:%f %f", SWx, SWy);
+		// printf("NW:%f %f", NWx, NWy);
+		// printf("NE:%f %f", NEx, NEy);
 		
 		/* elevacion */
 		double minEl, maxEl;
-		minEl = readDouble(file, 24, aux);
-		maxEl = readDouble(file, 24, aux);
-		// qDebug("Minima Elevacion:%f", minEl);
-		// qDebug("Maxima Elevacion:%f", maxEl);
+		minEl = readDouble(24, aux);
+		maxEl = readDouble(24, aux);
+		// printf("Minima Elevacion:%f", minEl);
+		// printf("Maxima Elevacion:%f", maxEl);
 		
 		/* angulo de desviacion de noseque */
 		double degree;
-		degree = readDouble(file, 24, aux);
-		// qDebug("AnguloDesv:%f", degree);
+		degree = readDouble(24, aux);
+		// printf("AnguloDesv:%f", degree);
 		
 		/* accuracy */
 		int accuracy;
-		accuracy = readInt(file, 6, aux);
-		// qDebug("Exactitud: %d", accuracy);
+		accuracy = readInt(6, aux);
+		// printf("Exactitud: %d", accuracy);
 		
 		/* resolution */
 		double rx, ry, rz;
-		rx = readDouble(file, 12, aux);
-		ry = readDouble(file, 12, aux);
-		rz = readDouble(file, 12, aux);
-		qDebug("Resolucion X:%f", rx);
-		qDebug("Resolucion Y:%f", ry);
-		qDebug("Resolucion Z:%f", rz);
+		rx = readDouble(12, aux);
+		ry = readDouble(12, aux);
+		rz = readDouble(12, aux);
+		printf("Resolucion X:%f", rx);
+		printf("Resolucion Y:%f", ry);
+		printf("Resolucion Z:%f", rz);
 		
-		Q_ASSERT(rx == ry);
+// 		TODO assert(rx == ry);
 		
 		double conversionFactor = rz / rx;
 		if (groundCoordsUnit != elevationCoordsUnit)
@@ -171,136 +170,136 @@ r3vMap *DEMParser::parse(QFile &file)
 				conversionFactor = conversionFactor * 0.3048;
 			}
 		}
-		qDebug("Factor conversion %f", conversionFactor);
+		printf("Factor conversion %f", conversionFactor);
 		
 		/* perfiles */
 		int row, n;
-		row = readInt(file, 6, aux);
-		if (row != 1) qFatal("Hay mas de 1 fila");
-		n = readInt(file, 6, aux);
-		// qDebug("Columnas:%d", n);
+		row = readInt(6, aux);
+		if (row != 1) perror("Hay mas de 1 fila");
+		n = readInt(6, aux);
+		// printf("Columnas:%d", n);
 		
-		/*file.readBlock(aux, 5);
+		/*m_file -> read(aux, 5);
 		aux[5] = '\0';
 		printf("%s\n", aux);
 		
-		file.readBlock(aux, 1);
+		m_file -> read(aux, 1);
 		aux[1] = '\0';
 		printf("%s\n", aux);
 		
-		file.readBlock(aux, 5);
+		m_file -> read(aux, 5);
 		aux[5] = '\0';
 		printf("%s\n", aux);
 		
-		file.readBlock(aux, 1);
+		m_file -> read(aux, 1);
 		aux[1] = '\0';
 		printf("%s\n", aux);
 		
-		file.readBlock(aux, 4);
+		m_file -> read(aux, 4);
 		aux[4] = '\0';
 		printf("%s\n", aux);
 		
-		file.readBlock(aux, 4);
+		m_file -> read(aux, 4);
 		aux[4] = '\0';
 		printf("%s\n", aux);
 		
-		file.readBlock(aux, 1);
+		m_file -> read(aux, 1);
 		aux[1] = '\0';
 		printf("%s\n", aux);
 		
-		file.readBlock(aux, 1);
+		m_file -> read(aux, 1);
 		aux[1] = '\0';
 		printf("%s\n", aux);
 		
-		file.readBlock(aux, 2);
+		m_file -> read(aux, 2);
 		aux[2] = '\0';
 		printf("%s\n", aux);
 		
-		file.readBlock(aux, 2);
+		m_file -> read(aux, 2);
 		aux[2] = '\0';
 		printf("%s\n", aux);
 		
-		file.readBlock(aux, 2);
+		m_file -> read(aux, 2);
 		aux[2] = '\0';
 		printf("%s\n", aux);
 		
-		file.readBlock(aux, 4);
+		m_file -> read(aux, 4);
 		aux[4] = '\0';
 		printf("%s\n", aux);
 		
-		file.readBlock(aux, 4);
+		m_file -> read(aux, 4);
 		aux[4] = '\0';
 		printf("%s\n", aux);
 		
-		file.readBlock(aux, 8);
+		m_file -> read(aux, 8);
 		aux[8] = '\0';
 		printf("%s\n", aux);
 		
-		file.readBlock(aux, 7);
+		m_file -> read(aux, 7);
 		aux[7] = '\0';
 		printf("%s\n", aux);
 		
-		file.readBlock(aux, 109);
+		m_file -> read(aux, 109);
 		*/
 		
-		file.readBlock(aux, 160);
+		m_file -> read(aux, 160);
 		
 		std::vector<double> *heights;
 		/* Record 2 */
 		for (int i = 0; i < n; i++)
 		{
 			int l;
-			// qDebug("\nRecord Tipo B");
+			// printf("\nRecord Tipo B");
 			l = 0;
 		
 			/* fila columna */
 			int row, column;
-			row = readInt(file, 6, aux);
-			column = readInt(file, 6, aux);
-			// qDebug("Fila:%d", row);
-			// qDebug("Columna:%d", column);
+			row = readInt(6, aux);
+			column = readInt(6, aux);
+			// printf("Fila:%d", row);
+			// printf("Columna:%d", column);
 			l += 12;
 		
 			int rows, columns;
-			rows = readInt(file, 6, aux);
-			// qDebug("Filas:%d", rows);
-			columns = readInt(file, 6, aux);
-			if (columns != 1) qFatal("Columnas es diferente de 1");
-			// qDebug("Columnas:%d", columns);
+			rows = readInt(6, aux);
+			// printf("Filas:%d", rows);
+			columns = readInt(6, aux);
+			if (columns != 1) perror("Columnas es diferente de 1");
+			// printf("Columnas:%d", columns);
 			l += 12;
 			
 			double xgp, ygp;
-			xgp = readDouble(file, 24, aux);
-			ygp = readDouble(file, 24, aux);
-			// qDebug("GP:%f %f", xgp,ygp);
+			xgp = readDouble(24, aux);
+			ygp = readDouble(24, aux);
+			// printf("GP:%f %f", xgp,ygp);
 			l += 48;
 		
 			double elevation;
-			elevation = readDouble(file, 24, aux);
-			// qDebug("Elevation:%f", elevation);
+			elevation = readDouble(24, aux);
+			// printf("Elevation:%f", elevation);
 			l += 24;
 		
 			/* elevacion local */
 			double minLocEl, maxLocEl;
-			minLocEl = readDouble(file, 24, aux);
-			maxLocEl = readDouble(file, 24, aux);
-			// qDebug("Minima Elevacion Loc:%f", minLocEl);
-			// qDebug("Maxima Elevacion Loc:%f", maxLocEl);
+			minLocEl = readDouble(24, aux);
+			maxLocEl = readDouble(24, aux);
+			// printf("Minima Elevacion Loc:%f", minLocEl);
+			// printf("Maxima Elevacion Loc:%f", maxLocEl);
 			l += 48;
 			
 			heights = new std::vector<double>;
 		
 			if (rows <= 146)
 			{
-				readHeights(file, rows, conversionFactor, heights, aux);
+				readHeights(rows, conversionFactor, heights, aux);
 				l += rows*6;
 				
-				file.readBlock(aux, 1024 - l);
+				m_file -> read(aux, 1024 - l);
 			}
 			else
 			{
-				readHeights(file, 146, conversionFactor, heights, aux);
-				file.readBlock(aux, 4);
+				readHeights(146, conversionFactor, heights, aux);
+				m_file -> read(aux, 4);
 				
 				int restan, read;
 				restan = rows - 146;
@@ -309,8 +308,8 @@ r3vMap *DEMParser::parse(QFile &file)
 					if (restan >= 170) read = 170;
 					else read = restan;
 					
-					readHeights(file, read, conversionFactor, heights, aux);
-					file.readBlock(aux, 1024 - read * 6);
+					readHeights(read, conversionFactor, heights, aux);
+					m_file -> read(aux, 1024 - read * 6);
 					restan -= read;
 				}
 				
@@ -318,84 +317,54 @@ r3vMap *DEMParser::parse(QFile &file)
 			}
 		
 			m->addColumn(heights);
-// 			file.readBlock(aux, falta);
+// 			m_file -> read(aux, falta);
 		}
-		file.close();
+// 		file.close();
 		return m;
-	}
-	return 0;
+// 	}
+// 	return 0;
 }
 
-QChar DEMParser::readChar(QFile &file)
+char DEMParser::readChar()
 {
 	char aux;
 	
-	file.readBlock(&aux, 1);
+	m_file -> read(&aux, 1);
 	return aux;
 }
 
-double DEMParser::readDouble(QFile &file, int length, char *aux)
+double DEMParser::readDouble(int length, char *aux)
 {
-	QString s;
-	s = readString(file, length, aux);
-	s = s.replace("D", "E");
-	return s.toDouble();
+	m_file -> read(aux, length);
+	aux[length] = '\0';
+	for (int i = 0; i < length; i++) if (aux[i] == 'D') aux[i] = 'E';
+	return atof(aux);
 }
 
-int DEMParser::readInt(QFile &file, int length, char *aux)
+int DEMParser::readInt(int length, char *aux)
 {
-	file.readBlock(aux, length);
+	m_file -> read(aux, length);
 	aux[length] = '\0';
 	return atoi(aux);
 }
 
-QString DEMParser::readString(QFile &file, int length, char *aux)
+std::string DEMParser::readString(int length, char *aux)
 {
-	QString res;
+	std::string res;
 	
-	file.readBlock(aux, length);
+	m_file -> read(aux, length);
 	aux[length] = '\0';
 	res = aux;
 	return res;
 }
 
-void DEMParser::readHeights(QFile &file, int howMany, double factor, std::vector<double> *v, char *aux)
+void DEMParser::readHeights(int howMany, double factor, std::vector<double> *v, char *aux)
 {
 	int height;
 	
 	for (int i = 0; i < howMany; i++)
 	{
-		height = readInt(file, 6, aux);
+		height = readInt(6, aux);
 		v->push_back(height * factor);
 	}
-}
-
-
-/* */
-
-r3vMap *myParser::parse(QFile &file)
-{
-	if (file.open(IO_ReadOnly))
-	{
-		r3vMap *m = new r3vMap();
-		
-		QTextStream ts(&file);
-		int columns = ts.readLine().toInt();
-		std::vector<double> *heights;
-		
-		for (int i = 0; i < columns; i++)
-		{
-			heights = new std::vector<double>;
-			for (int j = 0; j < columns; j++)
-			{
-				heights->push_back(ts.readLine().toDouble());
-			}
-			m -> addColumn(heights);
-		}
-		
-		file.close();
-		return m;
-	}
-	
-	return 0;
 }

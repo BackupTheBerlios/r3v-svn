@@ -10,36 +10,30 @@
 #ifndef PARSER_H
 #define PARSER_H
 
+#include <string>
 #include <vector>
-
-class QFile;
 
 class r3vMap;
 
 class r3vParser
 {
 	public:
-		virtual r3vMap* parse(QFile &file) = 0;
+		virtual r3vMap* parse(const std::string &file) = 0;
 };
 
 class DEMParser : r3vParser
 {
 	public:
-		r3vMap* parse(QFile &file);
+		r3vMap* parse(const std::string &file);
 	
 	private:
-		static QChar readChar(QFile &file);
-		static double readDouble(QFile &file, int length, char *aux);
-		static int readInt(QFile &file, int length, char *aux);
-		static QString readString(QFile &file, int length, char *aux);
-		static void readHeights(QFile &file, int howMany, double factor, std::vector<double> *v, char *aux);
+		char readChar();
+		double readDouble(int length, char *aux);
+		int readInt(int length, char *aux);
+		std::string readString(int length, char *aux);
+		void readHeights(int howMany, double factor, std::vector<double> *v, char *aux);
+		
+		std::istream *m_file;
 };
-
-class myParser : r3vParser
-{
-	public:
-		r3vMap* parse(QFile &file);
-};
-
 
 #endif
