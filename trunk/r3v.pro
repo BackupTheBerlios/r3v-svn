@@ -1,6 +1,7 @@
 TEMPLATE = app
 INCLUDEPATH += .
 CONFIG += opengl
+DEFINES += QT_NO_ASCII_CAST QT_NO_COMPAT
 
 # Input
 HEADERS += diamond.h faketriangle.h faketrianglelist.h geopoint.h glwidget.h map.h node.h observer.h parser.h triangle.h
