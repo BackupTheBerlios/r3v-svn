@@ -31,7 +31,7 @@ L'algorisme ROAM\footnote{http://www.llnl.gov/graphics/ROAM/roam.pdf} \textit{(R
 La generació de la malla de triangles es fa a partir de 2 triangles isòsceles que formen un quadrat i representen tota la superfície. A partir d'aquí es van partint els triangles en dos per aconseguir més precisió en la representació. Per decidir quin és el triangle que es partirà es mira l'alçada real que té la posició de la meitat de l'aresta base\footnote{Anomenen aresta base a aquella aresta del triangle isosceles que no és igual a cap altre} i quina és l'alçada que té a la representació (la mitjana de les alçades dels dos vèrtexs d'aquesta aresta) i es calcula un error. Aquest error es pondera segons la posició de l'observador ja que no és el mateix tenir un error $\varepsilon$ a un triangle que es troba molt lluny de l'observador que en un triangle que està aprop. El triangle amb més error ponderat és el que es parteix.
 
 \paragraph{}
-Un cop hem arribat a una quantitat de triangles donada i l'error que causen els triangles està per sota d'un nombre donat ja s'ha acabat la creació de la malla i aquesta pasa a visualitzar-se. L'algorisme torna a entrar en lloc quan l'observador es mou. En aquest moment la distància de cada triangle respecte a l'observador canvia i, per tant, també ho fa l'error ponderat, això pot fet que grups de 4 triangles es fusionin en 2 triangles ja que la nova posició de l'observador fa que no calgui tanta presició en aquesta regió del terreny, o que es parteixin nous triangles per fer més exactes regions que amb la posició anterior ja eren prou bones.
+Un cop hem arribat a una quantitat de triangles donada i l'error causat pels triangles està per sota del llindar donat s'ha acabat la creació de la malla i aquesta pasa a visualitzar-se. L'algorisme torna a entrar en lloc quan l'observador es mou. En aquest moment la distància de cada triangle respecte a l'observador canvia i, per tant, també ho fa l'error ponderat, això pot fet que grups de 4 triangles es fusionin en 2 triangles ja que la nova posició de l'observador fa que no calgui tanta presició en aquesta regió del terreny, o que es parteixin nous triangles per fer més exactes regions que amb la posició anterior ja eren prou bones.
 
 \newpage
 \section{Descripció dels objectius del projecte}
@@ -47,7 +47,7 @@ Tant el projectista com el director del PFC han decidit que l'aplicació resultan
 \paragraph{}
 La interfície gràfica ha de ser simple ja que el que es vol és que l'usuari pugui fer servir el programa sense haver-se de parar a pensar com es fan les coses. Per això la interfície es reduirà bàsicament a un programa a pantalla completa on es realitzarà la visualització del terreny. L'orientació de l'observador es controlarà amb el ratolí mentre que les tecles seran les encarregades de moure l'observador. Hi haurà un diàleg amb el qual l'usuari podrà decidir quin fitxer de terreny vol visualitzar.
 \paragraph{}
-Per la implementació d'aquesta interfície s'ha decidir utilitzar la llibrería gràfica Qt\footnote{http://www.trolltech.com/products/qt/index.html} degut a ser una llibreria multiplataforma (Windows/Linux/Mac) i lliure\footnote{La versió actual Qt3 només té llicència lliure (GPL) per a les plataformes Linux i Mac encara que la companyia que desenvolupa Qt ha dit públicament que la versió Qt4 també tindrà versió GPL per a Windows}. Aquests dos fets són importants ja que per una part garanteixen que l'aplicació pugui ser lliure(no es pot fer servir una llibreria no GPL en un programa GPL) i que el programa resultant s'executarà a la majoria de plataformes actuals.
+Per la implementació d'aquesta interfície s'ha decidit utilitzar la llibrería gràfica Qt\footnote{http://www.trolltech.com/products/qt/index.html} degut a ser una llibreria multiplataforma (Windows/Linux/Mac) i lliure\footnote{La versió actual Qt3 només té llicència lliure (GPL) per a les plataformes Linux i Mac encara que la companyia que desenvolupa Qt ha dit públicament que la versió Qt4 també tindrà versió GPL per a Windows}. Aquests dos fets són importants ja que garanteixen que l'aplicació pugui ser lliure(no es pot fer servir una llibreria no GPL en un programa GPL) i que el programa resultant s'executarà a la majoria de plataformes actuals.
 \paragraph{}
 Un altre dels objectius que volem tenir en la programació de la interfície gràfica és que estigui completament separada del funcionament de l'algorisme, de forma que si en algun moment es vol canviar de llibreria gràfica només calgui reescriure el codi relacionat amb la interfície gràfica i no tocar totes les parts del programa.
 
@@ -60,7 +60,7 @@ El format DEM\footnote{Especificació: http://rockyweb.cr.usgs.gov/nmpstds/acrodo
 
 \section{Objectius assolits}
 \paragraph{}
-A data d'avui s'ha programat una primera versió de les classes que es faran servir per l'algorisme. Aquesta primera versió de les classes no ha de ser la definitiva ja que es basa sobre un disseny inicial ràpid  i només s'ha programat per a arribar a comprendre millor el funcionament de l'algorisme. Amb aquestes classes s'ha implementat parts de l'algorisme que permeten controlar manualment la partició i fusió dels triangles de forma que és es poden detectar possibles errors en la seva implementació de més facilment que si es programa l'algorisme de forma que fusioni/particioni els triangles automàticament, ja que si es fan mil particions és molt complicat assegurar-se que els triangles que s'han particionat eren realment els que s'havien de partir.
+A data d'avui s'ha programat una primera versió de les classes que es faran servir per l'algorisme. Aquesta primera versió de les classes no ha de ser la definitiva ja que es basa sobre un disseny inicial ràpid  i només s'ha programat per a arribar a comprendre millor el funcionament de l'algorisme. Amb aquestes classes s'ha implementat parts de l'algorisme que permeten controlar manualment la partició i fusió dels triangles de forma que es poden detectar possibles errors en la seva implementació més facilment que si es programa l'algorisme de forma que fusioni/particioni els triangles automàticament, ja que si es fan mil particions és molt complicat assegurar-se que els triangles que s'han particionat eren realment els que s'havien de partir.
 \paragraph{}
 També s'ha dissenyat e implementat la simple interfície d'usuari descrita a l'apartat \ref{subsec:ig}. El lector del format DEM està també parcialment implementat de forma que es poden obtenir les dades dels fitxers.
 
@@ -79,6 +79,7 @@ El treball que queda per realitzar és:
 
 \begin{center}
 \includegraphics{horari.png}
+\newline
 \figurename{ 1 - Planificació del treball restant}
 \end{center}
 
