@@ -245,7 +245,6 @@ map *DEMParser::parse(QFile &file)
 		file.readBlock(aux, 160);
 		
 		QValueVector<double> *heights;
-		int height;
 		/* Record 2 */
 		for (int i = 0; i < n; i++)
 		{
@@ -292,46 +291,25 @@ map *DEMParser::parse(QFile &file)
 		
 			if (rows <= 146)
 			{
-				for (int i = 0; i < rows; i++)
-				{
-					height = readInt(file, 6, aux);
-					heights->append(height * conversionFactor);
-					// qDebug("Altura %d", height);
-				}
-				
+				readHeights(file, rows, conversionFactor, heights, aux);
 				l += rows*6;
 				
 				file.readBlock(aux, 1024 - l);
 			}
 			else
 			{
-				//QString s = readString(file, 146*6, aux);
-				for (int i = 0; i < 146; i++)
-				{
-					height = readInt(file, 6, aux);
-					//height = s.mid(i*6, 6).toInt();
-					heights->append(height * conversionFactor);
-					// qDebug("Altura %d", height);
-				}
-				
+				readHeights(file, 146, conversionFactor, heights, aux);
 				file.readBlock(aux, 4);
 				
 				int restan, read;
 				restan = rows - 146;
-				
 				while (restan > 0)
 				{
 					if (restan >= 170) read = 170;
 					else read = restan;
 					
-					for (int i = 0; i < read; i++)
-					{
-						height = readInt(file, 6, aux);
-						heights->append(height * conversionFactor);
-						// qDebug("Altura %d", height);
-					}
-					
-					file.readBlock(aux, 1024 - read*6);
+					readHeights(file, read, conversionFactor, heights, aux);
+					file.readBlock(aux, 1024 - read * 6);
 					restan -= read;
 				}
 				
@@ -378,6 +356,17 @@ QString DEMParser::readString(QFile &file, int length, char *aux)
 	aux[length] = '\0';
 	res = aux;
 	return res;
+}
+
+void DEMParser::readHeights(QFile &file, int howMany, double factor, QValueVector<double> *v, char *aux)
+{
+	int height;
+	
+	for (int i = 0; i < howMany; i++)
+	{
+		height = readInt(file, 6, aux);
+		v->append(height * factor);
+	}
 }
 
 

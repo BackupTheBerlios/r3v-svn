@@ -11,6 +11,7 @@
 #define PARSER_H
 
 class QFile;
+template<class T> class QValueVector;
 
 class map;
 
@@ -24,6 +25,7 @@ class DEMParser
 		static double readDouble(QFile &file, int length, char *aux);
 		static int readInt(QFile &file, int length, char *aux);
 		static QString readString(QFile &file, int length, char *aux);
+		static void readHeights(QFile &file, int howMany, double factor, QValueVector<double> *v, char *aux);
 };
 
 class myParser
