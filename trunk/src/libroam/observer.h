@@ -26,7 +26,6 @@ class observer
 		
 		void position(float *x, float *y, float *z) const;
 		void vrp(float *x, float *y, float *z) const;
-		void viewUpVector(float *x, float *y, float *z) const;
 		
 	private:
 		float m_posX, m_posY, m_posZ;
