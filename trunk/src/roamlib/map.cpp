@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include <math.h>
- 
+
 #include "diamond.h"
 #include "map.h"
 #include "node.h"
@@ -20,7 +20,7 @@ r3vMap::r3vMap() : m_baseDiamond(0)
 
 r3vMap::~r3vMap()
 {
-	QValueVector<QValueVector<double>*>::iterator it;
+	std::vector<std::vector<double>*>::iterator it;
 	while (m_heights.size())
 	{
 		it = m_heights.begin();
@@ -28,13 +28,8 @@ r3vMap::~r3vMap()
 		m_heights.erase(it);
 	}
 	
-// 	qDebug("%d nodos", m_nodes.count());
-	qDebug("%d triangulos", m_triangleCount);
-	qDebug("%d hojas", m_leavesCount);
 	m_baseDiamond -> clean();
 	delete m_baseDiamond;
-	qDebug("%d triangulos", m_triangleCount);
-	qDebug("%d hojas", m_leavesCount);
 	std::map<std::pair<double, double>, node*>::const_iterator it2;
 	it2 = m_nodes.begin();
 	while (it2 != m_nodes.end())
@@ -45,9 +40,9 @@ r3vMap::~r3vMap()
 	m_nodes.clear();
 }
 
-void r3vMap::addColumn(QValueVector<double> *column)
+void r3vMap::addColumn(std::vector<double> *column)
 {
-	m_heights.append(column);
+	m_heights.push_back(column);
 }
 
 diamond *r3vMap::baseDiamond() 
@@ -214,16 +209,9 @@ void r3vMap::square()
 			
 		}
 	}
-	qDebug("Lado maximo %d", x);
-	qDebug("Posicion %d", p);
-	/*qDebug("Demostracion");
-	for (int i = 0; i < x; i++)
-		qDebug("Altura de %d es %d", i+p, heights(i+p));*/
-	
-// 	x -= 10;
 	
 	// once we have searched the maximum square we crop the map
-	QValueVector<QValueVector<double>*>::iterator it;
+	std::vector<std::vector<double>*>::iterator it;
 	for (int i = 0; i < p; i++)
 	{
 		it = m_heights.begin();
@@ -231,7 +219,7 @@ void r3vMap::square()
 		m_heights.erase(it);
 	}
 	
-	QValueVector<double> *v;
+	std::vector<double> *v;
 	for (int i = 0; i < x; i++)
 	{
 		v = m_heights[i];
@@ -260,7 +248,6 @@ void r3vMap::square()
 	}
 	
 	m_amplitude = maxHeight - m_minHeight;
-	qDebug("%f %f", m_minHeight, m_amplitude);
 }
 
 void r3vMap::addTriangles(int n)
@@ -288,25 +275,25 @@ void r3vMap::color(double h, int &r, int &g, int &b) const
 	if (h < (m_minHeight + 0.25 * m_amplitude))
 	{
 		r = 0;
-		g = (int) qRound(4 * 255 * (h - m_minHeight) / m_amplitude);
+		g = (int)rint(4 * 255 * (h - m_minHeight) / m_amplitude);
 		b = 255;
 	}
 	else if (h < (m_minHeight + 0.5 * m_amplitude)) 
 	{
 		r = 0;
 		g = 255;
-		b = (int) qRound(2 * 255 - 4 * 255 * (h - m_minHeight) / m_amplitude);
+		b = (int)rint(2 * 255 - 4 * 255 * (h - m_minHeight) / m_amplitude);
 	}
 	else if (h < (m_minHeight + 0.75 * m_amplitude))
 	{
-		r = qRound(4 * 255 * (h - m_minHeight) / m_amplitude - 2 * 255);
+		r = (int)rint(4 * 255 * (h - m_minHeight) / m_amplitude - 2 * 255);
 		g = 255;
 		b = 0;
 	}
 	else
 	{
 		r = 255;
-		g = qRound(4 * 255 - 4 * 255 * (h - m_minHeight) / m_amplitude);
+		g = (int)rint(4 * 255 - 4 * 255 * (h - m_minHeight) / m_amplitude);
 		b = 0;
 	}
 }

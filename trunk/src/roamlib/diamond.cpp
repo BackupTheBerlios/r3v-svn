@@ -34,8 +34,7 @@ void diamond::merge(triangleList *splitQueue, diamondList *mergeQueue)
 
 double diamond::priority() const
 {
-	if (m_t1 -> priority() > m_t2 -> priority()) return m_t1 -> priority();
-	else return m_t2 -> priority();
+	return std::max(m_t1 -> priority(), m_t2 -> priority());
 }
 
 triangle *diamond::t1() const

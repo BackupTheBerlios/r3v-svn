@@ -10,8 +10,9 @@
 #ifndef PARSER_H
 #define PARSER_H
 
+#include <vector>
+
 class QFile;
-template<class T> class QValueVector;
 
 class r3vMap;
 
@@ -31,7 +32,7 @@ class DEMParser : r3vParser
 		static double readDouble(QFile &file, int length, char *aux);
 		static int readInt(QFile &file, int length, char *aux);
 		static QString readString(QFile &file, int length, char *aux);
-		static void readHeights(QFile &file, int howMany, double factor, QValueVector<double> *v, char *aux);
+		static void readHeights(QFile &file, int howMany, double factor, std::vector<double> *v, char *aux);
 };
 
 class myParser : r3vParser

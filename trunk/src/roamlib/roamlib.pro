@@ -1,7 +1,7 @@
 TEMPLATE = lib
 INCLUDEPATH += .
 CONFIG += opengl staticlib
-; CONFIG -= qt
+;CONFIG -= qt
 
 SOURCES += diamond.cpp \
            diamondlist.cpp \

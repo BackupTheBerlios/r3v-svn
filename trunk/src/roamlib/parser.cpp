@@ -10,6 +10,7 @@
 #include <stdlib.h>
 
 #include <qfile.h>
+#include <qtextstream.h>
 
 //#include "geopoint.h"
 #include "parser.h"
@@ -244,7 +245,7 @@ r3vMap *DEMParser::parse(QFile &file)
 		
 		file.readBlock(aux, 160);
 		
-		QValueVector<double> *heights;
+		std::vector<double> *heights;
 		/* Record 2 */
 		for (int i = 0; i < n; i++)
 		{
@@ -287,7 +288,7 @@ r3vMap *DEMParser::parse(QFile &file)
 			// qDebug("Maxima Elevacion Loc:%f", maxLocEl);
 			l += 48;
 			
-			heights = new QValueVector<double>;
+			heights = new std::vector<double>;
 		
 			if (rows <= 146)
 			{
@@ -358,14 +359,14 @@ QString DEMParser::readString(QFile &file, int length, char *aux)
 	return res;
 }
 
-void DEMParser::readHeights(QFile &file, int howMany, double factor, QValueVector<double> *v, char *aux)
+void DEMParser::readHeights(QFile &file, int howMany, double factor, std::vector<double> *v, char *aux)
 {
 	int height;
 	
 	for (int i = 0; i < howMany; i++)
 	{
 		height = readInt(file, 6, aux);
-		v->append(height * factor);
+		v->push_back(height * factor);
 	}
 }
 
@@ -380,14 +381,14 @@ r3vMap *myParser::parse(QFile &file)
 		
 		QTextStream ts(&file);
 		int columns = ts.readLine().toInt();
-		QValueVector<double> *heights;
+		std::vector<double> *heights;
 		
 		for (int i = 0; i < columns; i++)
 		{
-			heights = new QValueVector<double>;
+			heights = new std::vector<double>;
 			for (int j = 0; j < columns; j++)
 			{
-				heights->append(ts.readLine().toDouble());
+				heights->push_back(ts.readLine().toDouble());
 			}
 			m -> addColumn(heights);
 		}

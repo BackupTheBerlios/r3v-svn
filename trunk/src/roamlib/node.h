@@ -10,8 +10,7 @@
 #ifndef NODE_H
 #define NODE_H
 
-#include <qcolor.h>
-#include <qvaluelist.h>
+#include <list>
 
 class triangle;
 
@@ -33,7 +32,7 @@ class node
 		void addTriangle(triangle *t);
 		void removeTriangle(triangle *t);
 		triangle *getTriangle(node *n, triangle *t) const;
-		QValueList<triangle *> triangles();
+		std::list<triangle *> triangles();
 		
 		void print() const;
 		
@@ -50,7 +49,7 @@ class node
 		// 2 -> b
 		double m_color[3];
 		
-		QValueList<triangle *> m_triangles;
+		std::list<triangle *> m_triangles;
 };
 
 #endif

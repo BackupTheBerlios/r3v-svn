@@ -11,8 +11,7 @@
 #define MAP_H
 
 #include <map>
-
-#include <qvaluevector.h>
+#include <vector>
 
 #include "triangle.h"
 
@@ -25,7 +24,7 @@ class r3vMap
 		r3vMap();
 		~r3vMap();
 		
-		void addColumn(QValueVector<double> *column);
+		void addColumn(std::vector<double> *column);
 		
 		diamond *baseDiamond();
 		
@@ -50,7 +49,7 @@ class r3vMap
 	
 		bool checkSquare(int pos, int size) const;
 	
-		QValueVector<QValueVector<double>*> m_heights;
+		std::vector<std::vector<double>*> m_heights;
 		double m_minHeight, m_amplitude;
 		
 		std::map<std::pair<double, double>, node*> m_nodes;

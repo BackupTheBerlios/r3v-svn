@@ -7,6 +7,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include <algorithm>
+
 #include <assert.h>
 #include <stdio.h>
 
@@ -62,7 +64,7 @@ bool node::operator!=(const node &n) const
 
 void node::addTriangle(triangle *t)
 {
-	m_triangles.append(t);
+	m_triangles.push_back(t);
 }
 
 void node::removeTriangle(triangle *t)
@@ -72,8 +74,8 @@ void node::removeTriangle(triangle *t)
 
 triangle *node::getTriangle(node *n, triangle *t) const
 {
-	QValueList<triangle *> both, other;
-	QValueList<triangle *>::const_iterator it, it2, end, oBegin, oEnd;
+	std::list<triangle *> both, other;
+	std::list<triangle *>::const_iterator it, it2, end, oBegin, oEnd;
 	
 	other = n -> triangles();
 	other.remove(t);
@@ -84,21 +86,21 @@ triangle *node::getTriangle(node *n, triangle *t) const
 	oEnd = other.end();
 	for (it = m_triangles.begin(); it != end; ++it)
 	{
-		it2 = qFind(oBegin, oEnd, *it);
-		if (it2 != oEnd) both.append(*it);
+		it2 = std::find(oBegin, oEnd, *it);
+		if (it2 != oEnd) both.push_back(*it);
 	}
 	
-	if (both.count() == 1) return both.first();
-	else if (both.count() == 0) return 0;
+	if (both.size() == 1) return both.front();
+	else if (both.size() == 0) return 0;
 	else
 	{
-		assert(both.count() == 2);
+		assert(both.size() == 2);
 		int l1, l2;
 		triangle *t1, *t2;
 		
-		t1 = both.first();
+		t1 = both.front();
 		l1 = t1 -> level();
-		t2 = both.last();
+		t2 = both.back();
 		l2 = t2 -> level();
 		assert(l1 != l2);
 		if (l1 > l2) return t1;
@@ -106,7 +108,7 @@ triangle *node::getTriangle(node *n, triangle *t) const
 	}
 }
 
-QValueList<triangle *> node::triangles()
+std::list<triangle *> node::triangles()
 {
 	return m_triangles;
 }

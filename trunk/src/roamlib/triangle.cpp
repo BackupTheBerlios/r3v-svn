@@ -7,6 +7,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include <algorithm>
+
 #include <float.h>
 
 #include <assert.h>
@@ -111,7 +113,7 @@ unsigned int triangle::level() const
 
 void triangle::updateWedgie()
 {
-	m_wedgie = m_ownWedgie + QMAX(m_leftTriangle -> m_wedgie, m_rightTriangle -> m_wedgie);
+	m_wedgie = m_ownWedgie + std::max(m_leftTriangle -> m_wedgie, m_rightTriangle -> m_wedgie);
 	if (m_parentTriangle) m_parentTriangle -> updateWedgie();
 }
 
@@ -171,7 +173,7 @@ void triangle::split(triangleList *splitQueue, diamondList *mergeQueue, double *
 		{
 			setMergeable(true, mergeQueue, baseTriangle);
 		}
-		else qDebug("NO PASA NUNCA");
+		else printf("NO PASA NUNCA\n");
 	}
 	
 	updateWedgie();
@@ -250,8 +252,8 @@ void triangle::calcPriority(double *modelViewMatrix)
 	else d3 = DBL_MIN;
 	
 // 	qDebug("%f %f %f", d1, d2, d3);
-	m_priority = QMAX(d1, d2);
-	m_priority = QMAX(m_priority, d3);
+	m_priority = std::max(d1, d2);
+	m_priority = std::max(m_priority, d3);
 	
 	// TODO usar un define o algo ese 1.0 es el ZNear
 // 	if (r1 >= -1.0 || r2 >= -1.0 || r3 >= -1.0) m_priority = DBL_MIN;
