@@ -10,7 +10,7 @@ page1.pdf: page1.tex
 memoria.pdf: memoria.tex
 	pdflatex memoria.tex
 	pdflatex memoria.tex
-	rm -f *.aux *.dvi *.log *.idx *.toc
+	rm -f *.aux *.dvi *.log *.idx *.toc *.lof
 
 clean:
 	rm -f *~ *.aux *.dvi *.log page1.pdf memoria.pdf

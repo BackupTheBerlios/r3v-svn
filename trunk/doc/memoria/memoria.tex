@@ -66,7 +66,7 @@ Per representar una superfície amb arbres binaris de triangles es fan servir dos
 \label{fig: diamant}
 \end{figure}
 
-\subsubsection{Operacions sobre conjunts d'arbres binaris de triangles}
+\subsubsection{Conjunts d'arbres binaris de triangles}
 Una a triangulació d'arbres binaris de triangles (triangulació d'ara en endavant) és un conjunt d'arbres binaris que tenen alguna relació de veïnatge entre ells, ja sigui compartint un vèrtex o una aresta. Un cas especial de triangulació és el diamant, triangulació format per dos triangles que comparteixen l'aresta base i tenen el mateix nivell, la figura \ref{fig: diamant} és un exemple de diamant. Un fet important d'una triangulació és que donat un triangle, el triangle amb el que comparteix la base és del mateix nivell o del nivell superior. A la figura \ref{fig: triangleBase} podem veure un exemple de les dues situacions, el triangle A comparteix la base amb un triangle del seu nivell mentre que el triangle B comparteix la base amb un triangle d'un nivell superior ($l$ més petita).
 
 \begin{figure}
@@ -76,7 +76,24 @@ Una a triangulació d'arbres binaris de triangles (triangulació d'ara en endavant
 \label{fig: triangleBase}
 \end{figure}
 
+\subsubsection{Operacions sobre diamants}
+Sobre un diamant es poden realitzar dues operacions, split i merge. Split (partir) consisteix en crear els fills de $T$ i del seu triangle base $T_B$ de forma que s'obté una triangulació formada pels triangles $T_1$, $T_2$, $T_B1$ i $T_B2$. Merge (fusionar) consisteix en tornar als triangles $T$ i $T_B$ a partir dels seus quatre fills. Es pot veure una representació dels processos de partició i unió a la figura \ref{fig: splitMerge}.
 
+\begin{figure}
+\centering
+\includegraphics{images/splitMerge.png}
+\caption{Split i merge sobre una triangulació}
+\label{fig: splitMerge}
+\end{figure}
+
+No se li pot fer split a un triangle si el triangle amb el qual comparteix la base no es del mateix nivell, per exmeple el triangle B de la figura \ref{fig: triangleBase}, en aquest cas si realment volem partir-lo hem de fer abans un split del triangle amb el que comparteix la base. La figura \ref{fig: forceSplitExtrem} és un cas extrem en el que caldria fer 4 splits forçats abans de fer la partició del triangle $T$.
+
+\begin{figure}
+\centering
+\includegraphics{images/forceSplitExtrem.png}
+\caption{Cas extrem en el que cal aplicar 4 particions forçades}
+\label{fig: forceSplitExtrem}
+\end{figure}
 
 \subsection{Escala de colors}
 
@@ -86,4 +103,6 @@ Una a triangulació d'arbres binaris de triangles (triangulació d'ara en endavant
 \subsection{Anàlisi de costos}
 \section{Conclusions}
 \section{Bibliografia}
+\section{Index de figures}
+\listoffigures
 \end{document}
