@@ -10,8 +10,11 @@ AM_PROG_LIBTOOL
 echo "checking for Qt ..."
 
 if test -z $QTDIR; then
-echo "You don't have \$QTDIR set, please set \$QTDIR to point to your Qt installation"
+	# Debian does not set $QTDIR but has things in place, checking for Debian
+	if !(test -e /usr/include/qapplication.h && test -e /usr/bin/moc && test -e /usr/lib/libqt-mt.so.3); then
+	     echo "You don't have \$QTDIR set, that means you don't have Qt installed or your \$QTDIR is not pointing to your Qt installation"
 exit
+	fi
 fi
 
 if !(test -e $QTDIR); then
