@@ -33,7 +33,7 @@ map *DEMParser::parse(QFile &file)
 		
 		/* description */
 		descriptorField = readString(file, 40, aux);;
-		// qDebug("Descripción:%s", descriptorField.latin1());
+		// qDebug("Descripciï¿½:%s", descriptorField.latin1());
 		
 		/* filler */
 		file.readBlock(aux, 29);
@@ -73,7 +73,7 @@ map *DEMParser::parse(QFile &file)
 		
 		/* Elevetion Pattern */
 		elevationPattern = readInt(file, 6, aux);
-		// qDebug("Patrón de elevación:%d", elevationPattern);
+		// qDebug("Patrï¿½ de elevaciï¿½:%d", elevationPattern);
 		
 		/* ground planimetric reference system */
 		groundPlanimetricReferenceSystem = readInt(file, 6, aux);
@@ -316,35 +316,23 @@ map *DEMParser::parse(QFile &file)
 				
 				file.readBlock(aux, 4);
 				
-				int restan;
+				int restan, read;
 				restan = rows - 146;
 				
 				while (restan > 0)
 				{
-					if (restan >= 170)
+					if (restan >= 170) read = 170;
+					else read = restan;
+					
+					for (int i = 0; i < read; i++)
 					{
-						for (int i = 0; i < 170; i++)
-						{
-							height = readInt(file, 6, aux);
-							heights->append(height * conversionFactor);
-							// qDebug("Altura %d", height);
-						}
-						
-						file.readBlock(aux, 4);
-						restan -= 170;
+						height = readInt(file, 6, aux);
+						heights->append(height * conversionFactor);
+						// qDebug("Altura %d", height);
 					}
-					else
-					{
-						for (int i = 0; i < restan; i++)
-						{
-							height = readInt(file, 6, aux);
-							heights->append(height * conversionFactor);
-							// qDebug("Altura %d", height);
-						}
-						
-						file.readBlock(aux, 1024 - restan*6);
-						restan = 0;
-					}
+					
+					file.readBlock(aux, 1024 - read*6);
+					restan -= read;
 				}
 				
 // 				falta = 1024 - (m*n-146)*6;
