@@ -86,7 +86,7 @@ Sobre un diamant es poden realitzar dues operacions, split i merge. Split (parti
 \label{fig: splitMerge}
 \end{figure}
 
-No se li pot fer split a un triangle si el triangle amb el qual comparteix la base no es del mateix nivell, per exmeple el triangle B de la figura \ref{fig: triangleBase}, en aquest cas si realment volem partir-lo hem de fer abans un split del triangle amb el que comparteix la base. La figura \ref{fig: forceSplitExtrem} és un cas extrem en el que caldria fer 4 splits forçats abans de fer la partició del triangle $T$.
+Només els triangles que tenen el mateix nivell que el triangle amb el que comparteixen la base són susceptibles de ser partits. Aquells que comparteixen la base amb un triangle de nivell superior ($l$ més petita) (per exemple el triangle B de la figura \ref{fig: triangleBase})  no poden ser partits directament i si realment volem partir-los hem de fer abans un split del triangle amb el que comparteix la base. La figura \ref{fig: forceSplitExtrem} és un cas extrem en el que caldria fer 4 splits forçats abans de fer la partició del triangle $T$.
 
 \begin{figure}
 \centering
