@@ -36,7 +36,7 @@ int ROAM::open(const std::string &file)
 	else return 3;
 	
 	m_map->square();
-		
+	
 	d = m_map -> baseDiamond();
 
 	int size = m_map -> columns();
