@@ -309,3 +309,6 @@ void glWidget::initFPSTimer()
 	m_newFPSSum = 0;
 	m_FPSTimes = 0;
 }
+
+// #include "glwidget.moc"
+

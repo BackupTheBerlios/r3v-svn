@@ -1,0 +1,49 @@
+AC_INIT(configure.in)
+
+AM_CONFIG_HEADER(config.h)
+AM_INIT_AUTOMAKE(r3v, 0.1)
+
+AC_LANG_CPLUSPLUS
+AC_PROG_CXX
+AM_PROG_LIBTOOL
+
+echo "checking for Qt ..."
+
+if test -z $QTDIR; then
+echo "You don't have \$QTDIR set, please set \$QTDIR to point to your Qt installation"
+exit
+fi
+
+if !(test -e $QTDIR); then
+echo "You have \$QTDIR set, but it does not point to any existing folder"
+exit
+fi
+
+if !(test -e $QTDIR/include) then
+echo "You have \$QTDIR set, but it does not seem to point to a valid Qt installation, there is no $QTDIR/include folder"
+exit
+fi
+
+if !(test -e $QTDIR/lib) then
+echo "You have \$QTDIR set, but it does not seem to point to a valid Qt installation, there is no $QTDIR/lib folder"
+exit
+fi
+
+if !(test -e $QTDIR/bin) then
+echo "You have \$QTDIR set, but it does not seem to point to a valid Qt installation, there is no $QTDIR/bin folder"
+exit
+fi
+
+if !(test -e $QTDIR/bin/moc) then
+echo "You have \$QTDIR set, but it does not seem to point to a valid Qt installation, could not find the moc executable"
+exit
+fi
+
+if !(test -e $QTDIR/lib/libqt-mt.so.3) then
+echo "Your Qt version does not seem the correct one to install r3v, you need the threaded version Qt3 (libqt-mt.so.3)"
+exit
+fi
+
+echo "    Qt found at $QTDIR"
+
+AC_OUTPUT(Makefile src/Makefile src/libroam/Makefile)
