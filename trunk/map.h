@@ -12,8 +12,6 @@
 
 #include <map>
 
-#include <qcolor.h>
-#include <qmap.h>
 #include <qvaluevector.h>
 
 #include "triangle.h"
@@ -48,7 +46,7 @@ class r3vMap
 		int leaves() const;
 	
 	private:
-		QColor color(double height) const;
+		void color(double height, int &r, int &g, int &b) const;
 	
 		bool checkSquare(int pos, int size) const;
 	

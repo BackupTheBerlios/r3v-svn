@@ -169,8 +169,10 @@ node *r3vMap::getNode(double x, double y)
 	}
 	
 	double h;
+	int r, g, b;
 	h = height(x, y);
-	node *n = new node(x, y, h, color(h));
+	color(h, r, g, b);
+	node *n = new node(x, y, h, r, g, b);
 	m_nodes[p] = n;
 	
 	return n;
@@ -281,10 +283,8 @@ int r3vMap::leaves() const
 	return m_leavesCount;
 }
 
-QColor r3vMap::color(double h) const
+void r3vMap::color(double h, int &r, int &g, int &b) const
 {
-	int r, g, b;
-	
 	if (h < (m_minHeight + 0.25 * m_amplitude))
 	{
 		r = 0;
@@ -309,8 +309,6 @@ QColor r3vMap::color(double h) const
 		g = qRound(4 * 255 - 4 * 255 * (h - m_minHeight) / m_amplitude);
 		b = 0;
 	}
-	
-	return QColor(r, g, b);
 }
 
 bool r3vMap::checkSquare(int pos, int size) const

@@ -38,7 +38,7 @@ class node
 		void print() const;
 		
 	private:
-		node(double x, double y, double z, const QColor &c);
+		node(double x, double y, double z, int r, int g, int b);
 	
 		// 0 -> x
 		// 1 -> height

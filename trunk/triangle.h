@@ -12,8 +12,6 @@
 
 #include <math.h>
 
-#include <qstring.h>
-
 #include "trianglelist.h"
 
 class diamond;

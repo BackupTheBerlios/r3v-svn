@@ -13,15 +13,15 @@
 #include "node.h"
 #include "triangle.h"
 
-node::node(double x, double y, double z, const QColor &c)
+node::node(double x, double y, double z, int r, int g, int b)
 {
 	m_coords[0] = x;
 	m_coords[2] = y;
 	m_coords[1] = z;
 	
-	m_color[0] = (double)c.red() / 255;
-	m_color[1] = (double)c.green() / 255;
-	m_color[2] = (double)c.blue() / 255;
+	m_color[0] = (double)r / 255;
+	m_color[1] = (double)g / 255;
+	m_color[2] = (double)b / 255;
 }
 
 const double *node::color() const

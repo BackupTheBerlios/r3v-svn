@@ -11,7 +11,7 @@
 #include "diamondlist.h"
 #include "triangle.h"
 #include "trianglelist.h"
- 
+
 diamond::diamond(triangle *t1, triangle *t2) : m_t1(t1), m_t2(t2)
 {
 }
@@ -34,7 +34,8 @@ void diamond::merge(triangleList *splitQueue, diamondList *mergeQueue)
 
 double diamond::priority() const
 {
-	return QMAX(m_t1 -> priority(), m_t2 -> priority());
+	if (m_t1 -> priority() > m_t2 -> priority()) return m_t1 -> priority();
+	else return m_t2 -> priority();
 }
 
 triangle *diamond::t1() const

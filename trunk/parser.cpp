@@ -11,7 +11,7 @@
 
 #include <qfile.h>
 
-#include "geopoint.h"
+//#include "geopoint.h"
 #include "parser.h"
 #include "map.h"
 
@@ -22,7 +22,7 @@ r3vMap *DEMParser::parse(QFile &file)
 		char aux[1025];
 		QChar processCode;
 		QString name, descriptorField, originCode, sectionalIndicator;
-		geoPoint *SE;
+		//geoPoint *SE;
 		int DEMLevel, elevationPattern, groundPlanimetricReferenceSystem, zoneCode, groundCoordsUnit, elevationCoordsUnit, polygonSides;
 		
 		r3vMap *m = new r3vMap();
