@@ -315,6 +315,71 @@ r3vMap *DEMParser::parse(const std::string &file)
 			m->addColumn(heights);
 		}
 		m_file -> close();
+		
+		// SQUARE THE MAP
+		int x = 0; // maximum square side size
+		int p = 0; // position where the maximum square side size begins
+		int col = m->size();
+		for (int i = 0; i < col; i++)
+		{
+			n = m->m_heights[i]->size();
+
+			if (i + n >= col) n = col - i;
+			if (n > x)
+			{
+				bool good = true;
+				int j = i;
+				while(good && j < n + i)
+				{
+					good = good && m->m_heights[j]->size() >= n;
+					j++;
+				}
+				
+				if (good)
+				{
+					x = n;
+					p = i;
+				}
+// 				else 
+// 				{
+// 					int nn = n - 1;
+// 					while(!good && nn > x)
+// 					{
+// 						good = checkSquare(i, nn);
+// 						if (good)
+// 						{
+// 							x = nn;
+// 							p = i;
+// 						}
+// 						nn--;
+// 					}
+// 				}
+			}
+		}
+	
+		// once we have searched the maximum square we crop the map
+		std::vector<std::vector<double>*>::iterator it;
+		for (int i = 0; i < p; i++)
+		{
+			it = m->m_heights.begin();
+			delete *it;
+			m->m_heights.erase(it);
+		}
+	
+		std::vector<double> *v;
+		for (int i = 0; i < x; i++)
+		{
+			v = m->m_heights[i];
+			v -> resize(x);
+		}
+		
+		for (int i = 0; i < col - p - x; i++)
+		{
+			v = m->m_heights[i + x];
+			delete v;
+		}
+		m->m_heights.resize(x);
+	
 		return m;
 	}
 	return 0;

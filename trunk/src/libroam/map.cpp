@@ -14,7 +14,7 @@
 #include "node.h"
 #include "triangle.h"
 
-r3vMap::r3vMap() : m_baseDiamond(0)
+r3vMap::r3vMap() : m_baseDiamond(0), m_amplitude(-1)
 {
 }
 
@@ -49,19 +49,19 @@ diamond *r3vMap::baseDiamond()
 {
 	if (!m_baseDiamond) 
 	{
-		int size;
+		int s;
 		node *n1, *n2, *n3;
 		triangle *t1, *t2;
 	
-		size = columns();
-		size--;
+		s = size();
+		s--;
 	
 		n1 = getNode(0, 0);
-		n2 = getNode(size, 0);
-		n3 = getNode(0, size);
+		n2 = getNode(s, 0);
+		n3 = getNode(0, s);
 		t1 = new triangle(*this, n1, n2, n3, 0);
 	
-		n1 = getNode(size, size);
+		n1 = getNode(s, s);
 		t2 = new triangle(*this, n1, n3, n2, 0);
 	
 	/*	t1 -> setBaseTriangle(t2);
@@ -136,18 +136,19 @@ double r3vMap::height(double i, double j) const
 	return (h1 * d1x / res * d1y / res + h2 * d2x / res * d2y / res + h3 * d3x / res * d3y / res + h4 * d4x / res * d4y / res) / ((1 / res) * (1 / res));
 }
 
-int r3vMap::heights(int column) const
-{
-	return m_heights[column]->size();
-}
+// int r3vMap::heights(int column) const
+// {
+// 	return m_heights[column]->size();
+// }
 
-int r3vMap::columns() const
+int r3vMap::size() const
 {
 	return m_heights.size();
 }
 
 double r3vMap::midHeight() const
 {
+	if (m_amplitude == -1) calcAmplitudes();
 	return m_minHeight + m_amplitude / 2;
 }
 
@@ -173,83 +174,6 @@ node *r3vMap::getNode(double x, double y)
 	return n;
 }
 
-void r3vMap::square()
-{
-	int x = 0; // maximum square side size
-	int p = 0; // position where the maximum square side size begins
-	int col = columns();
-	int n; // current side size
-	for (int i = 0; i < col; i++)
-	{
-		n = heights(i);
-
-		if (i + n >= col) n = col - i;
-		if (n > x)
-		{
-			bool good = checkSquare(i, n);
-			if (good)
-			{
-				x = n;
-				p = i;
-			}
-// 			else 
-// 			{
-// 				int nn = n - 1;
-// 				while(!good && nn > x)
-// 				{
-// 					good = checkSquare(i, nn);
-// 					if (good)
-// 					{
-// 						x = nn;
-// 						p = i;
-// 					}
-// 					nn--;
-// 				}
-// 			}
-			
-		}
-	}
-	
-	// once we have searched the maximum square we crop the map
-	std::vector<std::vector<double>*>::iterator it;
-	for (int i = 0; i < p; i++)
-	{
-		it = m_heights.begin();
-		delete *it;
-		m_heights.erase(it);
-	}
-	
-	std::vector<double> *v;
-	for (int i = 0; i < x; i++)
-	{
-		v = m_heights[i];
-		v -> resize(x);
-	}
-	
-	for (int i = 0; i < col - p - x; i++)
-	{
-		v = m_heights[i + x];
-		delete v;
-	}
-	m_heights.resize(x);
-	
-	col = columns();
-	double maxHeight, aux;
-	maxHeight = height(0, 0);
-	m_minHeight = height(0, 0);
-	for (int i = 0; i < col; i++)
-	{
-		for (int j = 0; j < col; j++)
-		{
-			aux = height(i,j);
-			if (aux > maxHeight) maxHeight = aux;
-			if (aux < m_minHeight) m_minHeight = aux;
-		}
-	}
-	
-	m_amplitude = maxHeight - m_minHeight;
-}
-
 void r3vMap::addTriangles(int n)
 {
 	m_triangleCount += n;
@@ -270,8 +194,28 @@ int r3vMap::leaves() const
 	return m_leavesCount;
 }
 
+void r3vMap::calcAmplitudes()
+{
+	int col = size();
+	double maxHeight, aux;
+	maxHeight = height(0, 0);
+	m_minHeight = height(0, 0);
+	for (int i = 0; i < col; i++)
+	{
+		for (int j = 0; j < col; j++)
+		{
+			aux = height(i,j);
+			if (aux > maxHeight) maxHeight = aux;
+			if (aux < m_minHeight) m_minHeight = aux;
+		}
+	}
+	m_amplitude = maxHeight - m_minHeight;
+}
+
 void r3vMap::color(double h, int &r, int &g, int &b) const
 {
+	if (m_amplitude == -1) calcAmplitudes();
+	
 	if (h < (m_minHeight + 0.25 * m_amplitude))
 	{
 		r = 0;
@@ -296,16 +240,4 @@ void r3vMap::color(double h, int &r, int &g, int &b) const
 		g = (int)rint(4 * 255 - 4 * 255 * (h - m_minHeight) / m_amplitude);
 		b = 0;
 	}
-}
-
-bool r3vMap::checkSquare(int pos, int size) const
-{
-	bool good = true;
-	int j = pos;
-	while(good && j < size + pos)
-	{
-		good = good && heights(j) >= size;
-		j++;
-	}
-	return good;
 }

@@ -58,11 +58,9 @@ ROAM::Error ROAM::open(const std::string &file)
 	}
 	else return unknownFormat;
 	
-	m_map->square();
-	
 	d = m_map -> baseDiamond();
 
-	int size = m_map -> columns();
+	int size = m_map -> size();
 	const float r = 1.75;
 	const float degX = M_PI / 4;
 	// si hubiera 2 columnas, la 0 y la 1, no querriamos estar en 1 sino en 0.5

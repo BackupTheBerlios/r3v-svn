@@ -20,6 +20,8 @@ class node;
 
 class r3vMap
 {
+	friend class DEMParser;
+	
 	public:
 		r3vMap();
 		~r3vMap();
@@ -30,24 +32,20 @@ class r3vMap
 		
 		double height(int i, int j) const;
 		double height(double i, double j) const;
-		int heights(int column) const;
-		int columns() const;
+		int size() const;
 		double midHeight() const;
 		
 		node *getNode(double x, double y);
-		
-		void square();
 		
 		void addTriangles(int n);
 		void addLeaves(int n);
 		
 		int triangles() const;
 		int leaves() const;
-	
+		
 	private:
+		void calcAmplitudes();
 		void color(double height, int &r, int &g, int &b) const;
-	
-		bool checkSquare(int pos, int size) const;
 	
 		std::vector<std::vector<double>*> m_heights;
 		double m_minHeight, m_amplitude;
