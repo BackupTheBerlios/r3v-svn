@@ -42,7 +42,7 @@ class ROAM
 		void splitOne();
 		
 	private:
-		void paintTriangle(const triangle *t) const;
+		void paintTriangle(const triangle *t, bool color) const;
 		
 		r3vMap *m_map;
 		observer *m_observer;

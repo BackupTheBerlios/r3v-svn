@@ -136,10 +136,21 @@ void ROAM::paint()
 // 		}
 // 	}
 	
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glBegin(GL_TRIANGLES);
-	paintTriangle(m_map -> baseDiamond() -> t1());
-	paintTriangle(m_map -> baseDiamond() -> t2());
+	paintTriangle(m_map -> baseDiamond() -> t1(), false);
+	paintTriangle(m_map -> baseDiamond() -> t2(), false);
 	glEnd();
+	
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glEnable(GL_POLYGON_OFFSET_FILL);
+	glPolygonOffset(1.0, 1.0);
+	glBegin(GL_TRIANGLES);
+	paintTriangle(m_map -> baseDiamond() -> t1(), true);
+	paintTriangle(m_map -> baseDiamond() -> t2(), true);
+	glEnd();
+	glDisable(GL_POLYGON_OFFSET_FILL);
 }
 
 // 	if (m_FPSEnabled)
@@ -197,23 +208,25 @@ void ROAM::mergeOne()
 	d -> merge(m_splitQueue, m_mergeQueue);
 }
 
-void ROAM::paintTriangle(const triangle *t) const
+void ROAM::paintTriangle(const triangle *t, bool color) const
 {
 	if (t -> isLeaf())
 	{
-		if (t -> m_parentTriangle && t -> m_parentTriangle -> m_mergeableDiamond) glColor3d(1.0, 1.0, 1.0);
-		else glColor3dv(t -> apex() -> color());
-		glVertex3dv(t -> apex() -> coords());
-		if (t -> m_parentTriangle && t -> m_parentTriangle -> m_mergeableDiamond) glColor3d(1.0, 1.0, 1.0);
-		else glColor3dv(t -> rightVertex() -> color());
-		glVertex3dv(t -> rightVertex() -> coords());
-		if (t -> m_parentTriangle&& t -> m_parentTriangle -> m_mergeableDiamond) glColor3d(1.0, 1.0, 1.0);
-		else glColor3dv(t -> leftVertex() -> color());
-		glVertex3dv(t -> leftVertex() -> coords());
+		node *nodes[3];
+		nodes[0] = t -> apex();
+		nodes[1] = t -> rightVertex();
+		nodes[2] = t -> leftVertex();
+		
+		if (!color) glColor3d(0.0, 0.0, 0.0);
+		for (int i = 0; i < 3; i++)
+		{
+			if (color) glColor3dv(nodes[i] -> color());
+			glVertex3dv(nodes[i] -> coords());
+		}
 	}
 	else
 	{
-		paintTriangle(t -> leftTriangle());
-		paintTriangle(t -> rightTriangle());
+		paintTriangle(t -> leftTriangle(), color);
+		paintTriangle(t -> rightTriangle(), color);
 	}
 }
