@@ -10,8 +10,6 @@
 #ifndef ROAM_H
 #define ROAM_H
 
-class QString;
-
 class diamondList;
 class observer;
 class r3vMap;
