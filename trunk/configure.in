@@ -11,8 +11,8 @@ echo "checking for Qt ..."
 
 if test -z $QTDIR; then
 	# Debian does not set $QTDIR but has things in place, checking for Debian
-	if !(test -e /usr/include/qt3/qapplication.h && test -e /usr/bin/moc && test -e /usr/lib/libqt-mt.so.3); then
-		echo "You don't have \$QTDIR set, that means you don't have Qt installed or your \$QTDIR is not pointing to your Qt installation"
+	if !(test -e /usr/include/qt3/qapplication.h && test -e /usr/bin/moc && test -e /usr/lib/libqt-mt.so.3 && test -e usr/lib/libqt-mt.la); then
+		echo "You don't Qt or Qt-devel packages installed, if you have them please set \$QTDIR to point to your Qt installation"
 		exit
 	else
 		QT_INCLUDES="/usr/include/qt3"
@@ -47,6 +47,11 @@ else
 
 	if !(test -e $QTDIR/lib/libqt-mt.so.3) then
 		echo "Your Qt version does not seem the correct one to install r3v, you need the threaded version Qt3 (libqt-mt.so.3)"
+		exit
+	fi
+	
+	if !(test -e $QTDIR/lib/libqt-mt.la) then
+		echo "You don't seem to have development package of Qt installed, please install it"
 		exit
 	fi
 	
