@@ -28,18 +28,18 @@ r3vMap::~r3vMap()
 		m_heights.erase(it);
 	}
 	
-	qDebug("%d nodos", m_nodes.count());
+// 	qDebug("%d nodos", m_nodes.count());
 	qDebug("%d triangulos", m_triangleCount);
 	qDebug("%d hojas", m_leavesCount);
 	m_baseDiamond -> clean();
 	delete m_baseDiamond;
 	qDebug("%d triangulos", m_triangleCount);
 	qDebug("%d hojas", m_leavesCount);
-	QMap<QPair<double, double>, node*>::const_iterator it2;
+	std::map<std::pair<double, double>, node*>::const_iterator it2;
 	it2 = m_nodes.begin();
 	while (it2 != m_nodes.end())
 	{
-		delete *it2;
+		delete (*it2).second;
 		++it2;
 	}
 	m_nodes.clear();
@@ -158,14 +158,14 @@ double r3vMap::midHeight() const
 
 node *r3vMap::getNode(double x, double y)
 {
-	QMap<QPair<double, double>, node*>::const_iterator it;
-	QPair<double, double> p(x, y);
+	std::map<std::pair<double, double>, node*>::const_iterator it;
+	std::pair<double, double> p(x, y);
 	
 	it = m_nodes.find(p);
 	if (it != m_nodes.end())
 	{
 // 		qDebug("ME piden uno que existe %f %f", x, y);
-		return it.data();
+		return (*it).second;
 	}
 	
 	double h;

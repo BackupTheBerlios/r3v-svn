@@ -10,6 +10,8 @@
 #ifndef MAP_H
 #define MAP_H
 
+#include <map>
+
 #include <qcolor.h>
 #include <qmap.h>
 #include <qvaluevector.h>
@@ -53,7 +55,7 @@ class r3vMap
 		QValueVector<QValueVector<double>*> m_heights;
 		double m_minHeight, m_amplitude;
 		
-		QMap<QPair<double, double>, node*> m_nodes;
+		std::map<std::pair<double, double>, node*> m_nodes;
 		
 		diamond *m_baseDiamond;
 		int m_triangleCount;
