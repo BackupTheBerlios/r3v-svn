@@ -17,43 +17,19 @@ void fakeTriangleList::clear()
 
 void fakeTriangleList::insert(const fakeTriangle &ft)
 {
-	QValueList<fakeTriangle>::iterator it;
-	it = m_triangles.begin();
-	
-	if (it == m_triangles.end())
-	{
-		// m_triangles is empty
-		m_triangles.append(ft);
-	}
-	else if (ft < *it)
-	{
-		// ft is smaller than the first element of m_triangles so 
-		// put ft at the begging of m_triangles
-		m_triangles.prepend(ft);
-	}
-	else
-	{
-		while(it != m_triangles.end() && (*it < ft)) ++it;
-		// insert(it, x) 
-		// Inserts the value x in front of the item pointed to by the iterator, it. 
-		m_triangles.insert(it, ft);
-	}
+	std::multimap<double, triangle*>::iterator it;
+	it = m_triangles.insert(std::pair<double, triangle*>(ft.m_priority, ft.m_t));
+	ft.m_t->m_it = it;
 }
 
 void fakeTriangleList::remove(triangle *t)
 {
-	QValueList<fakeTriangle>::iterator it;
-	for (it = m_triangles.begin(); it != m_triangles.end(); ++it)
-	{
-		if ((*(*it)) == t)
-		{
-			m_triangles.remove(it);
-			break;
-		}
-	}
+	m_triangles.erase(t->m_it);
 }
 
-const fakeTriangle& fakeTriangleList::last() const
+triangle *fakeTriangleList::last() const
 {
-	return m_triangles.last();
+	std::multimap<double, triangle*>::const_iterator it = m_triangles.end();
+	--it;
+	return (*it).second;
 }

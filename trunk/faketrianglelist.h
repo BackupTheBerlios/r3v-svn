@@ -10,22 +10,21 @@
 #ifndef FAKETRIANGLELIST_H
 #define FAKETRIANGLELIST_H
 
-#include <qvaluelist.h>
+#include <map>
 
-#include "faketriangle.h"
-
-class fakeTriangleList
+class triangleList
 {
 	public:
 		void clear();
 		
-		void insert(const fakeTriangle &ft);
+		void insert(triangle *t);
 		void remove(triangle *t);
 		
-		const fakeTriangle& last() const;
+		triangle *last() const;
+		void print() const;
 		
 	private:
-		QValueList<fakeTriangle> m_triangles;
+		std::multimap<double, triangle*> m_triangles;
 };
 
 #endif
