@@ -23,3 +23,13 @@ triangle *diamond::t2() const
 {
 	return m_t2;
 }
+
+void diamond::setOwnIterator(std::multimap<double, diamond*>::iterator it)
+{
+	m_it = it;
+}
+
+std::multimap<double, diamond*>::iterator diamond::ownIterator() const
+{
+	return m_it;
+}

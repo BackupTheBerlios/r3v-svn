@@ -13,6 +13,7 @@
 #include <qdatetime.h>
 #include <qgl.h>
 
+#include "diamondlist.h"
 #include "trianglelist.h"
 
 class QTimer;
@@ -63,6 +64,7 @@ Q_OBJECT
 		int m_fontHeight;
 		
 		triangleList splitQueue;
+		diamondList mergeQueue;
 };
 
 #endif

@@ -65,8 +65,10 @@ void glWidget::initializeGL()
 // 	glClearColor(0, 0, 0, 0);
 //  	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	//glEnable(GL_CULL_FACE);
+	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
+// 	glShadeModel(GL_SMOOTH);
+// 	glShadeModel(GL_FLAT);
 }
 
 void glWidget::paintGL()
@@ -207,11 +209,11 @@ void glWidget::keyPressEvent(QKeyEvent *e)
 			
 			triangle *t;
 			glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
-			for (int kk = 0; kk < 1000; kk++)
+			for (int kk = 0; kk < 1/*000*/; kk++)
 			{
 				t = splitQueue.last();
 // 				qDebug("Parto %s", ft.m_t->nom.latin1());
-				t -> split(splitQueue, modelViewMatrix);
+				t -> split(splitQueue, mergeQueue, modelViewMatrix);
 			}
 			updateGL();
 		break;
@@ -335,7 +337,8 @@ void glWidget::openMap()
 	int size = m_map -> columns();
 	const float r = 1.75;
 	const float degX = M_PI / 4;
-	m_observer = new observer(size / 2.0, m_map -> midHeight() + size * (r - 0.5) * tan(degX), r * size, degX, 0, size / 150.0);
+	// si hubiera 2 columnas, la 0 y la 1, no querriamos estar en 1 sino en 0.5
+	m_observer = new observer((size - 1) / 2.0, m_map -> midHeight() + size * (r - 0.5) * tan(degX), r * size, degX, 0, size / 150.0);
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -346,13 +349,59 @@ void glWidget::openMap()
 	gluLookAt(ox, oy, oz, vrpx, vrpy, vrpz, 0, 1, 0);
 	
 	splitQueue.clear();
+	mergeQueue.clear();
 	
+	qDebug("El observador està en %f %f %f", ox, oy, oz);
+	qDebug("El observador mira a %f %f %f", vrpx, vrpy, vrpz);
 	double modelViewMatrix[16];
 	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
 	m_diamond -> t1() -> calcPriority(modelViewMatrix);
 	m_diamond -> t2() -> calcPriority(modelViewMatrix);
 	splitQueue.insert(m_diamond -> t1());
 	splitQueue.insert(m_diamond -> t2());
+	
+	
+	double p1, q1, r1;
+	
+	p1 = modelViewMatrix[0] * ox + 
+	     modelViewMatrix[4] * oy + 
+	     modelViewMatrix[8] * oz + 
+	     modelViewMatrix[12];
+	q1 = modelViewMatrix[1] * ox + 
+	     modelViewMatrix[5] * oy + 
+	     modelViewMatrix[9] * oz + 
+	     modelViewMatrix[13];
+	r1 = modelViewMatrix[2] * ox + 
+	     modelViewMatrix[6] * oy + 
+	     modelViewMatrix[10] * oz + 
+	     modelViewMatrix[14];
+	
+	qDebug("Observador %f %f %f en camera-space %f %f %f", ox, oy, oz, p1, q1, r1);
+	
+	p1 = modelViewMatrix[0] * vrpx + 
+	     modelViewMatrix[4] * vrpy + 
+	     modelViewMatrix[8] * vrpz + 
+	     modelViewMatrix[12];
+	q1 = modelViewMatrix[1] * vrpx + 
+	     modelViewMatrix[5] * vrpy + 
+	     modelViewMatrix[9] * vrpz + 
+	     modelViewMatrix[13];
+	r1 = modelViewMatrix[2] * vrpx + 
+	     modelViewMatrix[6] * vrpy + 
+	     modelViewMatrix[10] * vrpz + 
+	     modelViewMatrix[14];
+	qDebug("VRP %f %f %f en camera-space %f %f %f", vrpx, vrpy, vrpz, p1, q1, r1);
+
+	// FOO FOO	
+	triangle *t;
+	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
+	for (int kk = 0; kk < 1000; kk++)
+	{
+		t = splitQueue.last();
+		t -> split(splitQueue, mergeQueue, modelViewMatrix);
+	}
+	updateGL();
+	// FOO FOO
 
 	QCursor::setPos(width() / 2, height() / 2);
 	m_fromPopup = true;
@@ -392,11 +441,14 @@ void glWidget::paintTriangle(triangle *t) const
 {
 	if (t -> isLeaf())
 	{
-		glColor3dv(t -> apex() -> color());
+		if (t -> m_parentTriangle && t -> m_parentTriangle -> m_mergeableDiamond) glColor3d(1.0, 1.0, 1.0);
+		else glColor3dv(t -> apex() -> color());
 		glVertex3dv(t -> apex() -> coords());
-		glColor3dv(t -> rightVertex() -> color());
+		if (t -> m_parentTriangle && t -> m_parentTriangle -> m_mergeableDiamond) glColor3d(1.0, 1.0, 1.0);
+		else glColor3dv(t -> rightVertex() -> color());
 		glVertex3dv(t -> rightVertex() -> coords());
-		glColor3dv(t -> leftVertex() -> color());
+		if (t -> m_parentTriangle&& t -> m_parentTriangle -> m_mergeableDiamond) glColor3d(1.0, 1.0, 1.0);
+		else glColor3dv(t -> leftVertex() -> color());
 		glVertex3dv(t -> leftVertex() -> coords());
 	}
 	else

@@ -18,8 +18,10 @@
 
 #include "trianglelist.h"
 
-class r3vMap;
+class diamond;
+class diamondList;
 class node;
+class r3vMap;
 
 class triangle
 {
@@ -41,17 +43,21 @@ class triangle
 		
 		void updateWedgie();
 		
-		void split(triangleList &splitQueue, double *modelViewMatrix);
+		void split(triangleList &splitQueue, diamondList &mergeQueue, double *modelViewMatrix);
 		
 		void print() const;
 		
 		double priority() const;
 		void calcPriority(double *modelViewMatrix);
 		
+		void setMergeable(bool mergeable, diamondList &mergeQueue, triangle *baseTriangle);
+		
 		void setOwnIterator(std::multimap<double, triangle*>::iterator it);
 		std::multimap<double, triangle*>::iterator ownIterator() const;
+		
+		void setDiamond(diamond *d);
 	
-	private:
+// 	private:
 		QString nom;  // TODO removeme
 	
 		r3vMap &m_map;
@@ -70,6 +76,8 @@ class triangle
 		triangle *m_rightTriangle;
 		triangle *m_parentTriangle;
 		std::multimap<double, triangle*>::iterator m_it;
+		
+		diamond *m_mergeableDiamond;
 };
 
 #endif

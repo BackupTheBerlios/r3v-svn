@@ -32,6 +32,7 @@ class observer
 		float m_posX, m_posY, m_posZ;
 		float m_rotX, m_rotY;
 		const float m_step;
+		bool m_changed;
 };
 
 #endif

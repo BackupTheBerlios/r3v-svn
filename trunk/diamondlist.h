@@ -7,28 +7,27 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef DIAMOND_H
-#define DIAMOND_H
+#ifndef DIAMONDLIST_H
+#define DIAMONDLIST_H
 
 #include <map>
 
-class r3vMap;
+class diamond;
 class triangle;
 
-class diamond
+class diamondList
 {
 	public:
-		diamond(triangle *t1, triangle *t2);
+		void clear();
 		
-		void setOwnIterator(std::multimap<double, diamond*>::iterator it);
-		std::multimap<double, diamond*>::iterator ownIterator() const;
+		void insert(triangle *t1, triangle *t2);
+		void remove(diamond *d);
 		
-		triangle *t1() const;
-		triangle *t2() const;
+		diamond *last() const;
+// 		void print() const;
 		
 	private:
-		triangle *m_t1, *m_t2;
-		std::multimap<double, diamond*>::iterator m_it;
+		std::multimap<double, diamond*> m_diamonds;
 };
 
 #endif

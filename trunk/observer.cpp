@@ -11,7 +11,7 @@
 
 #include "observer.h"
 
-observer::observer(float x, float y, float z, float rotX, float rotY, float step) : m_posX(x), m_posY(y), m_posZ(z), m_rotX(rotX), m_rotY(rotY), m_step(step)
+observer::observer(float x, float y, float z, float rotX, float rotY, float step) : m_posX(x), m_posY(y), m_posZ(z), m_rotX(rotX), m_rotY(rotY), m_step(step), m_changed(false)
 {
 }
 
@@ -20,6 +20,7 @@ void observer::forward()
 	m_posX -= m_step * sin(m_rotY) * cos(m_rotX);
 	m_posY -= m_step * sin(m_rotX);
 	m_posZ -= m_step * cos(m_rotY) * cos(m_rotX);
+	m_changed = true;
 }
 
 void observer::backward()
@@ -27,18 +28,21 @@ void observer::backward()
 	m_posX += m_step * sin(m_rotY) * cos(m_rotX);
 	m_posY += m_step * sin(m_rotX);
 	m_posZ += m_step * cos(m_rotY) * cos(m_rotX);
+	m_changed = true;
 }
 
 void observer::left()
 {
 	m_posX += m_step * sin(m_rotY - M_PI / 2) * cos(m_rotX);
 	m_posZ += m_step * cos(m_rotY - M_PI / 2) * cos(m_rotX);
+	m_changed = true;
 }
 
 void observer::right()
 {
 	m_posX += m_step * sin(m_rotY + M_PI / 2) * cos(m_rotX);
 	m_posZ += m_step * cos(m_rotY + M_PI / 2) * cos(m_rotX);
+	m_changed = true;
 }
 
 /*#include <stdio.h>
@@ -58,6 +62,8 @@ void observer::rotate(float x, float y)
 	m_rotY += y;
 	if (m_rotX > 1.545398) m_rotX = 1.545398;
 	if (m_rotX < -1.545398) m_rotX = -1.545398;
+	// TODO optimize?
+	m_changed = true;
 }
 
 void observer::position(float *x, float *y, float *z) const
