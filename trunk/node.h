@@ -31,6 +31,7 @@ class node
 		bool operator!=(const node &n) const;
 		
 		void addTriangle(triangle *t);
+		void removeTriangle(triangle *t);
 		triangle *getTriangle(node *n, triangle *t) const;
 		QValueList<triangle *> triangles();
 		

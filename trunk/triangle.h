@@ -10,8 +10,6 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
-#include <map>
-
 #include <math.h>
 
 #include <qstring.h>
@@ -30,6 +28,7 @@ class triangle
 		~triangle();
 		
 		bool isLeaf() const;
+		void deleteLeaves(triangleList *splitQueue);
 		
 		node *apex() const;
 		node *leftVertex() const;
@@ -43,17 +42,17 @@ class triangle
 		
 		void updateWedgie();
 		
-		void split(triangleList &splitQueue, diamondList &mergeQueue, double *modelViewMatrix);
+		void split(triangleList *splitQueue, diamondList *mergeQueue, double *modelViewMatrix);
 		
 		void print() const;
 		
 		double priority() const;
 		void calcPriority(double *modelViewMatrix);
 		
-		void setMergeable(bool mergeable, diamondList &mergeQueue, triangle *baseTriangle);
+		void setMergeable(bool mergeable, diamondList *mergeQueue, triangle *baseTriangle);
 		
-		void setOwnIterator(std::multimap<double, triangle*>::iterator it);
-		std::multimap<double, triangle*>::iterator ownIterator() const;
+		void setOwnIterator(triangleListIterator it);
+		triangleListIterator ownIterator() const;
 		
 		void setDiamond(diamond *d);
 	
@@ -75,7 +74,7 @@ class triangle
 		triangle *m_leftTriangle;
 		triangle *m_rightTriangle;
 		triangle *m_parentTriangle;
-		std::multimap<double, triangle*>::iterator m_it;
+		triangleListIterator m_it;
 		
 		diamond *m_mergeableDiamond;
 };

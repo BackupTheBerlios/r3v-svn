@@ -15,15 +15,21 @@
 class diamond;
 class triangle;
 
+typedef std::multimap<double, diamond*>::iterator diamondListIterator;
+typedef std::multimap<double, diamond*>::const_iterator diamondListConstIterator;
+
 class diamondList
 {
 	public:
 		void clear();
 		
 		void insert(triangle *t1, triangle *t2);
+		void insert(diamond *d);
 		void remove(diamond *d);
 		
-		diamond *last() const;
+		diamondListConstIterator begin() const;
+		diamondListConstIterator end() const;
+		diamond *first() const;
 // 		void print() const;
 		
 	private:

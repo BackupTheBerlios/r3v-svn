@@ -65,6 +65,11 @@ void node::addTriangle(triangle *t)
 	m_triangles.append(t);
 }
 
+void node::removeTriangle(triangle *t)
+{
+	m_triangles.remove(t);
+}
+
 triangle *node::getTriangle(node *n, triangle *t) const
 {
 	QValueList<triangle *> both, other;

@@ -19,14 +19,21 @@ void diamondList::clear()
 void diamondList::insert(triangle *t1, triangle *t2)
 {
 	diamond *d;
-	double priority;
-	std::multimap<double, diamond*>::iterator it;
-	priority = QMAX(t1->priority(), t2->priority());
+	
 	d = new diamond(t1, t2);
-	it = m_diamonds.insert(std::pair<double, diamond*>(priority, d));
-	d->setOwnIterator(it);
+	insert(d);
 	t1 -> setDiamond(d);
 	t2 -> setDiamond(d);
+}
+
+void diamondList::insert(diamond *d)
+{
+	double priority;
+	diamondListIterator it;
+	
+	priority = d -> priority();
+	it = m_diamonds.insert(std::pair<double, diamond*>(priority, d));
+	d->setOwnIterator(it);
 }
 
 void diamondList::remove(diamond *d)
@@ -37,9 +44,18 @@ void diamondList::remove(diamond *d)
 	delete d;
 }
 
-diamond *diamondList::last() const
+diamondListConstIterator diamondList::begin() const
 {
-	std::multimap<double, diamond*>::const_iterator it = m_diamonds.end();
-	--it;
+	return m_diamonds.begin();
+}
+
+diamondListConstIterator diamondList::end() const
+{
+	return m_diamonds.end();
+}
+
+diamond *diamondList::first() const
+{
+	diamondListConstIterator it = m_diamonds.begin();
 	return (*it).second;
 }

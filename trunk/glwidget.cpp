@@ -18,14 +18,16 @@
 #include <qtimer.h>
 
 #include "diamond.h"
+#include "diamondlist.h"
 #include "glwidget.h"
 #include "map.h"
 #include "node.h"
 #include "observer.h"
 #include "parser.h"
 #include "triangle.h"
+#include "trianglelist.h"
 
-glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_map(0), m_diamond(0), m_fromPopup(false), m_FPSEnabled(true)
+glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_map(0), m_fromPopup(false), m_FPSEnabled(true)
 {
 	setMouseTracking(true);
 	
@@ -40,6 +42,9 @@ glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_map(0), m_diamond(0),
 	m_fontHeight = QFontMetrics(font()).height();
 	m_lastTime = QTime::currentTime();*/
 	
+	splitQueue = new triangleList();
+	mergeQueue = new diamondList();
+	
 	showFullScreen();
 	
 	openMap();
@@ -48,6 +53,8 @@ glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_map(0), m_diamond(0),
 glWidget::~glWidget()
 {
 	closeMap();
+	delete splitQueue;
+	delete mergeQueue;
 }
 
 void glWidget::resizeGL(int width, int height)
@@ -106,9 +113,64 @@ void glWidget::paintGL()
 			glVertex3f(x, (float)m_map -> height(x, y), y);
 		}
 	}*/
+	
+// 		triangleList *newSplitQueue;
+// 		triangleListConstIterator sqIt, sqEndIt;
+// 		triangle *t;
+// 		diamondList *newMergeQueue;
+// 		diamondListConstIterator mqIt, mqEndIt;
+// 		diamond *d;
+// 		double modelViewMatrix[16];
+// 		
+// 		glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
+// 		
+// 		newSplitQueue = new triangleList();
+// 		sqEndIt = splitQueue -> end();
+// 		for (sqIt = splitQueue -> begin(); sqIt != sqEndIt; ++sqIt)
+// 		{
+// 			t = (*sqIt).second;
+// 			t -> calcPriority(modelViewMatrix);
+// 			newSplitQueue->insert(t);
+// 		}
+// 		delete splitQueue;
+// 		splitQueue = newSplitQueue;
+// 		
+// 		newMergeQueue = new diamondList();
+// 		mqEndIt = mergeQueue -> end();
+// 		for (mqIt = mergeQueue -> begin(); mqIt != mqEndIt; ++mqIt)
+// 		{
+// 			d = (*mqIt).second;
+// 			d -> t1() -> calcPriority(modelViewMatrix);
+// 			d -> t2() -> calcPriority(modelViewMatrix);
+// 			newMergeQueue->insert(d);
+// 		}
+// 		delete mergeQueue;
+// 		mergeQueue = newMergeQueue;
+
+
+// // 		for (int kk = 0; kk < 1000; kk++)
+// 		while (m_map -> leaves() < 5000 || m_map -> leaves() > 5500 || 
+// 		       splitQueue -> last() -> priority() > mergeQueue -> first() -> priority())
+// 		{
+// 			
+// 			if (m_map -> leaves() < 5000)
+// 			{
+// 				t = splitQueue -> last();
+// 				t -> split(splitQueue, mergeQueue, modelViewMatrix);
+// 			}
+// 			else
+// 			{
+// 				d = mergeQueue -> first();
+// 				d -> merge(splitQueue, mergeQueue);
+// 			}
+// 		}
+// 		updateGL();
+// 		qDebug("Triangulos totales %d\n", m_map -> triangles());
+// 		qDebug("Hojas totales %d\n", m_map -> leaves());	
+	
 		glBegin(GL_TRIANGLES);
-		paintTriangle(m_diamond -> t1());
-		paintTriangle(m_diamond -> t2());
+		paintTriangle(m_map -> baseDiamond() -> t1());
+		paintTriangle(m_map -> baseDiamond() -> t2());
 		glEnd();
 		
 		// 	if (m_FPSEnabled)
@@ -132,7 +194,7 @@ void glWidget::paintGL()
 void glWidget::keyPressEvent(QKeyEvent *e)
 {
 	double modelViewMatrix[16];
-	double d;
+// 	double d;
 	
 	switch(e->key())
 	{
@@ -209,25 +271,51 @@ void glWidget::keyPressEvent(QKeyEvent *e)
 			
 			triangle *t;
 			glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
-			for (int kk = 0; kk < 1/*000*/; kk++)
-			{
-				t = splitQueue.last();
+// 			for (int kk = 0; kk < 1; kk++)
+// 			while (m_map -> leaves() < 5000)
+// 			{
+				t = splitQueue->last();
 // 				qDebug("Parto %s", ft.m_t->nom.latin1());
 				t -> split(splitQueue, mergeQueue, modelViewMatrix);
-			}
+// 			}
 			updateGL();
+// 			qDebug("Triangulos totales %d\n", m_map -> triangles());
+// 			qDebug("Hojas totales %d\n", m_map -> leaves());
+		break;
+		
+		case Key_2:
+			if (!m_map) return;
+			
+			diamond *d;
+// 			for (int kk = 0; kk < 1; kk++)
+// 			while (m_map -> leaves() < 5000)
+// 			{
+				d = mergeQueue->first();
+// 				qDebug("Parto %s", ft.m_t->nom.latin1());
+				d -> merge(splitQueue, mergeQueue);
+// 			}
+			updateGL();
+// 			qDebug("Triangulos totales %d\n", m_map -> triangles());
+// 			qDebug("Hojas totales %d\n", m_map -> leaves());
 		break;
 		
 		case Key_3:
-			for (int i = 0; i < 10; i++)
-			{
-				d = m_map -> height(1292, i);
-				qDebug("%f", d);
-				d = m_map -> height(1291, i);
-				qDebug("%f", d);
-			}
+			if (!m_map) return;
 			
+			qDebug("Triangulos totales %d", m_map -> triangles());
+			qDebug("Hojas totales %d", m_map -> leaves());
 		break;
+		
+// 		case Key_3:
+// 			for (int i = 0; i < 10; i++)
+// 			{
+// 				d = m_map -> height(1292, i);
+// 				qDebug("%f", d);
+// 				d = m_map -> height(1291, i);
+// 				qDebug("%f", d);
+// 			}
+// 			
+// 		break;
 		
 // 		case Key_2:
 // 		float a, b, c, p1, q1, r1, p2, q2, r2, p3, q3, r3, d1, d2, d3;
@@ -332,7 +420,7 @@ void glWidget::openMap()
 	
 	m_map = m;
 	
-	m_diamond = m_map -> baseDiamond();
+	diamond *d = m_map -> baseDiamond();
 
 	int size = m_map -> columns();
 	const float r = 1.75;
@@ -348,17 +436,17 @@ void glWidget::openMap()
 	m_observer -> vrp(&vrpx, &vrpy, &vrpz);
 	gluLookAt(ox, oy, oz, vrpx, vrpy, vrpz, 0, 1, 0);
 	
-	splitQueue.clear();
-	mergeQueue.clear();
+	splitQueue -> clear();
+	mergeQueue -> clear();
 	
 	qDebug("El observador està en %f %f %f", ox, oy, oz);
 	qDebug("El observador mira a %f %f %f", vrpx, vrpy, vrpz);
 	double modelViewMatrix[16];
 	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
-	m_diamond -> t1() -> calcPriority(modelViewMatrix);
-	m_diamond -> t2() -> calcPriority(modelViewMatrix);
-	splitQueue.insert(m_diamond -> t1());
-	splitQueue.insert(m_diamond -> t2());
+	d -> t1() -> calcPriority(modelViewMatrix);
+	d -> t2() -> calcPriority(modelViewMatrix);
+	splitQueue -> insert(d -> t1());
+	splitQueue -> insert(d -> t2());
 	
 	
 	double p1, q1, r1;
@@ -393,14 +481,14 @@ void glWidget::openMap()
 	qDebug("VRP %f %f %f en camera-space %f %f %f", vrpx, vrpy, vrpz, p1, q1, r1);
 
 	// FOO FOO	
-	triangle *t;
-	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
-	for (int kk = 0; kk < 500; kk++)
-	{
-		t = splitQueue.last();
-		t -> split(splitQueue, mergeQueue, modelViewMatrix);
-	}
-	updateGL();
+// 	triangle *t;
+// 	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
+// 	for (int kk = 0; kk < 500; kk++)
+// 	{
+// 		t = splitQueue.last();
+// 		t -> split(splitQueue, mergeQueue, modelViewMatrix);
+// 	}
+// 	updateGL();
 	// FOO FOO
 
 	QCursor::setPos(width() / 2, height() / 2);
@@ -421,9 +509,6 @@ void glWidget::closeMap()
 	if (m_map)
 	{
 		delete m_map;
-		delete m_diamond -> t1();
-		delete m_diamond -> t2();
-		delete m_diamond;
 		delete m_observer;
 	}
 }

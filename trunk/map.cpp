@@ -14,7 +14,7 @@
 #include "node.h"
 #include "triangle.h"
 
-r3vMap::r3vMap()
+r3vMap::r3vMap() : m_baseDiamond(0)
 {
 }
 
@@ -29,6 +29,12 @@ r3vMap::~r3vMap()
 	}
 	
 	qDebug("%d nodos", m_nodes.count());
+	qDebug("%d triangulos", m_triangleCount);
+	qDebug("%d hojas", m_leavesCount);
+	m_baseDiamond -> clean();
+	delete m_baseDiamond;
+	qDebug("%d triangulos", m_triangleCount);
+	qDebug("%d hojas", m_leavesCount);
 	QMap<QPair<double, double>, node*>::const_iterator it2;
 	it2 = m_nodes.begin();
 	while (it2 != m_nodes.end())
@@ -46,25 +52,31 @@ void r3vMap::addColumn(QValueVector<double> *column)
 
 diamond *r3vMap::baseDiamond() 
 {
-	int size;
-	node *n1, *n2, *n3;
-	triangle *t1, *t2;
+	if (!m_baseDiamond) 
+	{
+		int size;
+		node *n1, *n2, *n3;
+		triangle *t1, *t2;
 	
-	size = columns();
-	size--;
+		size = columns();
+		size--;
 	
-	n1 = getNode(0, 0);
-	n2 = getNode(size, 0);
-	n3 = getNode(0, size);
-	t1 = new triangle(*this, n1, n2, n3, 0, "T1");
+		n1 = getNode(0, 0);
+		n2 = getNode(size, 0);
+		n3 = getNode(0, size);
+		t1 = new triangle(*this, n1, n2, n3, 0, "T1");
 	
-	n1 = getNode(size, size);
-	t2 = new triangle(*this, n1, n3, n2, 0, "T2");
+		n1 = getNode(size, size);
+		t2 = new triangle(*this, n1, n3, n2, 0, "T2");
 	
-/*	t1 -> setBaseTriangle(t2);
-	t2 -> setBaseTriangle(t1);*/
+	/*	t1 -> setBaseTriangle(t2);
+		t2 -> setBaseTriangle(t1);*/
 	
-	return new diamond(t1, t2);
+		m_baseDiamond = new diamond(t1, t2);
+		m_triangleCount = 2;
+		m_leavesCount = 2;
+	}
+	return m_baseDiamond;
 }
 
 double r3vMap::height(int i, int j) const
@@ -247,6 +259,26 @@ void r3vMap::square()
 	
 	m_amplitude = maxHeight - m_minHeight;
 	qDebug("%f %f", m_minHeight, m_amplitude);
+}
+
+void r3vMap::addTriangles(int n)
+{
+	m_triangleCount += n;
+}
+
+void r3vMap::addLeaves(int n)
+{
+	m_leavesCount += n;
+}
+
+int r3vMap::triangles() const
+{
+	return m_triangleCount;
+}
+
+int r3vMap::leaves() const
+{
+	return m_leavesCount;
 }
 
 QColor r3vMap::color(double h) const

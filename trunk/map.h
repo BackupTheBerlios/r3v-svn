@@ -38,6 +38,12 @@ class r3vMap
 		node *getNode(double x, double y);
 		
 		void square();
+		
+		void addTriangles(int n);
+		void addLeaves(int n);
+		
+		int triangles() const;
+		int leaves() const;
 	
 	private:
 		QColor color(double height) const;
@@ -48,6 +54,10 @@ class r3vMap
 		double m_minHeight, m_amplitude;
 		
 		QMap<QPair<double, double>, node*> m_nodes;
+		
+		diamond *m_baseDiamond;
+		int m_triangleCount;
+		int m_leavesCount;
 };
 
 #endif

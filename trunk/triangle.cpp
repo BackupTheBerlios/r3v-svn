@@ -11,7 +11,6 @@
 
 #include <assert.h>
 #include <math.h>
-#include <stdio.h>
 
 #include "diamondlist.h"
 #include "map.h"
@@ -48,6 +47,13 @@ triangle::triangle(r3vMap &m, node *apex, node *left, node *right, triangle *par
 
 triangle::~triangle()
 {
+	m_map.addTriangles(-1);
+	if (!m_leftTriangle) m_map.addLeaves(-1);
+	
+	m_apex -> removeTriangle(this);
+	m_leftVertex -> removeTriangle(this);
+	m_rightVertex -> removeTriangle(this);
+	
 	delete m_leftTriangle;
 	delete m_rightTriangle;
 }
@@ -55,6 +61,17 @@ triangle::~triangle()
 bool triangle::isLeaf() const
 {
 	return !m_leftTriangle && !m_rightTriangle;
+}
+
+void triangle::deleteLeaves(triangleList *splitQueue)
+{
+	splitQueue -> remove(m_leftTriangle);
+	delete m_leftTriangle;
+	m_leftTriangle = 0;
+	splitQueue -> remove(m_rightTriangle);
+	delete m_rightTriangle;
+	m_rightTriangle = 0;
+	m_map.addLeaves(1);
 }
 
 node *triangle::apex() const
@@ -98,12 +115,12 @@ void triangle::updateWedgie()
 	if (m_parentTriangle) m_parentTriangle -> updateWedgie();
 }
 
-void triangle::split(triangleList &splitQueue, diamondList &mergeQueue, double *modelViewMatrix)
+void triangle::split(triangleList *splitQueue, diamondList *mergeQueue, double *modelViewMatrix)
 {
 // 	assert(!m_leftTriangle);
 // 	assert(!m_rightTriangle);
 	
-	splitQueue.remove(this);
+	splitQueue->remove(this);
 	
 	triangle *baseTriangle = m_rightVertex -> getTriangle(m_leftVertex, this);
 	if (baseTriangle && baseTriangle -> level() < m_level)
@@ -136,10 +153,13 @@ void triangle::split(triangleList &splitQueue, diamondList &mergeQueue, double *
 	
 	m_leftTriangle = new triangle(m_map, newApex, m_apex, m_leftVertex, this, nom+"L");
 	m_rightTriangle = new triangle(m_map, newApex, m_rightVertex, m_apex, this, nom+"R");
+	// TODO place in other funciton?=
+	m_map.addTriangles(2);
+	m_map.addLeaves(1);
 	m_leftTriangle -> calcPriority(modelViewMatrix);
 	m_rightTriangle -> calcPriority(modelViewMatrix);
-	splitQueue.insert(m_leftTriangle);
-	splitQueue.insert(m_rightTriangle);
+	splitQueue->insert(m_leftTriangle);
+	splitQueue->insert(m_rightTriangle);
 	
 	// baseTriangle -> m_leftTriangle to stop recurring splitting between base neighbours
 	if (baseTriangle && !baseTriangle -> m_leftTriangle) baseTriangle -> split(splitQueue, mergeQueue, modelViewMatrix);
@@ -259,24 +279,24 @@ void triangle::calcPriority(double *modelViewMatrix)
 // 	qDebug("wedgie  %f prio %f", m_wedgie, m_priority);
 }
 
-void triangle::setMergeable(bool mergeable, diamondList &mergeQueue, triangle *baseTriangle)
+void triangle::setMergeable(bool mergeable, diamondList *mergeQueue, triangle *baseTriangle)
 {
 	if (mergeable)
 	{
-		if (!m_mergeableDiamond) mergeQueue.insert(this, baseTriangle);
+		if (!m_mergeableDiamond) mergeQueue->insert(this, baseTriangle);
 	}
 	else
 	{
-		if (m_mergeableDiamond) mergeQueue.remove(m_mergeableDiamond);
+		if (m_mergeableDiamond) mergeQueue->remove(m_mergeableDiamond);
 	}
 }
 
-void triangle::setOwnIterator(std::multimap<double, triangle*>::iterator it)
+void triangle::setOwnIterator(triangleListIterator it)
 {
 	m_it = it;
 }
 
-std::multimap<double, triangle*>::iterator triangle::ownIterator() const
+triangleListIterator triangle::ownIterator() const
 {
 	return m_it;
 }

@@ -17,7 +17,7 @@ void triangleList::clear()
 
 void triangleList::insert(triangle *t)
 {
-	std::multimap<double, triangle*>::iterator it;
+	triangleListIterator it;
 	it = m_triangles.insert(std::pair<double, triangle*>(t->priority(), t));
 	t->setOwnIterator(it);
 }
@@ -27,9 +27,19 @@ void triangleList::remove(triangle *t)
 	m_triangles.erase(t->ownIterator());
 }
 
+triangleListConstIterator triangleList::begin() const
+{
+	return m_triangles.begin();
+}
+
+triangleListConstIterator triangleList::end() const
+{
+	return m_triangles.end();
+}
+
 triangle *triangleList::last() const
 {
-	std::multimap<double, triangle*>::const_iterator it = m_triangles.end();
+	triangleListConstIterator it = m_triangles.end();
 	--it;
 	return (*it).second;
 }

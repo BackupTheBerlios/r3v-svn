@@ -10,25 +10,32 @@
 #ifndef DIAMOND_H
 #define DIAMOND_H
 
-#include <map>
+#include "diamondlist.h"
 
+class diamondList;
 class r3vMap;
 class triangle;
+class triangleList;
 
 class diamond
 {
 	public:
 		diamond(triangle *t1, triangle *t2);
+		void clean();
+		
+		void merge(triangleList *splitQueue, diamondList *mergeQueue);
+		
+		double priority() const;
 		
 		triangle *t1() const;
 		triangle *t2() const;
 		
-		void setOwnIterator(std::multimap<double, diamond*>::iterator it);
-		std::multimap<double, diamond*>::iterator ownIterator() const;
+		void setOwnIterator(diamondListIterator it);
+		diamondListIterator ownIterator() const;
 		
 	private:
 		triangle *m_t1, *m_t2;
-		std::multimap<double, diamond*>::iterator m_it;
+		diamondListIterator m_it;
 };
 
 #endif

@@ -14,6 +14,9 @@
 
 class triangle;
 
+typedef std::multimap<double, triangle*>::iterator triangleListIterator;
+typedef std::multimap<double, triangle*>::const_iterator triangleListConstIterator;
+
 class triangleList
 {
 	public:
@@ -22,8 +25,11 @@ class triangleList
 		void insert(triangle *t);
 		void remove(triangle *t);
 		
+		triangleListConstIterator begin() const;
+		triangleListConstIterator end() const;
 		triangle *last() const;
 		void print() const;
+		
 		
 	private:
 		std::multimap<double, triangle*> m_triangles;

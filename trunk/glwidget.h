@@ -13,15 +13,14 @@
 #include <qdatetime.h>
 #include <qgl.h>
 
-#include "diamondlist.h"
-#include "trianglelist.h"
-
 class QTimer;
 
 class diamond;
+class diamondList;
 class r3vMap;
 class observer;
 class triangle;
+class triangleList;
 
 class glWidget : public QGLWidget
 {
@@ -49,7 +48,6 @@ Q_OBJECT
 		void paintTriangle(triangle *t) const;
 	
 		r3vMap *m_map;
-		diamond *m_diamond;
 		
 		observer *m_observer;
 		
@@ -63,8 +61,8 @@ Q_OBJECT
 		int m_lastFPS, m_newFPSSum, m_FPSTimes;
 		int m_fontHeight;
 		
-		triangleList splitQueue;
-		diamondList mergeQueue;
+		triangleList *splitQueue;
+		diamondList *mergeQueue;
 };
 
 #endif
