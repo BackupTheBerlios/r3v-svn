@@ -263,18 +263,18 @@ QColor r3vMap::color(double h) const
 	{
 		r = 0;
 		g = 255;
-		b = (int) qRound(255 + 2 * 255 * (m_minHeight - h) / m_amplitude);
+		b = (int) qRound(2 * 255 - 4 * 255 * (h - m_minHeight) / m_amplitude);
 	}
 	else if (h < (m_minHeight + 0.75 * m_amplitude))
 	{
-		r = qRound(4 / 3 * 255 * (h - m_minHeight) / m_amplitude);
+		r = qRound(4 * 255 * (h - m_minHeight) / m_amplitude - 2 * 255);
 		g = 255;
 		b = 0;
 	}
 	else
 	{
 		r = 255;
-		g = qRound(255 + 255 * (m_minHeight - h) / m_amplitude);
+		g = qRound(4 * 255 - 4 * 255 * (h - m_minHeight) / m_amplitude);
 		b = 0;
 	}
 	
