@@ -44,10 +44,6 @@ glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false), m_F
 	m_fontHeight = QFontMetrics(font()).height();
 	m_lastTime = QTime::currentTime();*/
 
-	// TODO HARA FALTA?	
-/*	splitQueue = new triangleList();
-	mergeQueue = new diamondList();*/
-	
 	showFullScreen();
 	
 	openMap();
@@ -56,9 +52,6 @@ glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false), m_F
 glWidget::~glWidget()
 {
 	delete m_roam;
-	// TODO HARA FALTA?	
-/*	delete splitQueue;
-	delete mergeQueue;*/
 }
 
 void glWidget::resizeGL(int width, int height)
@@ -88,8 +81,6 @@ void glWidget::paintGL()
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
-// 	qDebug("%f %f %f", m_posX, m_posY, m_posZ);
 
 	if (m_roam) m_roam -> paint();
 	swapBuffers();
@@ -123,11 +114,11 @@ void glWidget::keyPressEvent(QKeyEvent *e)
 			qApp -> quit();
 		break;
 		
-		case Key_F2:
-			m_FPSEnabled = !m_FPSEnabled;
-			if (m_FPSEnabled) initFPSTimer();
-			else m_FPSTimer -> stop();
-		break;
+// 		case Key_F2:
+// 			m_FPSEnabled = !m_FPSEnabled;
+// 			if (m_FPSEnabled) initFPSTimer();
+// 			else m_FPSTimer -> stop();
+// 		break;
 		
 // 		case Key_F1:
 // 		
@@ -168,19 +159,11 @@ void glWidget::keyPressEvent(QKeyEvent *e)
 // 		break;
 		
 		case Key_1:
-			if (m_roam)
-			{
-				m_roam -> splitOne();
-				updateGL();
-			}
+			if (m_roam) m_roam -> splitOne();
 		break;
 		
 		case Key_2:
-			if (m_roam)
-			{
-				m_roam -> mergeOne();
-				updateGL();
-			}
+			if (m_roam) m_roam -> mergeOne();
 		break;
 		
 // 		case Key_3:
@@ -237,7 +220,6 @@ void glWidget::keyPressEvent(QKeyEvent *e)
 // 		break;
 		
 		default:
-		
 		break;
 	}
 	updateGL();
