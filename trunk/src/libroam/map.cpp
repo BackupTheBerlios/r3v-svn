@@ -14,7 +14,7 @@
 #include "node.h"
 #include "triangle.h"
 
-r3vMap::r3vMap() : m_baseDiamond(0), m_amplitude(-1)
+r3vMap::r3vMap() : m_baseDiamond(0)
 {
 }
 
@@ -148,7 +148,6 @@ int r3vMap::size() const
 
 double r3vMap::midHeight() const
 {
-	if (m_amplitude == -1) calcAmplitudes();
 	return m_minHeight + m_amplitude / 2;
 }
 
@@ -194,7 +193,7 @@ int r3vMap::leaves() const
 	return m_leavesCount;
 }
 
-void r3vMap::calcAmplitudes()
+void r3vMap::calcAmplitude()
 {
 	int col = size();
 	double maxHeight, aux;
@@ -214,8 +213,6 @@ void r3vMap::calcAmplitudes()
 
 void r3vMap::color(double h, int &r, int &g, int &b) const
 {
-	if (m_amplitude == -1) calcAmplitudes();
-	
 	if (h < (m_minHeight + 0.25 * m_amplitude))
 	{
 		r = 0;

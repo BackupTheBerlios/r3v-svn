@@ -58,6 +58,8 @@ ROAM::Error ROAM::open(const std::string &file)
 	}
 	else return unknownFormat;
 	
+	m_map -> calcAmplitude();
+	
 	d = m_map -> baseDiamond();
 
 	int size = m_map -> size();

@@ -43,8 +43,9 @@ class r3vMap
 		int triangles() const;
 		int leaves() const;
 		
+		void calcAmplitude();
+		
 	private:
-		void calcAmplitudes();
 		void color(double height, int &r, int &g, int &b) const;
 	
 		std::vector<std::vector<double>*> m_heights;
