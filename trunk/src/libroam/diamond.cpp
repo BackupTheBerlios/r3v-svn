@@ -29,7 +29,6 @@ void diamond::merge(triangleList *splitQueue, diamondList *mergeQueue)
 	splitQueue -> insert(m_t1);
 	splitQueue -> insert(m_t2);
 	mergeQueue -> remove(this);
-// 	delete this;
 }
 
 double diamond::priority() const

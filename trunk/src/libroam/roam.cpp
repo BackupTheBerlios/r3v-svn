@@ -63,13 +63,13 @@ int ROAM::open(const std::string &file)
 	m_splitQueue -> insert(d -> t1());
 	m_splitQueue -> insert(d -> t2());
 	
-	triangle *t;
+/*	triangle *t;
 	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
 	for (int kk = 0; kk < 500; kk++)
 	{
 		t = m_splitQueue -> last();
 		t -> split(m_splitQueue, m_mergeQueue, modelViewMatrix);
-	}
+	}*/
 	return 0;
 }
 
@@ -83,73 +83,66 @@ ROAM::~ROAM()
 
 void ROAM::paint()
 {
+	triangleList *newSplitQueue;
+	triangleListConstIterator sqIt, sqEndIt;
+	triangle *t;
+	diamondList *newMergeQueue;
+	diamondListConstIterator mqIt, mqEndIt;
+	diamond *d;
+	double modelViewMatrix[16];
+	
 	float ox, oy, oz, vrpx, vrpy, vrpz;
-
 	m_observer -> position(&ox, &oy, &oz);
 	m_observer -> vrp(&vrpx, &vrpy, &vrpz);
-		
 	gluLookAt(ox, oy, oz, vrpx, vrpy, vrpz, 0, 1, 0);
-
-// 		triangleList *newSplitQueue;
-// 		triangleListConstIterator sqIt, sqEndIt;
-// 		triangle *t;
-// 		diamondList *newMergeQueue;
-// 		diamondListConstIterator mqIt, mqEndIt;
-// 		diamond *d;
-// 		double modelViewMatrix[16];
-// 		
-// 		glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
-// 		
-// 		newSplitQueue = new triangleList();
-// 		sqEndIt = splitQueue -> end();
-// 		for (sqIt = splitQueue -> begin(); sqIt != sqEndIt; ++sqIt)
-// 		{
-// 			t = (*sqIt).second;
-// 			t -> calcPriority(modelViewMatrix);
-// 			newSplitQueue->insert(t);
-// 		}
-// 		delete splitQueue;
-// 		splitQueue = newSplitQueue;
-// 		
-// 		newMergeQueue = new diamondList();
-// 		mqEndIt = mergeQueue -> end();
-// 		for (mqIt = mergeQueue -> begin(); mqIt != mqEndIt; ++mqIt)
-// 		{
-// 			d = (*mqIt).second;
-// 			d -> t1() -> calcPriority(modelViewMatrix);
-// 			d -> t2() -> calcPriority(modelViewMatrix);
-// 			newMergeQueue->insert(d);
-// 		}
-// 		delete mergeQueue;
-// 		mergeQueue = newMergeQueue;
-
-
-// // 		for (int kk = 0; kk < 1000; kk++)
-// 		while (m_map -> leaves() < 5000 || m_map -> leaves() > 5500 || 
-// 		       splitQueue -> last() -> priority() > mergeQueue -> first() -> priority())
-// 		{
-// 			
-// 			if (m_map -> leaves() < 5000)
-// 			{
-// 				t = splitQueue -> last();
-// 				t -> split(splitQueue, mergeQueue, modelViewMatrix);
-// 			}
-// 			else
-// 			{
-// 				d = mergeQueue -> first();
-// 				d -> merge(splitQueue, mergeQueue);
-// 			}
-// 		}
-// 		updateGL();
-// 		qDebug("Triangulos totales %d\n", m_map -> triangles());
-// 		qDebug("Hojas totales %d\n", m_map -> leaves());	
 	
-		glBegin(GL_TRIANGLES);
-		paintTriangle(m_map -> baseDiamond() -> t1());
-		paintTriangle(m_map -> baseDiamond() -> t2());
-		glEnd();
-		
-		// 	if (m_FPSEnabled)
+	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
+	
+	newSplitQueue = new triangleList();
+	sqEndIt = m_splitQueue -> end();
+	for (sqIt = m_splitQueue -> begin(); sqIt != sqEndIt; ++sqIt)
+	{
+		t = (*sqIt).second;
+		t -> calcPriority(modelViewMatrix);
+		newSplitQueue->insert(t);
+	}
+	delete m_splitQueue;
+	m_splitQueue = newSplitQueue;
+	
+	newMergeQueue = new diamondList();
+	mqEndIt = m_mergeQueue -> end();
+	for (mqIt = m_mergeQueue -> begin(); mqIt != mqEndIt; ++mqIt)
+	{
+		d = (*mqIt).second;
+		d -> t1() -> calcPriority(modelViewMatrix);
+		d -> t2() -> calcPriority(modelViewMatrix);
+		newMergeQueue->insert(d);
+	}
+	delete m_mergeQueue;
+	m_mergeQueue = newMergeQueue;
+	
+// 	while (m_map -> leaves() < 5000 ||
+// 	       m_splitQueue -> last() -> priority() > m_mergeQueue -> first() -> priority())
+// 	{
+// 		if (m_map -> leaves() < 5000)
+// 		{
+// 			t = m_splitQueue -> last();
+// 			t -> split(m_splitQueue, m_mergeQueue, modelViewMatrix);
+// 		}
+// 		else
+// 		{
+// 			d = m_mergeQueue -> first();
+// 			d -> merge(m_splitQueue, m_mergeQueue);
+// 		}
+// 	}
+	
+	glBegin(GL_TRIANGLES);
+	paintTriangle(m_map -> baseDiamond() -> t1());
+	paintTriangle(m_map -> baseDiamond() -> t2());
+	glEnd();
+}
+
+// 	if (m_FPSEnabled)
 // 	{
 // 		if (m_lastFPS != 0)
 // 		{
@@ -161,8 +154,7 @@ void ROAM::paint()
 // 		m_newFPSSum += m_lastTime.msecsTo(t);
 // 		m_FPSTimes++;
 // 		m_lastTime = t;
-// 	}
-}
+
 
 void ROAM::moveObserverForward()
 {

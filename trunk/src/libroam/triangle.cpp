@@ -67,6 +67,7 @@ bool triangle::isLeaf() const
 
 void triangle::deleteLeaves(triangleList *splitQueue)
 {
+	printf("%d\n", m_leftTriangle->m_level);
 	splitQueue -> remove(m_leftTriangle);
 	delete m_leftTriangle;
 	m_leftTriangle = 0;
