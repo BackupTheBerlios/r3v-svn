@@ -20,11 +20,11 @@ class diamond
 	public:
 		diamond(triangle *t1, triangle *t2);
 		
-		void setOwnIterator(std::multimap<double, diamond*>::iterator it);
-		std::multimap<double, diamond*>::iterator ownIterator() const;
-		
 		triangle *t1() const;
 		triangle *t2() const;
+		
+		void setOwnIterator(std::multimap<double, diamond*>::iterator it);
+		std::multimap<double, diamond*>::iterator ownIterator() const;
 		
 	private:
 		triangle *m_t1, *m_t2;

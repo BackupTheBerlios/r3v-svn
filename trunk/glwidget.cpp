@@ -395,7 +395,7 @@ void glWidget::openMap()
 	// FOO FOO	
 	triangle *t;
 	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
-	for (int kk = 0; kk < 1000; kk++)
+	for (int kk = 0; kk < 500; kk++)
 	{
 		t = splitQueue.last();
 		t -> split(splitQueue, mergeQueue, modelViewMatrix);
