@@ -68,16 +68,19 @@ void node::addTriangle(triangle *t)
 triangle *node::getTriangle(node *n, triangle *t) const
 {
 	QValueList<triangle *> both, other;
+	QValueList<triangle *>::const_iterator it, it2, end, oBegin, oEnd;
 	
 	other = n -> triangles();
 	other.remove(t);
 	other.remove(t -> parent());
 	
-	QValueList<triangle *>::const_iterator it, it2;
-	for (it = m_triangles.begin(); it != m_triangles.end(); ++it)
+	end = m_triangles.end();
+	oBegin = other.begin();
+	oEnd = other.end();
+	for (it = m_triangles.begin(); it != end; ++it)
 	{
-		it2 = qFind(other.begin(), other.end(), *it);
-		if (it2 != other.end()) both.append(*it);
+		it2 = qFind(oBegin, oEnd, *it);
+		if (it2 != oEnd) both.append(*it);
 	}
 	
 	if (both.count() == 1) return both.first();
