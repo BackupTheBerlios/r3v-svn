@@ -11,7 +11,7 @@ echo "checking for Qt ..."
 
 if test -z $QTDIR; then
 	# Debian does not set $QTDIR but has things in place, checking for Debian
-	if !(test -e /usr/include/qt3/qapplication.h && test -e /usr/bin/moc && test -e /usr/lib/libqt-mt.so.3 && test -e usr/lib/libqt-mt.la); then
+	if !(test -e /usr/include/qt3/qapplication.h && test -e /usr/bin/moc && test -e /usr/lib/libqt-mt.so.3 && test -e /usr/lib/libqt-mt.la); then
 		echo "You don't Qt or Qt-devel packages installed, if you have them please set \$QTDIR to point to your Qt installation"
 		exit
 	else
