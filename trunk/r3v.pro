@@ -15,4 +15,5 @@ SOURCES += diamond.cpp \
            node.cpp \
            observer.cpp \
            parser.cpp \
+           roam.cpp \
            triangle.cpp

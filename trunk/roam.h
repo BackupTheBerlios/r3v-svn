@@ -7,38 +7,41 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef PARSER_H
-#define PARSER_H
+#ifndef ROAM_H
+#define ROAM_H
 
-class QFile;
-template<class T> class QValueVector;
+class QString;
 
+class diamondList;
+class observer;
 class r3vMap;
+class triangleList;
 
-class r3vParser
+class ROAM
 {
 	public:
-		virtual r3vMap* parse(QFile &file) = 0;
-};
-
-class DEMParser : r3vParser
-{
-	public:
-		r3vMap* parse(QFile &file);
+		ROAM(const QString &file);
+		~ROAM();
 	
+		void paint();
+		
+		void moveObserverForward();
+		void moveObserverBackward();
+		void moveObserverLeft();
+		void moveObserverRight();
+		void rotateObserver(float x, float y);
+		
+		void mergeOne();
+		void splitOne();
+		
 	private:
-		static QChar readChar(QFile &file);
-		static double readDouble(QFile &file, int length, char *aux);
-		static int readInt(QFile &file, int length, char *aux);
-		static QString readString(QFile &file, int length, char *aux);
-		static void readHeights(QFile &file, int howMany, double factor, QValueVector<double> *v, char *aux);
-};
+		void paintTriangle(const triangle *t) const;
+		
+		r3vMap *m_map;
+		observer *m_observer;
 
-class myParser : r3vParser
-{
-	public:
-		r3vMap* parse(QFile &file);
+		triangleList *m_splitQueue;
+		diamondList *m_mergeQueue;
 };
-
 
 #endif

@@ -15,12 +15,7 @@
 
 class QTimer;
 
-class diamond;
-class diamondList;
-class r3vMap;
-class observer;
-class triangle;
-class triangleList;
+class ROAM;
 
 class glWidget : public QGLWidget
 {
@@ -45,12 +40,7 @@ Q_OBJECT
 	private:
 		void closeMap();
 		void initFPSTimer();
-		void paintTriangle(triangle *t) const;
 	
-		r3vMap *m_map;
-		
-		observer *m_observer;
-		
 		// popup
 		bool m_fromPopup;
 		
@@ -61,8 +51,7 @@ Q_OBJECT
 		int m_lastFPS, m_newFPSSum, m_FPSTimes;
 		int m_fontHeight;
 		
-		triangleList *splitQueue;
-		diamondList *mergeQueue;
+		ROAM *m_roam;
 };
 
 #endif
