@@ -11,42 +11,44 @@ echo "checking for Qt ..."
 
 if test -z $QTDIR; then
 	# Debian does not set $QTDIR but has things in place, checking for Debian
-	if !(test -e /usr/include/qapplication.h && test -e /usr/bin/moc && test -e /usr/lib/libqt-mt.so.3); then
-	     echo "You don't have \$QTDIR set, that means you don't have Qt installed or your \$QTDIR is not pointing to your Qt installation"
-exit
+	if !(test -e /usr/include/qt3/qapplication.h && test -e /usr/bin/moc && test -e /usr/lib/libqt-mt.so.3); then
+		echo "You don't have \$QTDIR set, that means you don't have Qt installed or your \$QTDIR is not pointing to your Qt installation"
+		exit
+	else
+		echo "    Qt found"
 	fi
-fi
+else
+	if !(test -e $QTDIR); then
+		echo "You have \$QTDIR set, but it does not point to any existing folder"
+		exit
+	fi
 
-if !(test -e $QTDIR); then
-echo "You have \$QTDIR set, but it does not point to any existing folder"
-exit
-fi
+	if !(test -e $QTDIR/include) then
+		echo "You have \$QTDIR set, but it does not seem to point to a valid Qt installation, there is no $QTDIR/include folder"
+		exit
+	fi
 
-if !(test -e $QTDIR/include) then
-echo "You have \$QTDIR set, but it does not seem to point to a valid Qt installation, there is no $QTDIR/include folder"
-exit
-fi
+	if !(test -e $QTDIR/lib) then
+		echo "You have \$QTDIR set, but it does not seem to point to a valid Qt installation, there is no $QTDIR/lib folder"
+		exit
+	fi
 
-if !(test -e $QTDIR/lib) then
-echo "You have \$QTDIR set, but it does not seem to point to a valid Qt installation, there is no $QTDIR/lib folder"
-exit
-fi
+	if !(test -e $QTDIR/bin) then
+		echo "You have \$QTDIR set, but it does not seem to point to a valid Qt installation, there is no $QTDIR/bin folder"
+		exit
+	fi
 
-if !(test -e $QTDIR/bin) then
-echo "You have \$QTDIR set, but it does not seem to point to a valid Qt installation, there is no $QTDIR/bin folder"
-exit
-fi
+	if !(test -e $QTDIR/bin/moc) then
+		echo "You have \$QTDIR set, but it does not seem to point to a valid Qt installation, could not find the moc executable"
+		exit
+	fi
 
-if !(test -e $QTDIR/bin/moc) then
-echo "You have \$QTDIR set, but it does not seem to point to a valid Qt installation, could not find the moc executable"
-exit
-fi
+	if !(test -e $QTDIR/lib/libqt-mt.so.3) then
+		echo "Your Qt version does not seem the correct one to install r3v, you need the threaded version Qt3 (libqt-mt.so.3)"
+		exit
+	fi
 
-if !(test -e $QTDIR/lib/libqt-mt.so.3) then
-echo "Your Qt version does not seem the correct one to install r3v, you need the threaded version Qt3 (libqt-mt.so.3)"
-exit
+	echo "    Qt found at $QTDIR"
 fi
-
-echo "    Qt found at $QTDIR"
 
 AC_OUTPUT(Makefile src/Makefile src/libroam/Makefile)
