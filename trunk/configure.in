@@ -65,7 +65,9 @@ echo "    Qt includes found at $QT_INCLUDES"
 echo "    Qt binaries found at $QT_MOC_PATH"
 
 QT_INCLUDES="-I $QT_INCLUDES"
+QT_LIB_LA="$QT_LIBS/libqt-mt.la"
 
+AC_SUBST(QT_LIB_LA)
 AC_SUBST(QT_INCLUDES)
 AC_SUBST(QT_MOC_PATH)
 

@@ -6,4 +6,4 @@ moc_%.cpp: %.h
 INCLUDES= $(all_includes) -I ./libroam $(QT_INCLUDES)
 bin_PROGRAMS = r3v
 r3v_SOURCES =  glwidget.cpp moc_glwidget.cpp main.cpp
-r3v_LDADD = libroam/libroam.la -lqt-mt
+r3v_LDADD = libroam/libroam.la $(QT_LIB_LA)
