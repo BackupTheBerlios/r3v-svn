@@ -251,8 +251,9 @@ void triangle::calcPriority(double *modelViewMatrix)
 	
 	if (r3sq > csq) d3 = 2 / (r3sq - csq) * sqrt(pow(a * r3 - c * p3, 2) + pow(b * r3 - c * q3, 2));
 	else d3 = DBL_MIN;
-	
-// 	qDebug("%f %f %f", d1, d2, d3);
+		
+// 	printf("%f %f %f\n", d1, d2, d3);
+// 	printf("%f %f %f\n", r1, r2, r3);
 	m_priority = std::max(d1, d2);
 	m_priority = std::max(m_priority, d3);
 	
