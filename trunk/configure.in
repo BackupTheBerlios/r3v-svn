@@ -15,9 +15,9 @@ if test -z $QTDIR; then
 		echo "You don't have \$QTDIR set, that means you don't have Qt installed or your \$QTDIR is not pointing to your Qt installation"
 		exit
 	else
-		QT_INCLUDES="-I /usr/include/qt3"
-		QT_MOC_PATH="-I /usr/bin"
-		echo "    Qt found"
+		QT_INCLUDES="/usr/include/qt3"
+		QT_MOC_PATH="/usr/bin"
+		QT_LIBS="/usr/lib"
 	fi
 else
 	if !(test -e $QTDIR); then
@@ -50,11 +50,16 @@ else
 		exit
 	fi
 	
-	QT_INCLUDES="-I $QTDIR/include"
-	QT_MOC_PATH="-I $QTDIR/bin"
-
-	echo "    Qt found at $QTDIR"
+	QT_INCLUDES="$QTDIR/include"
+	QT_MOC_PATH="$QTDIR/bin"
+	QT_LIBS="$QTDIR/lib"
 fi
+
+echo "    Qt libs found at $QT_LIBS"
+echo "    Qt includes found at $QT_INCLUDES"
+echo "    Qt binaries found at $QT_MOC_PATH"
+
+QT_INCLUDES="-I $QT_INCLUDES"
 
 AC_SUBST(QT_INCLUDES)
 AC_SUBST(QT_MOC_PATH)
