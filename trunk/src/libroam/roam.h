@@ -20,8 +20,15 @@ class triangleList;
 class ROAM
 {
 	public:
-		ROAM(const std::string &file);
+		ROAM();
 		~ROAM();
+		
+		// return value
+		// 0 -> OK
+		// 1 -> already have a map
+		// 2 -> error opening the file
+		// 3 -> no parser for that kind of file
+		int open(const std::string &file);
 	
 		void paint();
 		

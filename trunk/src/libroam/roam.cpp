@@ -17,20 +17,23 @@
 #include "observer.h"
 #include "parser.h"
 
-ROAM::ROAM(const std::string &file)
+ROAM::ROAM() : m_map(0), m_observer(0), m_splitQueue(0), m_mergeQueue(0)
+{
+}
+
+int ROAM::open(const std::string &file)
 {
 	diamond *d;
+	
+	if (m_map) return 1;
 	
 	if (file.substr(file.length() - 4, 4) == ".dem")
 	{
 		DEMParser dp;
 		m_map = dp.parse(file);
+		if (!m_map) return 2;
 	}
-	else
-	{
-		printf("ERORRRRRRRRRRO\n");
-		// TODO give an error ?
-	}
+	else return 3;
 	
 	m_map->square();
 		
@@ -53,8 +56,6 @@ ROAM::ROAM(const std::string &file)
 	m_splitQueue = new triangleList();
 	m_mergeQueue = new diamondList();
 	
-/*	qDebug("El observador està en %f %f %f", ox, oy, oz);
-	qDebug("El observador mira a %f %f %f", vrpx, vrpy, vrpz);*/
 	double modelViewMatrix[16];
 	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
 	d -> t1() -> calcPriority(modelViewMatrix);
@@ -62,46 +63,14 @@ ROAM::ROAM(const std::string &file)
 	m_splitQueue -> insert(d -> t1());
 	m_splitQueue -> insert(d -> t2());
 	
-/*	double p1, q1, r1;
-	
-	p1 = modelViewMatrix[0] * ox + 
-	     modelViewMatrix[4] * oy + 
-	     modelViewMatrix[8] * oz + 
-	     modelViewMatrix[12];
-	q1 = modelViewMatrix[1] * ox + 
-	     modelViewMatrix[5] * oy + 
-	     modelViewMatrix[9] * oz + 
-	     modelViewMatrix[13];
-	r1 = modelViewMatrix[2] * ox + 
-	     modelViewMatrix[6] * oy + 
-	     modelViewMatrix[10] * oz + 
-	     modelViewMatrix[14];
-	
-	qDebug("Observador %f %f %f en camera-space %f %f %f", ox, oy, oz, p1, q1, r1);
-	
-	p1 = modelViewMatrix[0] * vrpx + 
-	     modelViewMatrix[4] * vrpy + 
-	     modelViewMatrix[8] * vrpz + 
-	     modelViewMatrix[12];
-	q1 = modelViewMatrix[1] * vrpx + 
-	     modelViewMatrix[5] * vrpy + 
-	     modelViewMatrix[9] * vrpz + 
-	     modelViewMatrix[13];
-	r1 = modelViewMatrix[2] * vrpx + 
-	     modelViewMatrix[6] * vrpy + 
-	     modelViewMatrix[10] * vrpz + 
-	     modelViewMatrix[14];
-	qDebug("VRP %f %f %f en camera-space %f %f %f", vrpx, vrpy, vrpz, p1, q1, r1);*/
-
-	// FOO FOO	
-// 	triangle *t;
-// 	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
-// 	for (int kk = 0; kk < 500; kk++)
-// 	{
-// 		t = splitQueue.last();
-// 		t -> split(splitQueue, mergeQueue, modelViewMatrix);
-// 	}
-// 	updateGL();
+	triangle *t;
+	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
+	for (int kk = 0; kk < 500; kk++)
+	{
+		t = m_splitQueue -> last();
+		t -> split(m_splitQueue, m_mergeQueue, modelViewMatrix);
+	}
+	return 0;
 }
 
 ROAM::~ROAM()

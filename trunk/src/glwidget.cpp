@@ -14,6 +14,7 @@
 #include <qdesktopwidget.h> 
 #include <qfiledialog.h>
 #include <qfontmetrics.h>
+#include <qmessagebox.h>
 #include <qpopupmenu.h>
 #include <qtimer.h>
 
@@ -286,7 +287,18 @@ void glWidget::openMap()
 	if (file.isNull()) return;
 	
 	delete m_roam;
-	m_roam = new ROAM(file);
+	m_roam = new ROAM;
+		
+	int r = m_roam -> open(file);
+	if (r)
+	{
+		delete m_roam;
+		m_roam = 0;
+		if (r == 2) QMessageBox::critical(this, "Error", QString("Could not open the map, check you have read permission on %1").arg(file), QMessageBox::Ok, QMessageBox::NoButton);
+		else if (r == 3) QMessageBox::critical(this, "Error", "There is no parser available for that kind of file.", QMessageBox::Ok, QMessageBox::NoButton);
+		return;
+	}
+	updateGL();
 	
 	QCursor::setPos(width() / 2, height() / 2);
 	m_fromPopup = true;
