@@ -1,9 +1,9 @@
 
 # set the include path found by configure
-INCLUDES= $(all_includes) -I ./libroam -I $(QTDIR)/include
+INCLUDES= $(all_includes) -I ./libroam $(QT_INCLUDES)
 
 moc_%.cpp: %.h
-	$(QTDIR)/bin/moc $< -o $@ 
+	$(QT_MOC_PATH)/moc $< -o $@ 
 
 # the library search path.
 SUBDIRS =  libroam

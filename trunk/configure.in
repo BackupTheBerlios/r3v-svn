@@ -15,6 +15,8 @@ if test -z $QTDIR; then
 		echo "You don't have \$QTDIR set, that means you don't have Qt installed or your \$QTDIR is not pointing to your Qt installation"
 		exit
 	else
+		QT_INCLUDES="-I /usr/include/qt3"
+		QT_MOC_PATH="-I /usr/bin"
 		echo "    Qt found"
 	fi
 else
@@ -47,8 +49,14 @@ else
 		echo "Your Qt version does not seem the correct one to install r3v, you need the threaded version Qt3 (libqt-mt.so.3)"
 		exit
 	fi
+	
+	QT_INCLUDES="-I $QTDIR/include"
+	QT_MOC_PATH="-I $QTDIR/bin"
 
 	echo "    Qt found at $QTDIR"
 fi
+
+AC_SUBST(QT_INCLUDES)
+AC_SUBST(QT_MOC_PATH)
 
 AC_OUTPUT(Makefile src/Makefile src/libroam/Makefile)
