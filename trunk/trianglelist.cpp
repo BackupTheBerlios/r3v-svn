@@ -7,25 +7,29 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef FAKETRIANGLE_H
-#define FAKETRIANGLE_H
+#include "trianglelist.h"
+#include "triangle.h"
 
-class triangle;
-
-class fakeTriangle
+void triangleList::clear()
 {
-	public:
-		fakeTriangle();
-		fakeTriangle(triangle *t, double *modelViewMatrix);
-		fakeTriangle(const fakeTriangle &ft);
-		~fakeTriangle();
-		
-		triangle *operator*() const;
-		bool operator<(const fakeTriangle &ft) const;
-		
-// 	private:
-		triangle *m_t;
-		double m_priority;
-};
+	m_triangles.clear();
+}
 
-#endif
+void triangleList::insert(triangle *t)
+{
+	std::multimap<double, triangle*>::iterator it;
+	it = m_triangles.insert(std::pair<double, triangle*>(t->priority(), t));
+	t->setOwnIterator(it);
+}
+
+void triangleList::remove(triangle *t)
+{
+	m_triangles.erase(t->ownIterator());
+}
+
+triangle *triangleList::last() const
+{
+	std::multimap<double, triangle*>::const_iterator it = m_triangles.end();
+	--it;
+	return (*it).second;
+}

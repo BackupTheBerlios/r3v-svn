@@ -10,11 +10,13 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
+#include <map>
+
 #include <math.h>
 
 #include <qstring.h>
 
-#include "faketrianglelist.h"
+#include "trianglelist.h"
 
 class map;
 class node;
@@ -37,14 +39,19 @@ class triangle
 		
 		unsigned int level() const;
 		
-		double wedgie() const;
 		void updateWedgie();
 		
-		void split(fakeTriangleList &splitQueue, double *modelViewMatrix);
+		void split(triangleList &splitQueue, double *modelViewMatrix);
 		
 		void print() const;
+		
+		double priority() const;
+		void calcPriority(double *modelViewMatrix);
+		
+		void setOwnIterator(std::multimap<double, triangle*>::iterator it);
+		std::multimap<double, triangle*>::iterator ownIterator() const;
 	
-// 	private:
+	private:
 		QString nom;  // TODO removeme
 	
 		map &m_map;
@@ -57,9 +64,12 @@ class triangle
 		
 		double m_ownWedgie, m_wedgie;
 		
+		double m_priority;
+		
 		triangle *m_leftTriangle;
 		triangle *m_rightTriangle;
 		triangle *m_parentTriangle;
+		std::multimap<double, triangle*>::iterator m_it;
 };
 
 #endif

@@ -24,7 +24,6 @@
 #include "observer.h"
 #include "parser.h"
 #include "triangle.h"
-#include "faketrianglelist.h"
 
 glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_map(0), m_diamond(0), m_fromPopup(false), m_FPSEnabled(true)
 {
@@ -85,7 +84,13 @@ void glWidget::paintGL()
 	
 		m_observer -> position(&ox, &oy, &oz);
 		m_observer -> vrp(&vrpx, &vrpy, &vrpz);
+		
+// 		oy = 446.7;
+// 		vrpy = 446.7;
 	
+// 		qDebug("%f %f %f", ox, oy, oz);
+// 		qDebug("%f %f %f", vrpx, vrpy, vrpz);
+		
 		gluLookAt(ox, oy, oz, vrpx, vrpy, vrpz, 0, 1, 0);
 // 	qDebug("%f %f %f 0 1 0", vrpx-ox, vrpy-oy, vrpz-oz);
 
@@ -125,6 +130,7 @@ void glWidget::paintGL()
 void glWidget::keyPressEvent(QKeyEvent *e)
 {
 	double modelViewMatrix[16];
+	double d;
 	
 	switch(e->key())
 	{
@@ -202,14 +208,70 @@ void glWidget::keyPressEvent(QKeyEvent *e)
 			glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
 			
 			// 	while(splitQueue.size() < 20)
-			for (int kk = 0; kk < 1; kk++)
+			for (int kk = 0; kk < 1000; kk++)
 			{
-				fakeTriangle ft = splitQueue.last();
+				triangle *t;
+// 				fakeTriangle ft = splitQueue.last();
+				t = splitQueue.last();
+				printf("%lx\n", t);
 // 				qDebug("Parto %s", ft.m_t->nom.latin1());
-				(*ft) -> split(splitQueue, modelViewMatrix);
+				t -> split(splitQueue, modelViewMatrix);
 			}
 			updateGL();
 		break;
+		
+		case Key_3:
+			for (int i = 0; i < 10; i++)
+			{
+				d = m_map -> height(1292, i);
+				qDebug("%f", d);
+				d = m_map -> height(1291, i);
+				qDebug("%f", d);
+			}
+			
+		break;
+		
+// 		case Key_2:
+// 		float a, b, c, p1, q1, r1, p2, q2, r2, p3, q3, r3, d1, d2, d3;
+// 		glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
+// 			a = modelViewMatrix[4];
+// 			b = modelViewMatrix[5];
+// 			c = modelViewMatrix[6];
+// 	
+// 			p1 = modelViewMatrix[0] * 646.5 + 
+// 	     		modelViewMatrix[4] * 446.7 + 
+// 	     		modelViewMatrix[8] * 2300.0 + 
+// 	     		modelViewMatrix[12];
+// 			q1 = modelViewMatrix[1] * 646.5 + 
+// 	     		modelViewMatrix[5] * 446.7 + 
+// 	     		modelViewMatrix[9] * 2300.0 + 
+// 	     	modelViewMatrix[13];
+// 	r1 = modelViewMatrix[2] * 646.5 + 
+// 	     modelViewMatrix[6] * 446.7 + 
+// 	     modelViewMatrix[10] * 2300.0 + 
+// 	     modelViewMatrix[14];
+// 		 
+// 		 d1 = 2 / (r1 * r1 - c * c) * sqrt(pow(a * r1 - c * p1, 2) + pow(b * r1 - c * q1, 2));
+// 		 qDebug("%f %f %f", p1, q1, r1);
+// 		 qDebug("Prioridad 1:%f", d1);
+// 		 
+// 		 p2 = modelViewMatrix[0] * 646.5 + 
+// 	     		modelViewMatrix[4] * 446.7 + 
+// 	     		modelViewMatrix[8] * 2400.0 + 
+// 	     		modelViewMatrix[12];
+// 			q2 = modelViewMatrix[1] * 646.5 + 
+// 	     		modelViewMatrix[5] * 446.7 + 
+// 	     		modelViewMatrix[9] * 2400.0 + 
+// 	     	modelViewMatrix[13];
+// 	r2 = modelViewMatrix[2] * 646.5 + 
+// 	     modelViewMatrix[6] * 446.7 + 
+// 	     modelViewMatrix[10] * 2400.0 + 
+// 	     modelViewMatrix[14];
+// 		 
+// 		 qDebug("%f %f %f", p2, q2, r2);
+// 		 d2 = 2 / (r2 * r2 - c * c) * sqrt(pow(a * r2 - c * p2, 2) + pow(b * r2 - c * q2, 2));
+// 		 qDebug("Prioridad 2:%f", d2);
+// 		break;
 		
 		default:
 		
@@ -291,8 +353,10 @@ void glWidget::openMap()
 	
 	double modelViewMatrix[16];
 	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
-	splitQueue.insert(fakeTriangle(m_diamond -> t1(), modelViewMatrix));
-	splitQueue.insert(fakeTriangle(m_diamond -> t2(), modelViewMatrix));
+	m_diamond -> t1() -> calcPriority(modelViewMatrix);
+	m_diamond -> t2() -> calcPriority(modelViewMatrix);
+	splitQueue.insert(m_diamond -> t1());
+	splitQueue.insert(m_diamond -> t2());
 
 	QCursor::setPos(width() / 2, height() / 2);
 	m_fromPopup = true;

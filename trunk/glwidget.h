@@ -13,7 +13,7 @@
 #include <qdatetime.h>
 #include <qgl.h>
 
-#include "faketrianglelist.h"
+#include "trianglelist.h"
 
 class QTimer;
 
@@ -62,7 +62,7 @@ Q_OBJECT
 		int m_lastFPS, m_newFPSSum, m_FPSTimes;
 		int m_fontHeight;
 		
-		fakeTriangleList splitQueue;
+		triangleList splitQueue;
 };
 
 #endif

@@ -183,20 +183,20 @@ void map::square()
 				x = n;
 				p = i;
 			}
-			else 
-			{
-				int nn = n - 1;
-				while(!good && nn > x)
-				{
-					good = checkSquare(i, nn);
-					if (good)
-					{
-						x = nn;
-						p = i;
-					}
-					nn--;
-				}
-			}
+// 			else 
+// 			{
+// 				int nn = n - 1;
+// 				while(!good && nn > x)
+// 				{
+// 					good = checkSquare(i, nn);
+// 					if (good)
+// 					{
+// 						x = nn;
+// 						p = i;
+// 					}
+// 					nn--;
+// 				}
+// 			}
 			
 		}
 	}
@@ -205,6 +205,8 @@ void map::square()
 	/*qDebug("Demostracion");
 	for (int i = 0; i < x; i++)
 		qDebug("Altura de %d es %d", i+p, heights(i+p));*/
+	
+// 	x -= 10;
 	
 	// once we have searched the maximum square we crop the map
 	QValueVector<QValueVector<double>*>::iterator it;
@@ -275,8 +277,6 @@ QColor map::color(double h) const
 		g = qRound(255 + 255 * (m_minHeight - h) / m_amplitude);
 		b = 0;
 	}
-	
-// 	qDebug("%f %d %d %d", h, r, g, b);
 	
 	return QColor(r, g, b);
 }

@@ -26,6 +26,7 @@ node::node(double x, double y, double z, const QColor &c)
 
 const double *node::color() const
 {
+// 	printf("%f %f %f\n", m_color[0], m_color[1], m_color[2]);
 	return m_color;
 }
 

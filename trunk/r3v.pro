@@ -4,10 +4,9 @@ CONFIG += opengl
 DEFINES += QT_NO_ASCII_CAST QT_NO_COMPAT
 
 # Input
-HEADERS += diamond.h faketriangle.h faketrianglelist.h geopoint.h glwidget.h map.h node.h observer.h parser.h triangle.h
+HEADERS += diamond.h trianglelist.h geopoint.h glwidget.h map.h node.h observer.h parser.h triangle.h
 SOURCES += diamond.cpp \
-           faketriangle.h \
-           faketrianglelist.h \
+           trianglelist.cpp \
            geopoint.cpp \
            glwidget.cpp \
            main.cpp \

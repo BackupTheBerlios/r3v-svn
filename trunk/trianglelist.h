@@ -7,29 +7,26 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#include "faketrianglelist.h"
-#include "triangle.h"
+#ifndef FAKETRIANGLELIST_H
+#define FAKETRIANGLELIST_H
 
-void fakeTriangleList::clear()
-{
-	m_triangles.clear();
-}
+#include <map>
 
-void fakeTriangleList::insert(const fakeTriangle &ft)
-{
-	std::multimap<double, triangle*>::iterator it;
-	it = m_triangles.insert(std::pair<double, triangle*>(ft.m_priority, ft.m_t));
-	ft.m_t->m_it = it;
-}
+class triangle;
 
-void fakeTriangleList::remove(triangle *t)
+class triangleList
 {
-	m_triangles.erase(t->m_it);
-}
+	public:
+		void clear();
+		
+		void insert(triangle *t);
+		void remove(triangle *t);
+		
+		triangle *last() const;
+		void print() const;
+		
+	private:
+		std::multimap<double, triangle*> m_triangles;
+};
 
-triangle *fakeTriangleList::last() const
-{
-	std::multimap<double, triangle*>::const_iterator it = m_triangles.end();
-	--it;
-	return (*it).second;
-}
+#endif
