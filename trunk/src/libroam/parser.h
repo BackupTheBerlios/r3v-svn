@@ -33,7 +33,7 @@ class DEMParser : r3vParser
 		std::string readString(int length, char *aux);
 		void readHeights(int howMany, double factor, std::vector<double> *v, char *aux);
 		
-		std::istream *m_file;
+		std::ifstream *m_file;
 };
 
 #endif
