@@ -10,7 +10,7 @@
 #ifndef DIAMOND_H
 #define DIAMOND_H
 
-class map;
+class r3vMap;
 class triangle;
 
 class diamond

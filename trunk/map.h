@@ -19,11 +19,11 @@
 class diamond;
 class node;
 
-class map
+class r3vMap
 {
 	public:
-		map();
-		~map();
+		r3vMap();
+		~r3vMap();
 		
 		void addColumn(QValueVector<double> *column);
 		

@@ -18,13 +18,13 @@
 
 #include "trianglelist.h"
 
-class map;
+class r3vMap;
 class node;
 
 class triangle
 {
 	public:
-		triangle(map &m, node *apex, node *left, node *right, triangle *parentTriangle, QString n);
+		triangle(r3vMap &m, node *apex, node *left, node *right, triangle *parentTriangle, QString n);
 		~triangle();
 		
 		bool isLeaf() const;
@@ -54,7 +54,7 @@ class triangle
 	private:
 		QString nom;  // TODO removeme
 	
-		map &m_map;
+		r3vMap &m_map;
 		
 		node *m_apex;
 		node *m_leftVertex;

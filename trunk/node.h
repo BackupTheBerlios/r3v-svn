@@ -17,7 +17,7 @@ class triangle;
 
 class node
 {
-	friend class map;
+	friend class r3vMap;
 	
 	public:
 		const double *color() const;

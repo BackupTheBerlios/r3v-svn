@@ -13,12 +13,12 @@
 class QFile;
 template<class T> class QValueVector;
 
-class map;
+class r3vMap;
 
 class DEMParser
 {
 	public:
-		static map* parse(QFile &file);
+		static r3vMap* parse(QFile &file);
 	
 	private:
 		static QChar readChar(QFile &file);
@@ -31,7 +31,7 @@ class DEMParser
 class myParser
 {
 	public:
-		static map* parse(QFile &file);
+		static r3vMap* parse(QFile &file);
 };
 
 

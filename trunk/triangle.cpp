@@ -15,7 +15,7 @@
 #include "node.h"
 #include "triangle.h"
 
-triangle::triangle(map &m, node *apex, node *left, node *right, triangle *parentTriangle, QString n) : nom(n), m_map(m), m_apex(apex), m_leftVertex(left), m_rightVertex(right), m_priority(-1), m_leftTriangle(0), m_rightTriangle(0), m_parentTriangle(parentTriangle)
+triangle::triangle(r3vMap &m, node *apex, node *left, node *right, triangle *parentTriangle, QString n) : nom(n), m_map(m), m_apex(apex), m_leftVertex(left), m_rightVertex(right), m_priority(-1), m_leftTriangle(0), m_rightTriangle(0), m_parentTriangle(parentTriangle)
 {
 	assert(*apex != *left);
 	assert(*apex != *right);

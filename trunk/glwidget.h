@@ -18,7 +18,7 @@
 class QTimer;
 
 class diamond;
-class map;
+class r3vMap;
 class observer;
 class triangle;
 
@@ -47,7 +47,7 @@ Q_OBJECT
 		void initFPSTimer();
 		void paintTriangle(triangle *t) const;
 	
-		map *m_map;
+		r3vMap *m_map;
 		diamond *m_diamond;
 		
 		observer *m_observer;

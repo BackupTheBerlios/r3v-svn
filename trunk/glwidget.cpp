@@ -324,7 +324,7 @@ void glWidget::openMap()
 	if (file.isNull()) return;
 	
 	QFile f(file);
-	map *m;
+	r3vMap *m;
 	if (file.right(4) == ".dem") m = DEMParser::parse(f);
 	else m = myParser::parse(f);
 	

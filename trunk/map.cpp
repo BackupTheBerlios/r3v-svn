@@ -14,11 +14,11 @@
 #include "node.h"
 #include "triangle.h"
 
-map::map()
+r3vMap::r3vMap()
 {
 }
 
-map::~map()
+r3vMap::~r3vMap()
 {
 	QValueVector<QValueVector<double>*>::iterator it;
 	while (m_heights.size())
@@ -39,12 +39,12 @@ map::~map()
 	m_nodes.clear();
 }
 
-void map::addColumn(QValueVector<double> *column)
+void r3vMap::addColumn(QValueVector<double> *column)
 {
 	m_heights.append(column);
 }
 
-diamond *map::baseDiamond() 
+diamond *r3vMap::baseDiamond() 
 {
 	int size;
 	node *n1, *n2, *n3;
@@ -67,12 +67,12 @@ diamond *map::baseDiamond()
 	return new diamond(t1, t2);
 }
 
-double map::height(int i, int j) const
+double r3vMap::height(int i, int j) const
 {
 	return (*m_heights[i])[j];
 }
 
-double map::height(double i, double j) const
+double r3vMap::height(double i, double j) const
 {
 	double h1, h2, h3, h4, d1x, d1y, d2x, d2y, d3x, d3y, d4x, d4y, res;
 	int fi, fj, ci, cj;
@@ -129,22 +129,22 @@ double map::height(double i, double j) const
 	return (h1 * d1x / res * d1y / res + h2 * d2x / res * d2y / res + h3 * d3x / res * d3y / res + h4 * d4x / res * d4y / res) / ((1 / res) * (1 / res));
 }
 
-int map::heights(int column) const
+int r3vMap::heights(int column) const
 {
 	return m_heights[column]->size();
 }
 
-int map::columns() const
+int r3vMap::columns() const
 {
 	return m_heights.size();
 }
 
-double map::midHeight() const
+double r3vMap::midHeight() const
 {
 	return m_minHeight + m_amplitude / 2;
 }
 
-node *map::getNode(double x, double y)
+node *r3vMap::getNode(double x, double y)
 {
 	QMap<QPair<double, double>, node*>::const_iterator it;
 	QPair<double, double> p(x, y);
@@ -164,7 +164,7 @@ node *map::getNode(double x, double y)
 	return n;
 }
 
-void map::square()
+void r3vMap::square()
 {
 	int x = 0; // maximum square side size
 	int p = 0; // position where the maximum square side size begins
@@ -249,7 +249,7 @@ void map::square()
 	qDebug("%f %f", m_minHeight, m_amplitude);
 }
 
-QColor map::color(double h) const
+QColor r3vMap::color(double h) const
 {
 	int r, g, b;
 	
@@ -281,7 +281,7 @@ QColor map::color(double h) const
 	return QColor(r, g, b);
 }
 
-bool map::checkSquare(int pos, int size) const
+bool r3vMap::checkSquare(int pos, int size) const
 {
 	bool good = true;
 	int j = pos;

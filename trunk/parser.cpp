@@ -15,7 +15,7 @@
 #include "parser.h"
 #include "map.h"
 
-map *DEMParser::parse(QFile &file)
+r3vMap *DEMParser::parse(QFile &file)
 {
 	if (file.open(IO_ReadOnly))
 	{
@@ -25,7 +25,7 @@ map *DEMParser::parse(QFile &file)
 		geoPoint *SE;
 		int DEMLevel, elevationPattern, groundPlanimetricReferenceSystem, zoneCode, groundCoordsUnit, elevationCoordsUnit, polygonSides;
 		
-		map *m = new map();
+		r3vMap *m = new r3vMap();
 		
 		/* name */
 		name = readString(file, 40, aux);
@@ -372,11 +372,11 @@ void DEMParser::readHeights(QFile &file, int howMany, double factor, QValueVecto
 
 /* */
 
-map *myParser::parse(QFile &file)
+r3vMap *myParser::parse(QFile &file)
 {
 	if (file.open(IO_ReadOnly))
 	{
-		map *m = new map();
+		r3vMap *m = new r3vMap();
 		
 		QTextStream ts(&file);
 		int columns = ts.readLine().toInt();
