@@ -204,16 +204,12 @@ void glWidget::keyPressEvent(QKeyEvent *e)
 		
 		case Key_1:
 			if (!m_map) return;
-		
-			glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
 			
-			// 	while(splitQueue.size() < 20)
+			triangle *t;
+			glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
 			for (int kk = 0; kk < 1000; kk++)
 			{
-				triangle *t;
-// 				fakeTriangle ft = splitQueue.last();
 				t = splitQueue.last();
-				printf("%lx\n", t);
 // 				qDebug("Parto %s", ft.m_t->nom.latin1());
 				t -> split(splitQueue, modelViewMatrix);
 			}

@@ -7,8 +7,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef FAKETRIANGLELIST_H
-#define FAKETRIANGLELIST_H
+#ifndef TRIANGLELIST_H
+#define TRIANGLELIST_H
 
 #include <map>
 
