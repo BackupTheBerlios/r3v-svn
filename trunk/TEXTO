@@ -1,0 +1,39 @@
+The sentence before the one you mention is the key to understanding the 
+formula.  I indicate the screen-space distortion at a corner vertex is 
+bounded by projecting the thickness segment--this is the simple method I 
+suggested at the beginning of this message, applied now at the triangle 
+corners.  What we need to do to get the robust bound is split up this 
+projection into two steps, (1) into camera space (without perspective), then 
+(2) bound in screen space.  Let's say your world-space (x,y,z) goes to 
+camera-space (x',y',z').  Take the two endponts of a thickness segment, 
+(x0,y0,z0) and (x1,y1,z1), and these transformed to (x0',y0',z0') and 
+(x1',y1',z1').  What we need in the formula is the vector between these, 
+(a,b,c)=(x1'-x0',y1'-y0',z1'-z0').  Note that (a,b,c) will be the same 
+regardless of where you move the thickness segment, as long as its direction 
+and length remain constant.  In effect you only need to perform the rotation 
+part of your camera transform (and some scaling), ignoring the translation, 
+on the vector (0,0,e_T).  So the bottom line is that (a,b,c) depends only on 
+your rotation matrix (and perhaps scaling) and the wedgie thickness, and is 
+the same for all three triangle vertices. 
+
+
+So now for three vertices you have three (p,q,r)'s and one (a,b,c).  In your 
+code you compute 2/(r^2-c^2) three times (once per vertex), and take the max 
+of the three.  You also compute ((ar-cp)^2+(br-cq)^2) three times and take 
+the max.  You then take the first max times the square root of the second 
+max as your distortion bound and priority. 
+
+
+The one major caveat here is that you need to make sure r^2>c^2, or you 
+could get divide-by-zero or negative "bounds".  If 
+r^<=c^2+tiny_positive_number, then set the priority to an artificially large 
+value.  Also make sure your near clipping plane is as far forward as your 
+application allows (this makes good sense for other reasons as well, like 
+good use of finite depth-buffer precision).  This way the "artificially 
+prioritized" triangles quickly get culled outside the view frustum.  You 
+never need to compute the priority of a triangle labeled OUT, and you and up 
+without any artificially-prioritized triangles after a few splits.  NOTE: 
+what I describe here is better than what I put in the paper--the method 
+there causes terrain intersecting the near clipping plane to be subdivided 
+to the finest resolution at the expense of all the other visible terrain 
+(which I consider to be a bug :). 
