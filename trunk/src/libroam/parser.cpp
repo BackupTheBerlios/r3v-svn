@@ -363,3 +363,37 @@ void DEMParser::readHeights(int howMany, double factor, std::vector<double> *v, 
 		v->push_back(height * factor);
 	}
 }
+
+
+r3vMap *PMParser::parse(const std::string &file)
+{
+	m_file = new std::ifstream(file.c_str());
+	if (m_file -> is_open())
+	{
+		r3vMap *m;
+		int columns;
+		double aux;
+		std::vector<double> *heights;
+		
+		m = new r3vMap();
+		*m_file >> columns;
+		
+		
+		for (int i = 0; i < columns; i++)
+		{
+			heights = new std::vector<double>;
+			for (int j = 0; j < columns; j++)
+			{
+				*m_file >> aux;
+				heights -> push_back(aux);
+			}
+			m -> addColumn(heights);
+		}
+		
+		m_file -> close();
+		return m;
+	}
+	
+	return 0;
+}
+

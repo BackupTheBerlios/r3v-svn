@@ -50,6 +50,12 @@ ROAM::Error ROAM::open(const std::string &file)
 		m_map = dp.parse(file);
 		if (!m_map) return openingError;
 	}
+	else if (file.substr(file.length() - 3, 3) == ".pm")
+	{
+		PMParser pp;
+		m_map = pp.parse(file);
+		if (!m_map) return openingError;
+	}
 	else return unknownFormat;
 	
 	m_map->square();

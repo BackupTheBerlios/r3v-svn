@@ -254,7 +254,7 @@ void glWidget::mousePressEvent(QMouseEvent *e)
 void glWidget::openMap()
 {
 	setCursor(ArrowCursor);
-	QString file = QFileDialog::getOpenFileName(QString::null, "DEM files (*.dem);;Plain files (*)", this);
+	QString file = QFileDialog::getOpenFileName(QString::null, "DEM files (*.dem);;Plain maps (*.pm)", this);
 	setCursor(BlankCursor);
 	if (file.isNull()) return;
 	

@@ -36,4 +36,14 @@ class DEMParser : r3vParser
 		std::ifstream *m_file;
 };
 
+class PMParser : r3vParser
+{
+	public:
+		r3vMap* parse(const std::string &file);
+	
+	private:
+		std::ifstream *m_file;
+};
+
+
 #endif
