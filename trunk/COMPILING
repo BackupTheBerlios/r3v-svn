@@ -1,0 +1,13 @@
+To compile r3v you only need to do 
+
+./configure
+make
+
+If you don't have configure because you did not got r3v from a release 
+tarball, you'll have to do
+
+aclocal
+autoconf
+automake
+
+to get configure
