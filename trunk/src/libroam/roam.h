@@ -15,6 +15,7 @@ class QString;
 class diamondList;
 class observer;
 class r3vMap;
+class triangle;
 class triangleList;
 
 class ROAM
@@ -23,12 +24,15 @@ class ROAM
 		ROAM();
 		~ROAM();
 		
-		// return value
-		// 0 -> OK
-		// 1 -> already have a map
-		// 2 -> error opening the file
-		// 3 -> no parser for that kind of file
-		int open(const std::string &file);
+		// OK -> OK
+		// openingError -> error opening the file
+		// unknownFormat -> no parser for that kind of file
+		enum Error {OK, openingError, unknownFormat};
+		
+		Error open(const std::string &file);
+		void close();
+		
+		bool hasMap();
 	
 		void paint();
 		
@@ -42,6 +46,7 @@ class ROAM
 		void splitOne();
 		
 	private:
+		void clean();
 		void paintTriangle(const triangle *t, bool color) const;
 		
 		r3vMap *m_map;

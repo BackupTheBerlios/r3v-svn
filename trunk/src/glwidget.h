@@ -13,9 +13,9 @@
 #include <qdatetime.h>
 #include <qgl.h>
 
-class QTimer;
+#include "libroam/roam.h"
 
-class ROAM;
+class QTimer;
 
 class glWidget : public QGLWidget
 {
@@ -51,7 +51,7 @@ Q_OBJECT
 		int m_lastFPS, m_newFPSSum, m_FPSTimes;
 		int m_fontHeight;
 		
-		ROAM *m_roam;
+		ROAM m_roam;
 };
 
 #endif

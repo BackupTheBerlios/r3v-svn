@@ -18,18 +18,9 @@
 #include <qpopupmenu.h>
 #include <qtimer.h>
 
-#include "diamond.h"
-#include "diamondlist.h"
 #include "glwidget.h"
-#include "map.h"
-#include "node.h"
-#include "observer.h"
-#include "parser.h"
-#include "roam.h"
-#include "triangle.h"
-#include "trianglelist.h"
 
-glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false), m_FPSEnabled(true), m_roam(0)
+glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false), m_FPSEnabled(true)
 {
 	setMouseTracking(true);
 	
@@ -51,7 +42,6 @@ glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false), m_F
 
 glWidget::~glWidget()
 {
-	delete m_roam;
 }
 
 void glWidget::resizeGL(int width, int height)
@@ -80,7 +70,7 @@ void glWidget::paintGL()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	if (m_roam) m_roam -> paint();
+	if (m_roam.hasMap()) m_roam.paint();
 	swapBuffers();
 }
 
@@ -90,22 +80,22 @@ void glWidget::keyPressEvent(QKeyEvent *e)
 	{
 		case Key_Up:
 		case Key_W:
-			if (m_roam) m_roam -> moveObserverForward();
+			if (m_roam.hasMap()) m_roam.moveObserverForward();
 		break;
 		
 		case Key_Down:
 		case Key_S:
-			if (m_roam) m_roam -> moveObserverBackward();
+			if (m_roam.hasMap()) m_roam.moveObserverBackward();
 		break;
 		
 		case Key_Left:
 		case Key_A:
-			if (m_roam) m_roam -> moveObserverLeft();
+			if (m_roam.hasMap()) m_roam.moveObserverLeft();
 		break;
 		
 		case Key_Right:
 		case Key_D:
-			if (m_roam) m_roam -> moveObserverRight();
+			if (m_roam.hasMap()) m_roam.moveObserverRight();
 		break;
 		
 		case Key_Escape:
@@ -157,11 +147,11 @@ void glWidget::keyPressEvent(QKeyEvent *e)
 // 		break;
 		
 		case Key_1:
-			if (m_roam) m_roam -> splitOne();
+			if (m_roam.hasMap()) m_roam.splitOne();
 		break;
 		
 		case Key_2:
-			if (m_roam) m_roam -> mergeOne();
+			if (m_roam.hasMap()) m_roam.mergeOne();
 		break;
 		
 // 		case Key_3:
@@ -240,7 +230,7 @@ void glWidget::mouseMoveEvent(QMouseEvent *e)
 	difx = hh - e -> y();
 	
 	// TODO that 25.0 should be box dependant ... or not?
-	if (m_roam) m_roam -> rotateObserver(difx / 25.0, dify / 25.0);
+	if (m_roam.hasMap()) m_roam.rotateObserver(difx / 25.0, dify / 25.0);
 	
 	QCursor::setPos(hw, hh);
 	updateGL();
@@ -266,16 +256,11 @@ void glWidget::openMap()
 	setCursor(BlankCursor);
 	if (file.isNull()) return;
 	
-	delete m_roam;
-	m_roam = new ROAM;
-		
-	int r = m_roam -> open(file);
-	if (r)
+	ROAM::Error e = m_roam.open(file);
+	if (e != ROAM::OK)
 	{
-		delete m_roam;
-		m_roam = 0;
-		if (r == 2) QMessageBox::critical(this, "Error", QString("Could not open the map, check you have read permission on %1").arg(file), QMessageBox::Ok, QMessageBox::NoButton);
-		else if (r == 3) QMessageBox::critical(this, "Error", "There is no parser available for that kind of file.", QMessageBox::Ok, QMessageBox::NoButton);
+		if (e == ROAM::openingError) QMessageBox::critical(this, "Error", QString("Could not open the map, check you have read permission on %1").arg(file), QMessageBox::Ok, QMessageBox::NoButton);
+		else if (e == ROAM::unknownFormat) QMessageBox::critical(this, "Error", "There is no parser available for that kind of file.", QMessageBox::Ok, QMessageBox::NoButton);
 		return;
 	}
 	updateGL();

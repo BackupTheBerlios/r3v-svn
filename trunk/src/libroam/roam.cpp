@@ -21,19 +21,36 @@ ROAM::ROAM() : m_map(0), m_observer(0), m_splitQueue(0), m_mergeQueue(0)
 {
 }
 
-int ROAM::open(const std::string &file)
+ROAM::~ROAM()
+{
+	clean();
+}
+
+void ROAM::clean()
+{
+	delete m_map;
+	m_map = 0;
+	delete m_observer;
+	m_observer = 0;
+	delete m_splitQueue;
+	m_splitQueue = 0;
+	delete m_mergeQueue;
+	m_mergeQueue = 0;
+}
+
+ROAM::Error ROAM::open(const std::string &file)
 {
 	diamond *d;
 	
-	if (m_map) return 1;
+	if (m_map) clean();
 	
 	if (file.substr(file.length() - 4, 4) == ".dem")
 	{
 		DEMParser dp;
 		m_map = dp.parse(file);
-		if (!m_map) return 2;
+		if (!m_map) return openingError;
 	}
-	else return 3;
+	else return unknownFormat;
 	
 	m_map->square();
 	
@@ -70,15 +87,17 @@ int ROAM::open(const std::string &file)
 		t = m_splitQueue -> last();
 		t -> split(m_splitQueue, m_mergeQueue, modelViewMatrix);
 	}*/
-	return 0;
+	return OK;
 }
 
-ROAM::~ROAM()
+void ROAM::close()
 {
-	delete m_map;
-	delete m_observer;
-	delete m_splitQueue;
-	delete m_mergeQueue;
+	clean();
+}
+
+bool ROAM::hasMap()
+{
+	return m_map;
 }
 
 void ROAM::paint()

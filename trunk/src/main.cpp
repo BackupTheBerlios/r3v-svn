@@ -8,37 +8,11 @@
  ***************************************************************************/
 
 #include <qapplication.h>
-#include <qfile.h>
 
-#include <stdio.h>
-
-#include "diamond.h"
 #include "glwidget.h"
-#include "map.h"
-#include "node.h"
-#include "parser.h"
-#include "triangle.h"
 
 int main(int argc, char *argv[])
 {
-// 	QFile f("mauna_kea.dem");
-// 	map * m = DEMParser::parse(f);
-// m->square();
-	
-/*	qDebug("Columnas %d", m->columns());
-	for (int i = 0; i < m->columns(); i++)
-	{
-		qDebug("Alturas de %d es %d", i, m->heights(i));
-	}*/
-	
-/*	for (int i = 0; i < m->columns(); i++)
-	{
-		for (int j = 0; j < m->columns(); j++)
-		{
-			qDebug("%d %d es %f", i, j, m->height(i, j));
-		}
-	}*/
-	
 	QApplication a(argc, argv);
 	
 	glWidget *g = new glWidget(0);
