@@ -8,6 +8,5 @@ moc_%.cpp: %.h
 # the library search path.
 SUBDIRS =  libroam
 bin_PROGRAMS = r3v
-r3v_COMPILE_FIRST = glwidget.moc
 r3v_SOURCES =  glwidget.cpp moc_glwidget.cpp main.cpp
 r3v_LDADD = libroam/libroam.la -lqt-mt
