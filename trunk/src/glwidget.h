@@ -35,10 +35,10 @@ Q_OBJECT
 	
 	private slots:
 		void openMap();
+		void closeMap();
 		void updateFPS();
 
 	private:
-		void closeMap();
 		void initFPSTimer();
 	
 		// popup

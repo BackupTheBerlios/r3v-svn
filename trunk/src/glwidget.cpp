@@ -244,7 +244,9 @@ void glWidget::mousePressEvent(QMouseEvent *e)
 		m_fromPopup = true;
 		QPopupMenu popup;
 		popup.insertItem("&Open", this, SLOT(openMap()));
+		int id = popup.insertItem("&Close", this, SLOT(closeMap()));
 		popup.insertItem("&Quit", qApp, SLOT(quit()));
+		popup.setItemEnabled(id, m_roam.hasMap());
 		popup.exec(e->pos());
 	}
 }
@@ -269,6 +271,12 @@ void glWidget::openMap()
 	m_fromPopup = true;
 }
 
+void glWidget::closeMap()
+{
+	m_roam.close();
+	updateGL();
+}
+
 void glWidget::updateFPS()
 {
 	int aux;
@@ -286,6 +294,3 @@ void glWidget::initFPSTimer()
 	m_newFPSSum = 0;
 	m_FPSTimes = 0;
 }
-
-// #include "glwidget.moc"
-
