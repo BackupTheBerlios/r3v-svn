@@ -24,7 +24,7 @@ class r3vMap;
 class triangle
 {
 	public:
-		triangle(r3vMap &m, node *apex, node *left, node *right, triangle *parentTriangle, QString n);
+		triangle(r3vMap &m, node *apex, node *left, node *right, triangle *parentTriangle);
 		~triangle();
 		
 		bool isLeaf() const;
@@ -44,8 +44,6 @@ class triangle
 		
 		void split(triangleList *splitQueue, diamondList *mergeQueue, double *modelViewMatrix);
 		
-		void print() const;
-		
 		double priority() const;
 		void calcPriority(double *modelViewMatrix);
 		
@@ -57,8 +55,6 @@ class triangle
 		void setDiamond(diamond *d);
 	
 // 	private:
-		QString nom;  // TODO removeme
-	
 		r3vMap &m_map;
 		
 		node *m_apex;

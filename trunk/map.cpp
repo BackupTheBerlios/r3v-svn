@@ -64,10 +64,10 @@ diamond *r3vMap::baseDiamond()
 		n1 = getNode(0, 0);
 		n2 = getNode(size, 0);
 		n3 = getNode(0, size);
-		t1 = new triangle(*this, n1, n2, n3, 0, "T1");
+		t1 = new triangle(*this, n1, n2, n3, 0);
 	
 		n1 = getNode(size, size);
-		t2 = new triangle(*this, n1, n3, n2, 0, "T2");
+		t2 = new triangle(*this, n1, n3, n2, 0);
 	
 	/*	t1 -> setBaseTriangle(t2);
 		t2 -> setBaseTriangle(t1);*/

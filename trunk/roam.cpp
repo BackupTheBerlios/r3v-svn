@@ -14,7 +14,7 @@
 
 #include "diamond.h"
 #include "map.h"
-#include "node.h" // solo necesario pa decir el color lo podemos montar de otra manera???
+#include "node.h"
 #include "roam.h"
 #include "observer.h"
 #include "parser.h"

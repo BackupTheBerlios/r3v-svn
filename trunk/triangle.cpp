@@ -17,7 +17,7 @@
 #include "node.h"
 #include "triangle.h"
 
-triangle::triangle(r3vMap &m, node *apex, node *left, node *right, triangle *parentTriangle, QString n) : nom(n), m_map(m), m_apex(apex), m_leftVertex(left), m_rightVertex(right), m_leftTriangle(0), m_rightTriangle(0), m_parentTriangle(parentTriangle), m_mergeableDiamond(0)
+triangle::triangle(r3vMap &m, node *apex, node *left, node *right, triangle *parentTriangle) : m_map(m), m_apex(apex), m_leftVertex(left), m_rightVertex(right), m_leftTriangle(0), m_rightTriangle(0), m_parentTriangle(parentTriangle), m_mergeableDiamond(0)
 {
 	assert(*apex != *left);
 	assert(*apex != *right);
@@ -151,8 +151,8 @@ void triangle::split(triangleList *splitQueue, diamondList *mergeQueue, double *
 		printf("3\n");
 	}*/
 	
-	m_leftTriangle = new triangle(m_map, newApex, m_apex, m_leftVertex, this, nom+"L");
-	m_rightTriangle = new triangle(m_map, newApex, m_rightVertex, m_apex, this, nom+"R");
+	m_leftTriangle = new triangle(m_map, newApex, m_apex, m_leftVertex, this);
+	m_rightTriangle = new triangle(m_map, newApex, m_rightVertex, m_apex, this);
 	// TODO place in other funciton?=
 	m_map.addTriangles(2);
 	m_map.addLeaves(1);
@@ -175,25 +175,6 @@ void triangle::split(triangleList *splitQueue, diamondList *mergeQueue, double *
 	}
 	
 	updateWedgie();
-}
-
-void triangle::print() const
-{
-	/*printf("Apex ");
-	m_apex->print();
-	printf("\nLeftVertex ");
-	m_leftVertex->print();
-	printf("\nrightVertex ");
-	m_rightVertex->print();
-	printf("\n");*/
-	QString l, r, p, b;
-	if (m_leftTriangle) l = m_leftTriangle->nom.latin1();
-	if (m_rightTriangle) r = m_rightTriangle->nom.latin1();
-	if (m_parentTriangle) p = m_parentTriangle->nom.latin1();
-// 	qDebug("%s left %s right %s padre %s base %s", nom.latin1(), l.latin1(), r.latin1(), p.latin1(), b.latin1());
-	
-	if (m_leftTriangle) m_leftTriangle->print();
-	if (m_rightTriangle) m_rightTriangle->print();
 }
 
 double triangle::priority() const
