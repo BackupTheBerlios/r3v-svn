@@ -1,12 +1,9 @@
-
-# set the include path found by configure
-INCLUDES= $(all_includes) -I ./libroam $(QT_INCLUDES)
+SUBDIRS =  libroam
 
 moc_%.cpp: %.h
 	$(QT_MOC_PATH)/moc $< -o $@ 
 
-# the library search path.
-SUBDIRS =  libroam
+INCLUDES= $(all_includes) -I ./libroam $(QT_INCLUDES)
 bin_PROGRAMS = r3v
 r3v_SOURCES =  glwidget.cpp moc_glwidget.cpp main.cpp
 r3v_LDADD = libroam/libroam.la -lqt-mt
