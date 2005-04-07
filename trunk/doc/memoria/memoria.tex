@@ -26,9 +26,13 @@
 \section{Com usar aquesta memòria}
 \section{Objectius i motivacions}
 \section{Introducció}
+\subsection{El format DEM}
+\paragraph{}
+El format DEM\footnote{Especificació: http://rockyweb.cr.usgs.gov/nmpstds/acrodocs/dem/2DEM0198.PDF} (Digital Elevation Model) va ser creat per l'USGS \textit{(United States Geological Survey)} per guardar la informació de les seves mesures de la superfície dels Estats Units. 
+
 \section{Especificació}
-\subsection{Què és libroam?}
 \subsection{Què és r3v?}
+\subsection{Què és libroam?}
 \subsection{Requeriments no funcionals}
 \subsection{Requeriments funcionals}
 \subsection{Model Conceptual}
@@ -42,12 +46,14 @@
 \label{fig: casosUs}
 \end{figure}
 
+\paragraph{}
 Com es pot veure a la figura \ref{fig: casosUs} l'aplicació $r3v$ disposa d'un petit número de casos d'ús.
 
 \section{Disseny}
 
 \subsection{Arbres binaris de triangles}
-Un arbre binari de triangles és un arbre per organitzar triangles de forma jeràrquica. El triangle arrel $T = (v_a, v_0, v_1)$ és un triangle isòsceles amb àpex $v_a$. Els fills de l'arrel es defineixen partint l'arrel en dos parts fent crent una nova aresta que va des del vèrtex $v_a$ al punt mig $v_c$ de l'aresta base (aresta entre $v_0$ i $v_1$). El fill esquerre de $T$ és $T_0 = (v_c, v_a, v_0)$ mentre que el fill dret és $T_1 = (v_c, v_1, v_a)$. La resta de de l'estructura de l'arbre de triangles és una repetició recursiva del procés de partició explicat anteriorment. Cada triangle té un nivell $l$ definit pel nombre de vegades que s'ha partit al triangle arrel per arribar a generar aquell triangle en concret. A la figura \ref{fig: triangles} podem veure una representació dels nivells 0 a 5 d'un arbre binari de triangles.
+\paragraph{}
+Un arbre binari de triangles és un arbre per organitzar triangles de forma jeràrquica. El triangle arrel $T = (v_a, v_0, v_1)$ és un triangle isòsceles amb àpex $v_a$. Els fills de l'arrel es defineixen partint l'arrel en dos parts fent crent una nova aresta que va des del vèrtex $v_a$ al punt mig $v_c$ de l'aresta base (aresta entre $v_0$ i $v_1$). El fill esquerre de $T$ és $T_0 = (v_c, v_a, v_0)$ mentre que el fill dret és $T_1 = (v_c, v_1, v_a)$. La resta de de l'estructura de l'arbre de triangles és una repetició recursiva del procés de partició explicat anteriorment. Dins de l'arbre cada triangle té un nivell $l$ definit pel nombre de vegades que s'ha partit al triangle arrel per arribar a generar aquell triangle en concret. A la figura \ref{fig: triangles} podem veure una representació dels nivells 0 a 5 d'un arbre binari de triangles.
 
 \begin{figure}
 \centering
@@ -57,6 +63,7 @@ Un arbre binari de triangles és un arbre per organitzar triangles de forma jeràr
 \end{figure}
 
 \subsubsection{Representació de superfícies amb arbres binaris}
+\paragraph{}
 Per representar una superfície amb arbres binaris de triangles es fan servir dos arbres de triangles situats de forma que comparteixin la seva aresta base, d'aquesta forma es cubreix una superfície quadrada (Figura \ref{fig: diamant}). Un cop tenim una estructura que permet cubrir tot un quadrat només cal assignar a cada vèrtex una alçada $w(v)$ per tenir una forma eficient de guardar les alçades d'un terreny.
 
 \begin{figure}
@@ -67,6 +74,7 @@ Per representar una superfície amb arbres binaris de triangles es fan servir dos
 \end{figure}
 
 \subsubsection{Conjunts d'arbres binaris de triangles}
+\paragraph{}
 Una a triangulació d'arbres binaris de triangles (triangulació d'ara en endavant) és un conjunt d'arbres binaris que tenen alguna relació de veïnatge entre ells, ja sigui compartint un vèrtex o una aresta. Un cas especial de triangulació és el diamant, triangulació format per dos triangles que comparteixen l'aresta base i tenen el mateix nivell, la figura \ref{fig: diamant} és un exemple de diamant. Un fet important d'una triangulació és que donat un triangle, el triangle amb el que comparteix la base és del mateix nivell o del nivell superior. A la figura \ref{fig: triangleBase} podem veure un exemple de les dues situacions, el triangle A comparteix la base amb un triangle del seu nivell mentre que el triangle B comparteix la base amb un triangle d'un nivell superior ($l$ més petita).
 
 \begin{figure}
@@ -77,6 +85,7 @@ Una a triangulació d'arbres binaris de triangles (triangulació d'ara en endavant
 \end{figure}
 
 \subsubsection{Operacions sobre diamants}
+\paragraph{}
 Sobre un diamant es poden realitzar dues operacions, split i merge. Split (partir) consisteix en crear els fills de $T$ i del seu triangle base $T_B$ de forma que s'obté una triangulació formada pels triangles $T_1$, $T_2$, $T_B1$ i $T_B2$. Merge (fusionar) consisteix en tornar als triangles $T$ i $T_B$ a partir dels seus quatre fills. Es pot veure una representació dels processos de partició i unió a la figura \ref{fig: splitMerge}.
 
 \begin{figure}
@@ -86,6 +95,7 @@ Sobre un diamant es poden realitzar dues operacions, split i merge. Split (parti
 \label{fig: splitMerge}
 \end{figure}
 
+\paragraph{}
 Només els triangles que tenen el mateix nivell que el triangle amb el que comparteixen la base són susceptibles de ser partits. Aquells que comparteixen la base amb un triangle de nivell superior ($l$ més petita) (per exemple el triangle B de la figura \ref{fig: triangleBase})  no poden ser partits directament i si realment volem partir-los hem de fer abans un split del triangle amb el que comparteix la base. La figura \ref{fig: forceSplitExtrem} és un cas extrem en el que caldria fer 4 splits forçats abans de fer la partició del triangle $T$.
 
 \begin{figure}
@@ -95,9 +105,23 @@ Només els triangles que tenen el mateix nivell que el triangle amb el que compar
 \label{fig: forceSplitExtrem}
 \end{figure}
 
+\paragraph{}
+En primera instància es pot pensar que no seria necessari que l'operació de split s'apliquès sobre un diamant i que es podria fer sobre un triangle sol, però això no es possible ja que crearia una discontinuitat en la superfície. A la figura \ref{fig: discontinuitat} veiem la representació resultant de partir només un dels triangles del diamant d'una superfície en la que els punts $(0, 0)$, $(0, 1)$, $(1, 0)$ i $(1, 1)$ tenen una alçada de 0 mentre que el punt $(0.5, 0.5)$ té una alçada de 1.
+
+\begin{figure}
+\centering
+\includegraphics{images/discontinuitat.png}
+\caption{Discontinuitat: Resultat de partir un triangle i no un diamant}
+\label{fig: discontinuitat}
+\end{figure}
+
 \subsection{Escala de colors}
+\paragraph{}
 
 \section{Implementació}
+\subsection{Lector de format DEM}
+\paragraph{}
+
 \section{Recursos i Anàlisi de costos}
 \subsection{Recursos humans i tecnològics}
 \subsection{Anàlisi de costos}

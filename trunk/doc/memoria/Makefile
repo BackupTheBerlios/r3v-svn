@@ -1,7 +1,7 @@
 all: memoria-tot.pdf
 
 memoria-tot.pdf: page1.pdf empty.pdf page3.pdf memoria.pdf
-	gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=/tmp/memoria-tot.pdf page1.pdf empty.pdf empty.pdf empty.pdf page3.pdf empty.pdf memoria.pdf; mv /tmp/memoria-tot.pdf .
+	pdftk page1.pdf empty.pdf empty.pdf empty.pdf page3.pdf empty.pdf memoria.pdf cat output memoria-tot.pdf
 
 page1.pdf: page1.tex
 	pdflatex page1.tex
