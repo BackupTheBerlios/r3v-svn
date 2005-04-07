@@ -28,7 +28,34 @@
 \section{Introducció}
 \subsection{El format DEM}
 \paragraph{}
-El format DEM\footnote{Especificació: http://rockyweb.cr.usgs.gov/nmpstds/acrodocs/dem/2DEM0198.PDF} (Digital Elevation Model) va ser creat per l'USGS \textit{(United States Geological Survey)} per guardar la informació de les seves mesures de la superfície dels Estats Units. 
+El format DEM\footnote{Especificació: http://rockyweb.cr.usgs.gov/nmpstds/acrodocs/dem/2DEM0198.PDF} (Digital Elevation Model) va ser creat per l'USGS \textit{(United States Geological Survey)} per guardar la informació de les seves mesures de la superfície dels Estats Units.
+\paragraph{}
+Un fitxer DEM està organitzat en tres tipus de registres lògics: A, B i C. 
+\begin{itemize}
+\item El tipus de registre A conté informació en quant les característiques generals del mapa, nom, límits, unitats de mesua, elevació mínima i màxima, el número de registres de tipus B, etc. Només hi ha un registre de tipus A per fitxer.
+\item Els registres de tipus B contenen la informació de les alçades propiament dita.
+\item El tipus de registre C conté estàdistiques en quant a l'exactitud de les dades del fitxer.
+\end{itemize}
+\paragraph{}
+Degut a que el format DEM estava pensat per emmagatzemar-se en cintes magnètiques, l'especificació del format parla de registres físics, cadascun de 1024 bytes. En un registre físic no hi pot haver més d'un registre lògic, en canvi és usual que els registres lògics de tipus B ocupin més d'un registre lògic. Les parts d'un registre físic no ocupades per la informació d'un registre lògic s'han d'omplir amb blancs. Els registres lògics de tipus A i C mai ocupen més d'un registre físic.
+\paragraph{}
+Els fitxers DEM divideixen el mapa en una graella i proporcionen l'alçada de cadascun dels punts de la graella. Cada registre de tipus B té la informació de les alçades d'una columna d'aquesta graella, es a dir, si la graella d'un mapa tinguès n columnes i m files hi hauria n registres de tipus B cadascun amb m alçades.
+\paragraph{}
+Hi ha tres tipus de fitxers DEM:
+\begin{enumerate}
+\item \textbf{DEM d'1 grau:} Tenen 1201*1201 punts de dades, estan basats en latitud-longitud i l'espaiat entre els punts de la graella és de 3 segons d'arc, que és aproximadament 90 metres, encara que obviament depèn de la latitud.
+\item \textbf{DEM de 30 minuts:} Són 4 unitats de fitxers DEM d'1 grau distribuïdes de forma conjunta, són el menys comú dels 3 tipus.
+\item \textbf{DEM de 7.5 minuts:} L'espaiat entre els punts de la graella pot ser de 30 o 10 metres (1 segon d'arc i 1/3 de segon d'arc respectivament), els límits del fitxer estan basats en latitud-longitud, però en canvi els punts de dades es donen en coordenada x-y d'una projecció Mercator, resultant en fitxers on no tots registres de tipus B tenen la mateixa longitud. (Figura \ref{fig: dem})
+\end{enumerate}
+
+\begin{figure}
+\centering
+\includegraphics{images/dem75.png}
+\caption{Esquema d'un DEM de 7.5 minuts}
+\label{fig: dem}
+\end{figure}
+
+
 
 \section{Especificació}
 \subsection{Què és r3v?}
