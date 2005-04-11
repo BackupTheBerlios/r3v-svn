@@ -25,7 +25,7 @@
 
 \subsection{Gràfics per computador}
 \paragraph{}
-Els gràfics per computador és el camp de la computació on s'utilitzen  ordinadors tant com per generar imatges sintètiques com per mostrar la informació obtinguda del món real.
+Els gràfics per computador és un camp de la computació en el qual s'utilitzen els ordinadors per generar imatges, ja siguin completament sintètiques o generades a partir d'informació obtinguda del món real.
 
 \paragraph{}
 Els gràfics per computador tenen dos grans camps, els gràfics 2D i els gràfics 3D.
@@ -36,10 +36,10 @@ Els gràfics per computador tenen dos grans camps, els gràfics 2D i els gràfics 3
 Els gràfics 2D són aquells que representen imatges bidimensionals en pantalla. Hi ha dos tipus bàsics d'imatges 2D, els mapes de bits i les imatges vectorials.
 
 \paragraph{}
-Els mapes de bits són bàsicament una graella de píxels bidimensional. Cada píxel té una posició assignada dintre de la graella i emmagatzema el seu color. Un mapa de bits te una resolució finita determinada pel nombre de columnes i files, i per tant si es vol fer mostrar més gran del que realment és, sol aparèixer l'efecte de pixelació consistent en que l'observador de la imatge és capaç de disintigir cada un dels píxels de forma separada, cosa que no pasa quan la imatge es visualitza a la seva mida real.
+Els mapes de bits són bàsicament una graella de píxels bidimensional. Cada píxel té una posició assignada dintre de la graella i emmagatzema el seu color. Un mapa de bits te una resolució finita determinada pel nombre de columnes i files, i per tant si es vol fer mostrar més gran del que realment és, sol aparèixer l'efecte de pixelació consistent en que l'observador de la imatge és capaç de disintigir cada un dels píxels de forma separada, cosa que no pasa quan la imatge es visualitza amb la seva mida real.
 
 \paragraph{}
-Les imatges vectorials tenen les dades geomètriques de forma precisa. Els punts es donen en un sistema de coordenades i juntament amb la descripció de les connexions entre els punts(per formar línies o rutes), el color, el gruix, etc. permeten generar la imatge. La majoria de sistemes gràfics vectorials també tenen primitives pels tipus de formes més bàsics con els cercles o rectangles. El fet que la imatge estigui guardada amb una descripció de com s'ha de \textit{crear}, permet que les imatges vectorials no sofreixin mai de l'efecte de pixelació encara que també les fa més lentes de visualitzar. Per visualitzar una imatge vectorial s'ha d'acabar creant un mapa de bits.
+Les imatges vectorials tenen les dades geomètriques de forma precisa. Els punts es donen en un sistema de coordenades, les dades de la imatge vectorital també contenen la descripció de les connexions entre els punts(per formar línies o rutes), el color de cada punt o línia, el gruix de cara línia o secció, etc. La majoria de sistemes gràfics vectorials també tenen primitives pels tipus de formes més bàsics con els cercles o rectangles. Aquestes dades permeten generar la imatge des de zero. El fet que la imatge estigui guardada amb una descripció de com s'ha de \textit{crear}, permet que les imatges vectorials no sofreixin mai de l'efecte de pixelació encara que també les fa més lentes de visualitzar. Per visualitzar una imatge vectorial s'ha d'acabar creant un mapa de bits.
 
 
 \subsubsection{Gràfics 3D}
@@ -55,41 +55,42 @@ CONTINUARRRRRRRRR
 
 \subsubsection{Gràfics interactius vs Gràfics realistes}
 \paragraph{}
-Dins dels gràfics generats per computador hi ha dos grans branques. Els gràfics interactius i els gràfics realistics.
+Dins dels gràfics generats per computador (ja siguin 2D o 3D) hi ha dos grans branques. Els gràfics interactius i els gràfics realistes.
 
 \paragraph{}
-Els gràfics interactius són aquells en els que l'observador pot influir en la generació dels gràfics. És a dir, l'usuari del programa pot rotar, moure, escalar, etc. els objectes de l'escena a voluntat. Això és útil per a jocs, simuladors i visualitzadors de dades en general. La característica principal que es demana a aquests gràfics és la velocitat de generació, que ha d'estar al voltant de les 25 actualitzacions per segons, de forma que l'humà que veu la imatge vegi una suavitat en el moviment, per sota de les 15 actualitzacions per segon el moviment comença a semblar que vagi a salts. Per aquesta raó també se'ls sol anomenar gràfics en temps real. Degut a que la velocitat és el principal factor en aquests tipus de gràfics la qualitat no és molt gran, encara que gràcies a que les targetes acceleradores estan evolucionant molt ràpid, la qualitat ha pujat molt en poc temps. La base d'aquest tipus dels gràfics interactius en el món 3D són els triangles, tot es genera a partir d'una acumulació de triangles, fins i tot les cercles.
+Els gràfics interactius són aquells en els que l'observador pot influir en la generació dels gràfics. És a dir, l'usuari del programa pot rotar, moure, escalar, etc. els objectes de l'escena a voluntat. Això és útil per a jocs, simuladors i visualitzadors de dades en general. La característica principal que es demana a aquests gràfics és la velocitat de generació, que ha d'estar al voltant de les 25 actualitzacions per segons, de forma que l'observador vegi una suavitat en el moviment, per sota de les 15 actualitzacions per segon el moviment comença a semblar que vagi a salts. Per aquesta raó també se'ls sol anomenar gràfics en temps real. Degut a que la velocitat és el principal factor en aquests tipus de gràfics la qualitat no és molt gran, encara que gràcies a que les targetes acceleradores estan evolucionant molt ràpid, la qualitat ha pujat molt en poc temps. La base d'aquest tipus dels gràfics en el món 3D són els triangles, tot es genera a partir d'una acumulació de triangles, fins i tot les cercles.
 
 \paragraph{}
-Els gràfics realistes són aquells on el que prima és que la imatge generada s'asembli el més possible a una imatge real. El destí principal d'aquest tipus de gràfics són les pel·lícules, anuncis, etc. que gràcies als gràfics realistes poden incloure imatges que abans serien o molt cares de fer o, fins i tot, impossibles de rodar. Aquest fet condiciona la velocitat de generació de les imatges i de vegades es triga hores en aconseguir una sola imatge estàtica, per tant, aquest mètode encara que aconsegueix imatges d'una qualitat espectacular no serveix per fer gràfics interactius. Aquets mètodes usen fòrmules matemàtiques que intenten modelar el comportament real de la llum.
+Els gràfics realistes són aquells on el que prima és que la imatge generada s'asembli el més possible a una imatge real. El destí principal d'aquest tipus de gràfics són les pel·lícules, anuncis, etc. que gràcies als gràfics realistes poden incloure imatges que abans serien o molt cares de fer o, fins i tot, impossibles de rodar. Aquest fet condiciona la velocitat de generació de les imatges i de vegades es triga hores en aconseguir una sola imatge estàtica, per tant, aquest mètode encara que aconsegueix imatges d'una qualitat espectacular no serveix per fer gràfics interactius. A la generació de gràfics 3D s'usen mètodes que utilitzen fòrmules matemàtiques que intenten modelar el comportament real de la llum.
 
 
 
 \subsection{API 3D}
 \paragraph{}
-Una API (\textbf{A}pplication \textbf{p}rogramming \textbf{i}nterface) és un conjunt de definicions de formes en que un component de software interactua amb un altre. És un mètode per aconseguir abstracció entre capes diferents, ja sigui entre capes de diferents nivells com de capes del mateix nivell que es dediquen a tasques diferents.
+Una API (\textbf{A}pplication \textbf{p}rogramming \textbf{i}nterface) és un conjunt de definicions com un component de software interactua amb un altre. És un mètode per aconseguir abstracció entre capes diferents de software, ja sigui entre capes de diferents nivells com de capes del mateix nivell que es dediquen a tasques diferents.
+
 \paragraph{}
-Una API 3D és una API que defineix les funcions necessàries per crear gràfics tridimensionals. Hi ha dos APIs 3D dominants, OpenGL i Direct3D.
+Una API 3D és una API que defineix les funcions necessàries per crear gràfics tridimensionals. Avui en dia hi ha dos APIs 3D dominants per la generació de gràfics interactius, OpenGL i Direct3D. Totes les APIs 3D per generar gràfics interactius serveixen també per generar gràfics 2D interactius ja que només cal fer que tots els objectes 3D es situin en un mateix pla per fer que el mon 3D sigui bidimensional.
 
 \subsubsection{OpenGL}
 \paragraph{}
-OpenGL (\textbf{Open} \textbf{G}raphics \textbf{L}ibrary) és una especificació d'una API d'un llenguatge per escriure aplicacions que produeixen gràfics 3D (i, evidentment, també gràfics 2D). OpenGL és un estàndard definit per la \textit{OpenGL Architecture Review Board}, formada per molt membres de la indústria dels ordinadors com Apple, ATI Technologies, Dell, Hewlett-Packard, IBM, Intel, Nvidia, SGI, etc. cosa que converteix en un estàndard realment neutral i amb suport per totes les plataformes gràfiques.
+OpenGL (\textbf{Open} \textbf{G}raphics \textbf{L}ibrary) és una especificació d'una API d'un llenguatge per escriure aplicacions que produeixen gràfics 3D. OpenGL és un estàndard definit per la \textit{OpenGL Architecture Review Board}, formada per molt membres de la indústria dels computadors, ja siguin constructors d'ordinadors, de sistemes operatius o de hardware gràfic. Alguns dels membres són Apple, ATI Technologies, Dell, Hewlett-Packard, IBM, Intel, Nvidia, SGI, etc. cosa que converteix OpenGL en un estàndard realment neutral i amb suport per totes les plataformes gràfiques.
 
 \paragraph{Història}
 OpenGL va ser introduït el 1992 com a evolució de la interfície 3D IRIS GL de SGI. Un dels problemes de IRIS GL era que tot el que implementava la llibrera havia d'estar suportat pel hardware i per tant si el hardware que no suportava una caracterísitica que es feia servir al programa, aquest no es podia executar. OpenGL va solucionar aquest problema proporcionant suport software per a les característiques que el hardware no tenia, cosa que en aquell moment va permetre executar programes 3D en sistemes no tan cars com els que fabricava SGI.
 
 \paragraph{Característiques bàsiques}
 \begin{itemize}
-\item \textbf{Multillenguatge:} Hi ha llibreries que permeten utilitzar OpenGL des de C, C++, Fortran, Ada, Java, Perl, Python, Visual Basic, etc.
-\item \textbf{Multiplataforma:} OpenGL ve de sèrie a Windows, Mac OS, Unix i Linux.
-\item \textbf{Estable:} La API de OpenGL s'ha mantingut bastant estable durant més de 7 anys. Això permet que els programes continuin funcionant sense problemes amb noves versions i a més a més facilita la feina dels programadors que no han d'anar modificant els seus coneixements cada poc temps.
+\item \textbf{Multillenguatge:} Hi ha llibreries que permeten utilitzar OpenGL des de C, C++, Fortran, Ada, Java, Perl, Python, Visual Basic, etc. Per tant, si es vol es pot reutilitzar el codi OpenGL d'una aplicació en un llenguatge per programar la mateixa aplicació o similar en un llenguatge diferent.
+\item \textbf{Multiplataforma:} OpenGL està disponible per a Windows, Mac OS, Unix comercials, Linux i d'altres sistemes operatius menors, per tant una aplicació que utilitzi OpenGL no està limitada a executar-se en un sistema operatiu en particular.
+\item \textbf{Estable:} La API d'OpenGL s'ha mantingut bastant estable durant més de 7 anys. Això permet que els programes continuin funcionant sense problemes amb noves versions i a més a més facilita la feina dels programadors que no han d'anar modificant els seus coneixements cada poc temps.
 \end{itemize}
 
 \subsubsection{Direct3D}
 \paragraph{}
-Direct3D és la part que s'encarrega de la visualització tridimensional de la API DirectX de Microsoft. Només hi ha versions de DirectX (i per tant de Direct3D) per als sistemes operatius de Microsft (Windows 95 en endavant) encara que la consola Xbox (produïda per Microsoft) té una API molt similar a DirectX.
+Direct3D és la part que s'encarrega de la visualització tridimensional de la API DirectX de Microsoft. Només hi ha versions de DirectX (i per tant de Direct3D) per als sistemes operatius de Microsft (Windows 95 en endavant) encara que la consola XBox (produïda per Microsoft) té una API molt similar a la de DirectX.
 \paragraph{}
-Hi ha moltes versions de DirectX, cadascuna afegeix noves característiques sobre la anterior. Això és útil en un món que es mou tan ràpidament com els dels gràfics per computador però també suposa que els programadors han d'anar reaprenent el seu coneixement sobre la llibreria.
+Hi ha moltes versions de DirectX, cadascuna afegeix noves característiques sobre la anterior. Això és útil en un món que es mou tan ràpidament com els dels gràfics per computador però també suposa que els programadors han d'anar readaptant el seu coneixement sobre la llibreria per poder programar per les últimes versions.
 
 \subsection{El format DEM}
 \paragraph{}
