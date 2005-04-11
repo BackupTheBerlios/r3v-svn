@@ -1,17 +1,11 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage[latin1]{inputenc}
 \usepackage{vmargin}
-\usepackage{fancyhdr}
 \usepackage[catalan]{babel}
 \usepackage{graphicx}
 
 \setmargnohfrb{2.5cm}{2.5cm}{2.5cm}{2.5cm}
 
-\fancypagestyle{plain}{%
-  \fancyhf{}
-  \fancyfoot[C]{\footnotesize\textrm{\thepage}}
-  \renewcommand{\headrulewidth}{0pt}%
-}
 \pagestyle{plain}
 
 \renewcommand{\baselinestretch}{1.3}
@@ -26,13 +20,84 @@
 \section{Com usar aquesta memòria}
 \section{Objectius i motivacions}
 \section{Introducció}
+
+
+
+\subsection{Gràfics per computador}
+\paragraph{}
+Els gràfics per computador és el camp de la computació on s'utilitzen  ordinadors tant com per generar imatges sintètiques com per mostrar la informació obtinguda del món real.
+
+\paragraph{}
+Els gràfics per computador tenen dos grans camps, els gràfics 2D i els gràfics 3D.
+
+
+\subsubsection{Gràfics 2D}
+\paragraph{}
+Els gràfics 2D són aquells que representen imatges bidimensionals en pantalla. Hi ha dos tipus bàsics d'imatges 2D, els mapes de bits i les imatges vectorials.
+
+\paragraph{}
+Els mapes de bits són bàsicament una graella de píxels bidimensional. Cada píxel té una posició assignada dintre de la graella i emmagatzema el seu color. Un mapa de bits te una resolució finita determinada pel nombre de columnes i files, i per tant si es vol fer mostrar més gran del que realment és, sol aparèixer l'efecte de pixelació consistent en que l'observador de la imatge és capaç de disintigir cada un dels píxels de forma separada, cosa que no pasa quan la imatge es visualitza a la seva mida real.
+
+\paragraph{}
+Les imatges vectorials tenen les dades geomètriques de forma precisa. Els punts es donen en un sistema de coordenades i juntament amb la descripció de les connexions entre els punts(per formar línies o rutes), el color, el gruix, etc. permeten generar la imatge. La majoria de sistemes gràfics vectorials també tenen primitives pels tipus de formes més bàsics con els cercles o rectangles. El fet que la imatge estigui guardada amb una descripció de com s'ha de \textit{crear}, permet que les imatges vectorials no sofreixin mai de l'efecte de pixelació encara que també les fa més lentes de visualitzar. Per visualitzar una imatge vectorial s'ha d'acabar creant un mapa de bits.
+
+
+\subsubsection{Gràfics 3D}
+\paragraph{}
+Els gràfics 3D tenen dos branques bastant diferenciades, els gràfics 3D per ser visualitzats en una pantalla (ja sigui d'ordinador, televisió, etc.) i els gràfics tridimensionals que es representen de forma volumètrica usant diferents aparells. En aquest document ens centrarem en explicar els gràfics 3D per ser visualitzats en pantalla ja que els altres estan menys desenvolupats i a més a més no tenen cap relació amb l'objectiu del projecte.
+
+\paragraph{}
+Els gràfics 3D es diferencien dels gràfics 2D principalment pel fet que en els gràfics 3D hi ha una representació virtual tridimensional dels objectes de l'escena que s'utilitza per fer els cálculs i per obtenir la imatge 2D que finalment s'acabarà representant en pantalla mentre que en els gràfics 2D o bé no hi ha objectes (mapa de bits) o els objectes són bidimensionals (imatges vectorials). En general, els gràfics 3D es poden comparar amb una fotografia d'una escultura, mentre que els gràfics 2D es correspondrien amb un dibuix.
+
+\paragraph{}
+CONTINUARRRRRRRRR \newline
+CONTINUARRRRRRRRR
+
+\subsubsection{Gràfics interactius vs Gràfics realistes}
+\paragraph{}
+Dins dels gràfics generats per computador hi ha dos grans branques. Els gràfics interactius i els gràfics realistics.
+
+\paragraph{}
+Els gràfics interactius són aquells en els que l'observador pot influir en la generació dels gràfics. És a dir, l'usuari del programa pot rotar, moure, escalar, etc. els objectes de l'escena a voluntat. Això és útil per a jocs, simuladors i visualitzadors de dades en general. La característica principal que es demana a aquests gràfics és la velocitat de generació, que ha d'estar al voltant de les 25 actualitzacions per segons, de forma que l'humà que veu la imatge vegi una suavitat en el moviment, per sota de les 15 actualitzacions per segon el moviment comença a semblar que vagi a salts. Per aquesta raó també se'ls sol anomenar gràfics en temps real. Degut a que la velocitat és el principal factor en aquests tipus de gràfics la qualitat no és molt gran, encara que gràcies a que les targetes acceleradores estan evolucionant molt ràpid, la qualitat ha pujat molt en poc temps. La base d'aquest tipus dels gràfics interactius en el món 3D són els triangles, tot es genera a partir d'una acumulació de triangles, fins i tot les cercles.
+
+\paragraph{}
+Els gràfics realistes són aquells on el que prima és que la imatge generada s'asembli el més possible a una imatge real. El destí principal d'aquest tipus de gràfics són les pel·lícules, anuncis, etc. que gràcies als gràfics realistes poden incloure imatges que abans serien o molt cares de fer o, fins i tot, impossibles de rodar. Aquest fet condiciona la velocitat de generació de les imatges i de vegades es triga hores en aconseguir una sola imatge estàtica, per tant, aquest mètode encara que aconsegueix imatges d'una qualitat espectacular no serveix per fer gràfics interactius. Aquets mètodes usen fòrmules matemàtiques que intenten modelar el comportament real de la llum.
+
+
+
+\subsection{API 3D}
+\paragraph{}
+Una API (\textbf{A}pplication \textbf{p}rogramming \textbf{i}nterface) és un conjunt de definicions de formes en que un component de software interactua amb un altre. És un mètode per aconseguir abstracció entre capes diferents, ja sigui entre capes de diferents nivells com de capes del mateix nivell que es dediquen a tasques diferents.
+\paragraph{}
+Una API 3D és una API que defineix les funcions necessàries per crear gràfics tridimensionals. Hi ha dos APIs 3D dominants, OpenGL i Direct3D.
+
+\subsubsection{OpenGL}
+\paragraph{}
+OpenGL (\textbf{Open} \textbf{G}raphics \textbf{L}ibrary) és una especificació d'una API d'un llenguatge per escriure aplicacions que produeixen gràfics 3D (i, evidentment, també gràfics 2D). OpenGL és un estàndard definit per la \textit{OpenGL Architecture Review Board}, formada per molt membres de la indústria dels ordinadors com Apple, ATI Technologies, Dell, Hewlett-Packard, IBM, Intel, Nvidia, SGI, etc. cosa que converteix en un estàndard realment neutral i amb suport per totes les plataformes gràfiques.
+
+\paragraph{Història}
+OpenGL va ser introduït el 1992 com a evolució de la interfície 3D IRIS GL de SGI. Un dels problemes de IRIS GL era que tot el que implementava la llibrera havia d'estar suportat pel hardware i per tant si el hardware que no suportava una caracterísitica que es feia servir al programa, aquest no es podia executar. OpenGL va solucionar aquest problema proporcionant suport software per a les característiques que el hardware no tenia, cosa que en aquell moment va permetre executar programes 3D en sistemes no tan cars com els que fabricava SGI.
+
+\paragraph{Característiques bàsiques}
+\begin{itemize}
+\item \textbf{Multillenguatge:} Hi ha llibreries que permeten utilitzar OpenGL des de C, C++, Fortran, Ada, Java, Perl, Python, Visual Basic, etc.
+\item \textbf{Multiplataforma:} OpenGL ve de sèrie a Windows, Mac OS, Unix i Linux.
+\item \textbf{Estable:} La API de OpenGL s'ha mantingut bastant estable durant més de 7 anys. Això permet que els programes continuin funcionant sense problemes amb noves versions i a més a més facilita la feina dels programadors que no han d'anar modificant els seus coneixements cada poc temps.
+\end{itemize}
+
+\subsubsection{Direct3D}
+\paragraph{}
+Direct3D és la part que s'encarrega de la visualització tridimensional de la API DirectX de Microsoft. Només hi ha versions de DirectX (i per tant de Direct3D) per als sistemes operatius de Microsft (Windows 95 en endavant) encara que la consola Xbox (produïda per Microsoft) té una API molt similar a DirectX.
+\paragraph{}
+Hi ha moltes versions de DirectX, cadascuna afegeix noves característiques sobre la anterior. Això és útil en un món que es mou tan ràpidament com els dels gràfics per computador però també suposa que els programadors han d'anar reaprenent el seu coneixement sobre la llibreria.
+
 \subsection{El format DEM}
 \paragraph{}
 El format DEM\footnote{Especificació: http://rockyweb.cr.usgs.gov/nmpstds/acrodocs/dem/2DEM0198.PDF} (Digital Elevation Model) va ser creat per l'USGS \textit{(United States Geological Survey)} per guardar la informació de les seves mesures de la superfície dels Estats Units.
 \paragraph{}
 Un fitxer DEM està organitzat en tres tipus de registres lògics: A, B i C. 
 \begin{itemize}
-\item El tipus de registre A conté informació en quant les característiques generals del mapa, nom, límits, unitats de mesua, elevació mínima i màxima, el número de registres de tipus B, etc. Només hi ha un registre de tipus A per fitxer.
+\item El tipus de registre A conté informació en quant les característiques generals del mapa, nom, límits, unitats de mesura, elevació mínima i màxima, el número de registres de tipus B, etc. Només hi ha un registre de tipus A per fitxer.
 \item Els registres de tipus B contenen la informació de les alçades propiament dita.
 \item El tipus de registre C conté estàdistiques en quant a l'exactitud de les dades del fitxer.
 \end{itemize}
