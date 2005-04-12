@@ -242,6 +242,7 @@ r3vMap *DEMParser::parse(const std::string &file)
 		
 		m_file -> read(aux, 160);
 		
+		std::vector<std::vector<double>*> allHeights;
 		std::vector<double> *heights;
 		/* Record 2 */
 		for (int i = 0; i < n; i++)
@@ -312,9 +313,10 @@ r3vMap *DEMParser::parse(const std::string &file)
 				}
 			}
 		
-			m->addColumn(heights);
+			allHeights.push_back(heights);
 		}
 		m_file -> close();
+		m->setMap(allHeights, true);
 		
 		// SQUARE THE MAP
 		int x = 0; // maximum square side size
@@ -432,6 +434,7 @@ void DEMParser::readHeights(int howMany, double factor, std::vector<double> *v, 
 
 r3vMap *PMParser::parse(const std::string &file)
 {
+	std::vector<std::vector<double>*> allHeights;
 	m_file = new std::ifstream(file.c_str());
 	if (m_file -> is_open())
 	{
@@ -452,10 +455,11 @@ r3vMap *PMParser::parse(const std::string &file)
 				*m_file >> aux;
 				heights -> push_back(aux);
 			}
-			m -> addColumn(heights);
+			allHeights.push_back(heights);
 		}
 		
 		m_file -> close();
+		m -> setMap(allHeights, true);
 		return m;
 	}
 	

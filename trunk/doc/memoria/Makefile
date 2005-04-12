@@ -13,7 +13,7 @@ memoria.pdf: memoria.tex
 	rm -f *.aux *.dvi *.log *.idx *.toc *.lof
 
 clean:
-	rm -f *~ *.aux *.dvi *.log page1.pdf memoria.pdf
+	rm -f *~ *.aux *.dvi *.log *.idx *.toc *.lof page1.pdf memoria.pdf
 
 mrproper: clean
 	rm -f memoria-tot.pdf

@@ -40,9 +40,10 @@ r3vMap::~r3vMap()
 	m_nodes.clear();
 }
 
-void r3vMap::addColumn(std::vector<double> *column)
+void r3vMap::setMap(const std::vector<std::vector<double>*> &heights, bool byColumns)
 {
-	m_heights.push_back(column);
+	m_heights = heights;
+	m_byColumns = byColumns;
 }
 
 diamond *r3vMap::baseDiamond() 
@@ -76,7 +77,8 @@ diamond *r3vMap::baseDiamond()
 
 double r3vMap::height(int i, int j) const
 {
-	return (*m_heights[i])[j];
+	if (m_byColumns) return (*m_heights[i])[j];
+	else return (*m_heights[j])[i];
 }
 
 double r3vMap::height(double i, double j) const

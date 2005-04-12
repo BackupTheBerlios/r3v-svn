@@ -26,7 +26,7 @@ class r3vMap
 		r3vMap();
 		~r3vMap();
 		
-		void addColumn(std::vector<double> *column);
+		void setMap(const std::vector<std::vector<double>*> &heights, bool byColumns);
 		
 		diamond *baseDiamond();
 		
@@ -49,6 +49,7 @@ class r3vMap
 		void color(double height, int &r, int &g, int &b) const;
 	
 		std::vector<std::vector<double>*> m_heights;
+		bool m_byColumns;
 		double m_minHeight, m_amplitude;
 		
 		std::map<std::pair<double, double>, node*> m_nodes;
