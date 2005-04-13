@@ -74,14 +74,15 @@ Una API 3D és una API que defineix les funcions necessàries per crear gràfics tr
 
 \subsubsection{OpenGL}
 \paragraph{}
-OpenGL (\textbf{Open} \textbf{G}raphics \textbf{L}ibrary) és una especificació d'una API d'un llenguatge per escriure aplicacions que produeixen gràfics 3D. OpenGL és un estàndard definit per la \textit{OpenGL Architecture Review Board}, formada per molt membres de la indústria dels computadors, ja siguin constructors d'ordinadors, de sistemes operatius o de hardware gràfic. Alguns dels membres són Apple, ATI Technologies, Dell, Hewlett-Packard, IBM, Intel, Nvidia, SGI, etc. cosa que converteix OpenGL en un estàndard realment neutral i amb suport per totes les plataformes gràfiques.
+OpenGL (\textbf{Open} \textbf{G}raphics \textbf{L}ibrary) és una especificació d'una API d'un llenguatge per escriure aplicacions que produeixen gràfics 3D. OpenGL és un estàndard definit per la \textit{OpenGL Architecture Review Board}, formada per molt membres de la indústria dels computadors, ja siguin constructors d'ordinadors, de sistemes operatius o de hardware gràfic. Alguns dels membres són Apple, ATI Technologies, Dell, Hewlett-Packard, IBM, Intel, Nvidia, SGI, etc. cosa que converteix OpenGL en un estàndard realment neutral i amb suport per la gran majoria de les plataformes gràfiques.
 
-\paragraph{Història}
+\paragraph{}
 OpenGL va ser introduït el 1992 com a evolució de la interfície 3D IRIS GL de SGI. Un dels problemes de IRIS GL era que tot el que implementava la llibrera havia d'estar suportat pel hardware i per tant si el hardware que no suportava una caracterísitica que es feia servir al programa, aquest no es podia executar. OpenGL va solucionar aquest problema proporcionant suport software per a les característiques que el hardware no tenia, cosa que en aquell moment va permetre executar programes 3D en sistemes no tan cars com els que fabricava SGI.
 
-\paragraph{Característiques bàsiques}
+\paragraph{}
+Les caracterísitiques bàsiques d'OpenGL són:
 \begin{itemize}
-\item \textbf{Multillenguatge:} Hi ha llibreries que permeten utilitzar OpenGL des de C, C++, Fortran, Ada, Java, Perl, Python, Visual Basic, etc. Per tant, si es vol es pot reutilitzar el codi OpenGL d'una aplicació en un llenguatge per programar la mateixa aplicació o similar en un llenguatge diferent.
+\item \textbf{Multillenguatge:} Hi ha llibreries que permeten utilitzar OpenGL des de C, C++, Fortran, Ada, Java, Perl, Python, Visual Basic, etc. Per tant, es pot reutilitzar el codi OpenGL d'una aplicació en un llenguatge per programar la mateixa aplicació o similar en un llenguatge diferent.
 \item \textbf{Multiplataforma:} OpenGL està disponible per a Windows, Mac OS, Unix comercials, Linux i d'altres sistemes operatius menors, per tant una aplicació que utilitzi OpenGL no està limitada a executar-se en un sistema operatiu en particular.
 \item \textbf{Estable:} La API d'OpenGL s'ha mantingut bastant estable durant més de 7 anys. Això permet que els programes continuin funcionant sense problemes amb noves versions i a més a més facilita la feina dels programadors que no han d'anar modificant els seus coneixements cada poc temps.
 \end{itemize}
@@ -91,6 +92,41 @@ OpenGL va ser introduït el 1992 com a evolució de la interfície 3D IRIS GL de SG
 Direct3D és la part que s'encarrega de la visualització tridimensional de la API DirectX de Microsoft. Només hi ha versions de DirectX (i per tant de Direct3D) per als sistemes operatius de Microsft (Windows 95 en endavant) encara que la consola XBox (produïda per Microsoft) té una API molt similar a la de DirectX.
 \paragraph{}
 Hi ha moltes versions de DirectX, cadascuna afegeix noves característiques sobre la anterior. Això és útil en un món que es mou tan ràpidament com els dels gràfics per computador però també suposa que els programadors han d'anar readaptant el seu coneixement sobre la llibreria per poder programar per les últimes versions.
+
+% CUÑAAAAAAAAA NO HAS EXPLICAO LO Q ES UNA MALLA DE TRIANGULOS :_D
+% CUÑAAAAAAAAA LOS BASICOS 3D :_D
+
+\subsubsection{Primitives gràfiques 3D}
+La majoria d'API per la generació de gràfics 3D interactius tenen un conjunt similar de primitives, és a dir, \textit{d'objectes} que podem fer servir per contruir una escena. En aquesta secció ens centrarem en les primitives que té OpenGL.
+
+\begin{itemize}
+\item \textbf{GL\_POINTS} - Cada punt que es dona es converteix en un punt a l'espai.
+\item \textbf{GL\_LINES} - Cada dos punts que es donen es converteixen en una línia.
+\item \textbf{GL\_LINE\_STRIP} - Donats $i$ punts, es creen $i-1$ línies. Els punts que uneix una línia amb índex $k$ són els $k$ i $k+1$.
+\item \textbf{GL\_LINE\_LOOP} - Donats $i$ punts, es creen $i$ línies. Els punts que uneix una línia amb índex $k$ són els $k$ i $k+1$ per $0<k<i-1$ i els $i$ i el $0$ per l'última línia ($k = i$).
+\item \textbf{GL\_TRIANGLES} - Cada 3 punts que es donen es converteixen en un triangle.
+\item \textbf{GL\_TRIANGLE\_STRIP} - Donats $i$ punts, ($i>3$) es creen $i-2$ triangles. El triangle amb índex $k$ està format pels punts amb índex $k$, $k+1$ i $k+2$.
+\item \textbf{GL\_TRIANGLE\_FAN} - Donats $i$ punts, ($i>=3$) es creen $i-2$ triangles. El triangle amb índex $k$ està format pels punts amb índex $0$, $k+1$ i $k+2$.
+\item \textbf{GL\_QUADS} - Cada 4 punts que es donen es converteixen en un quadrilàter.
+\item \textbf{GL\_QUAD\_STRIP} - Donats $i$ punts, ($i>=4$) es creen $i-3$ quadrilàters. El quadrilàter amb índex $k$ està format pels punts amb índex $k$, $k+1$, $k+2$ i $k+3$ TODO ESTA MAL INUTIIIIIIIIL.
+\item \textbf{GL\_POLYGON} - Té el mateix comportament que \textbf{GL\_LINE\_LOOP}, però en comptes de crear línies crear un polígon.
+\end{itemize}
+Podem veure exemples de les 10 primitives a la figura \ref{fig: primitives}
+
+\begin{figure}
+\centering
+\includegraphics{images/primitives.png}
+\caption{Primitives gràfiques d'OpenGL}
+\label{fig: primitives}
+\end{figure}
+
+
+
+
+\subsection{Representació interactiva de superfícies en 3D}
+La representació de interactiva superfícies en 3D tracta de com aconseguir malles de triangles que representin una superfície 3D tant de forma acurada com de forma eficient. La eficiència ve donada per la interactivitat, ja que com s'ha comentat anteriorment, els gràfics interactius necesiten acualitzar la imatge vàries vegades per segon. Per aconseguir tots dos objectius, que en principi es contradiuen, el que fan la majoria d'algorismes és generar una malla de triangles potencialment diferent per cada posició de l'observador. D'aquesta manera s'intenta generar una malla de triangles que sigui la òptima per aquesta posició, on òptima significa ser el més acurada possible per allò que és aprop de l'observador i alhora suficientment ràpida per poder-se visualitzar de forma interactiva.
+
+\subsection{L'algorisme ROAM}
 
 \subsection{El format DEM}
 \paragraph{}
@@ -121,7 +157,33 @@ Hi ha tres tipus de fitxers DEM:
 \label{fig: dem}
 \end{figure}
 
-
+\subsection{GPL}
+\paragraph{}
+GPL (\textbf{G}eneral \textbf{P}ublic \textbf{L}icense) és una llicència de software lliure. La llicència GPL garanteix als destinataris d'un programa informàtic els següents drets o llibertats:
+\begin{itemize}
+\item La llibertat per executar el programa sigui quin sigui el propòsit
+\item La llibertat d'estudiar com funciona el programa i de modificar-lo (Evidentment cal tenir accés al codi com a precondició per complir això)
+\item La llibertat de distribuir copies (ja siguin modificades o sense modificar)
+\end{itemize}
+\paragraph{}
+La llicència GPL és una de les llicències de software lliure més exteses, si visitem la pàgina de SourceForge (una pàgina web on es registren projectes de software lliure per tal de desenvolupar-los usant les serveis que aquesta proporciona) que llista el número de projectes registrats per cada tipus de llicència, veiem que un 69\% (43089 dels 62291) utilitzen la llicència GPL.
+\paragraph{}
+Es pot trobar el text complet de la llicència a \textit{http://www.gnu.org/licenses/gpl.html}
+\subsection{Qt}
+\paragraph{}
+Qt és un \textit{framework} complet de desenvolupament d'aplicacions en C++. Inclou una llibreria així com eines per la internacionalització i el desenvolupament multiplataforma d'aplicacions.
+\paragraph{}
+Qt aconsegueix ser multiplataforma abstraient els sistemes operatius i de gestió de finestres, de forma que proporciona una API coherent, lògica i orientada a objectes comú. Les aplicacions Qt s'executen nativament, compilades des del mateix codi font, a totes les plataformes suportades:
+\begin{itemize}
+\item Qt/Windows (Microsoft Windows XP, 2000, NT 4, Me/98/95)
+\item Qt/X11 (Linux, Solaris, HP-UX, IRIX, AIX, i altres variants Unix)
+\item Qt/Mac (Mac OS X)
+\item Qt/Embedded (Linux embedded)
+\end{itemize}
+\paragraph{}
+La llibreria inclou una gran part de classes per a la construcció d'interfícies gràfiques, encara que també proporciona moltes altres funcionalitats, com comunicació per xarxa via sockets, classes per treballar amb XML, classes per accedir a fitxers, etc.
+\paragraph{}
+Qt té un sistema de llicències dual que permet desenvolupar tant aplicacions lliures (sota la llicència GPL) com aplicacions propietàries. Actualment, aquest sistema està disponible per totes les plataformes excepte per a Qt/Windows, però la versió Qt 4.0, esperada per finals del segon quatrimestre del 2005, també usarà aquest sistema.
 
 \section{Especificació}
 \subsection{Què és r3v?}
