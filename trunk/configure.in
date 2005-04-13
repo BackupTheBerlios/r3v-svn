@@ -45,14 +45,26 @@ else
 		exit
 	fi
 
+	QT4=no;
 	if !(test -e $QTDIR/lib/libqt-mt.so.3) then
-		echo "Your Qt version does not seem the correct one to install r3v, you need the threaded version Qt3 (libqt-mt.so.3)"
-		exit
+		if !(test -e $QTDIR/lib/libQtOpenGL.so.4) then
+			echo "Your Qt version does not seem the correct one to install r3v, you need the threaded version Qt3 (libqt-mt.so.3)"
+			exit
+		else
+			QT4=yes;
+		fi
 	fi
 	
-	if !(test -e $QTDIR/lib/libqt-mt.la) then
-		echo "You don't seem to have development package of Qt installed, please install it"
-		exit
+	if (test x$QT4 = xyes) then
+		if !(test -e $QTDIR/lib/libQtOpenGL.la) then
+			echo "You don't seem to have development package of Qt installed, please install it"
+			exit
+		fi
+	else
+		if !(test -e $QTDIR/lib/libqt-mt.la) then
+			echo "You don't seem to have development package of Qt installed, please install it"
+			exit
+		fi
 	fi
 	
 	QT_INCLUDES="$QTDIR/include"
@@ -64,8 +76,16 @@ echo "    Qt libs found at $QT_LIBS"
 echo "    Qt includes found at $QT_INCLUDES"
 echo "    Qt binaries found at $QT_MOC_PATH"
 
-QT_INCLUDES="-I $QT_INCLUDES"
-QT_LIB_LA="$QT_LIBS/libqt-mt.la"
+
+if (test x$QT4 = xyes) then
+	AC_DEFINE_UNQUOTED(QT4, 1, [Defines if your system has QT4 library])
+	QT_INCLUDES="-I $QT_INCLUDES/Qt -I $QT_INCLUDES"
+	QT_LIB_LA="$QT_LIBS/libQtOpenGL.la"
+else
+	AC_DEFINE_UNQUOTED(QT4, 0, [Defines if your system has QT4 library])
+	QT_INCLUDES="-I $QT_INCLUDES"
+	QT_LIB_LA="$QT_LIBS/libqt-mt.la"
+fi
 
 AC_SUBST(QT_LIB_LA)
 AC_SUBST(QT_INCLUDES)
