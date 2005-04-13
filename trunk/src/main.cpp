@@ -7,6 +7,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include <config.h>
+
 #include <qapplication.h>
 
 #include "glwidget.h"
@@ -18,7 +20,9 @@ int main(int argc, char *argv[])
 	glWidget *g = new glWidget(0);
 	g->show();
 	
+#if !QT4
 	a.setMainWidget(g);
+#endif
 
 	a.exec();
 	

@@ -7,15 +7,22 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#include <config.h>
+
 #include <math.h>
 
 #include <qapplication.h> 
 #include <qcursor.h>
 #include <qdesktopwidget.h> 
+#include <qevent.h> 
 #include <qfiledialog.h>
 #include <qfontmetrics.h>
 #include <qmessagebox.h>
+#if QT4
+#include <qmenu.h>
+#else
 #include <qpopupmenu.h>
+#endif
 #include <qtimer.h>
 
 #include "glwidget.h"
@@ -78,27 +85,27 @@ void glWidget::keyPressEvent(QKeyEvent *e)
 {
 	switch(e->key())
 	{
-		case Key_Up:
-		case Key_W:
+		case Qt::Key_Up:
+		case Qt::Key_W:
 			if (m_roam.hasMap()) m_roam.moveObserverForward();
 		break;
 		
-		case Key_Down:
-		case Key_S:
+		case Qt::Key_Down:
+		case Qt::Key_S:
 			if (m_roam.hasMap()) m_roam.moveObserverBackward();
 		break;
 		
-		case Key_Left:
-		case Key_A:
+		case Qt::Key_Left:
+		case Qt::Key_A:
 			if (m_roam.hasMap()) m_roam.moveObserverLeft();
 		break;
 		
-		case Key_Right:
-		case Key_D:
+		case Qt::Key_Right:
+		case Qt::Key_D:
 			if (m_roam.hasMap()) m_roam.moveObserverRight();
 		break;
 		
-		case Key_Escape:
+		case Qt::Key_Escape:
 			qApp -> quit();
 		break;
 		
@@ -146,11 +153,11 @@ void glWidget::keyPressEvent(QKeyEvent *e)
 // 	
 // 		break;
 		
-		case Key_1:
+		case Qt::Key_1:
 			if (m_roam.hasMap()) m_roam.splitOne();
 		break;
 		
-		case Key_2:
+		case Qt::Key_2:
 			if (m_roam.hasMap()) m_roam.mergeOne();
 		break;
 		
@@ -239,26 +246,42 @@ void glWidget::mouseMoveEvent(QMouseEvent *e)
 
 void glWidget::mousePressEvent(QMouseEvent *e)
 {
-	if (e -> button() == RightButton)
+	if (e -> button() == Qt::RightButton)
 	{
 		m_fromPopup = true;
+#if QT4
+		QMenu popup;
+		popup.addAction("&Open", this, SLOT(openMap()));
+		QAction *a = popup.addAction("&Close", this, SLOT(closeMap()));
+		popup.addAction("&Quit", qApp, SLOT(quit()));
+		a->setEnabled(m_roam.hasMap());
+#else
 		QPopupMenu popup;
 		popup.insertItem("&Open", this, SLOT(openMap()));
 		int id = popup.insertItem("&Close", this, SLOT(closeMap()));
 		popup.insertItem("&Quit", qApp, SLOT(quit()));
 		popup.setItemEnabled(id, m_roam.hasMap());
+#endif
 		popup.exec(e->pos());
 	}
 }
 
 void glWidget::openMap()
 {
-	setCursor(ArrowCursor);
+	setCursor(Qt::ArrowCursor);
+#if QT4
+	QString file = QFileDialog::getOpenFileName(this, QString(), QString(), "DEM files (*.dem);;Plain maps (*.pm)");
+#else
 	QString file = QFileDialog::getOpenFileName(QString::null, "DEM files (*.dem);;Plain maps (*.pm)", this);
-	setCursor(BlankCursor);
+#endif
+	setCursor(Qt::BlankCursor);
 	if (file.isNull()) return;
 	
+#if QT4
+	ROAM::Error e = m_roam.open(file.toStdString());
+#else
 	ROAM::Error e = m_roam.open(file);
+#endif
 	if (e != ROAM::OK)
 	{
 		if (e == ROAM::openingError) QMessageBox::critical(this, "Error", QString("Could not open the map, check you have read permission on %1").arg(file), QMessageBox::Ok, QMessageBox::NoButton);
