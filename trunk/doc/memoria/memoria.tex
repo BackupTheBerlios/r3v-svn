@@ -15,10 +15,13 @@
 \begin{document}
 
 \tableofcontents
+
 \newpage
 \section{Com usar aquesta memòria}
+
 \newpage
 \section{Objectius i motivacions}
+
 \newpage
 \section{Introducció}
 
@@ -133,6 +136,7 @@ Al paradigma walk, l'usuari del programa pot moure la càmara i per tant navegar 
 El paradigma fly és gairabé igual al paradigma walk, sent la no existència de la gravetat la diferència més gran. El paradigma fly se sol utilitzar en simuladors espaials o bé en els mateixos escenaris que utilitzen el paradigma walk per donar-li a l'usuari més llibertat a l'hora de reconèixer l'escena, per exemple es molt possible que als dissenyadors de pantalles els interesi poder volar per l'escenari per així poder desplaçar-se entre diferents alçades de forma més ràpida. Així mateix a vegades el paradigma fly desactiva la detecció de col·lisions permetent que l'avatar atravesi les parets.
 
 \subsubsection{Paradigma examine}
+Al paradigma examine l'observador no es mou, sempre està a la mateixa posició i mira en la mateixa direcció. La interactivitat d'aquest paradigma es a la part dels objectes i no a la de l'observador. Normalment hi ha uns quants objectes (de vegades només un) al punt on està enfocant la càmara i l'usuari put rotar, escalar, desplaçar els objectes de forma que pugui examinar l'objecte completament. Aquest paradigma es sol usar en aplicacions que permeten la visualització d'ossos, peces de maquinària, etc.
 
 
 \subsection{Representació interactiva de superfícies en 3D}
@@ -196,7 +200,7 @@ Qt aconsegueix ser multiplataforma abstraient els sistemes operatius i de gestió
 \paragraph{}
 La llibreria inclou una gran part de classes per a la construcció d'interfícies gràfiques, encara que també proporciona moltes altres funcionalitats, com comunicació per xarxa via sockets, classes per treballar amb XML, classes per accedir a fitxers, etc.
 \paragraph{}
-Qt té un sistema de llicències dual que permet desenvolupar tant aplicacions lliures (sota la llicència GPL) com aplicacions propietàries. Actualment, aquest sistema està disponible per totes les plataformes excepte per a Qt/Windows, però la versió Qt 4.0, esperada per finals del segon quatrimestre del 2005, també usarà aquest sistema.
+Qt té un sistema de llicències dual que permet desenvolupar tant aplicacions lliures (sota la llicència GPL) com aplicacions propietàries. Per poder desenvolupar aplicacions propietàries s'ha de pagar una llicència de Qt per cada programador. Actualment, aquest sistema està disponible per totes les plataformes excepte per a Qt/Windows on només hi ha la posibilitat de pagar per una llicència, però la versió Qt 4.0, esperada per finals del segon quatrimestre del 2005, també usarà aquest sistema per Qt/Windows.
 
 \newpage
 \section{Especificació}
@@ -287,6 +291,13 @@ En primera instància es pot pensar que no seria necessari que l'operació de spli
 
 \subsection{Escala de colors}
 \paragraph{}
+\begin{figure}
+\centering
+\includegraphics{images/cube.png}
+\caption{Cub amb la escala de colors que s'ha utilitzat}
+\label{fig: cub}
+\end{figure}
+
 
 \newpage
 \section{Implementació}
