@@ -16,9 +16,10 @@
 
 \tableofcontents
 \newpage
-
 \section{Com usar aquesta memòria}
+\newpage
 \section{Objectius i motivacions}
+\newpage
 \section{Introducció}
 
 
@@ -121,9 +122,21 @@ Podem veure exemples de les 10 primitives a la figura \ref{fig: primitives}
 \end{figure}
 
 
+\subsection{Paradigmes de navegació 3D}
+\paragraph{}
+La navegació d'escenes 3D té tres paradigmes fonamentals, Walk, Fly i Examine. Tota aplicació 3D implementa un d'aquests paradigmes, encara que no n'ha d'implementar només un.
+
+\subsubsection{Paradigma walk}
+Al paradigma walk, l'usuari del programa pot moure la càmara i per tant navegar per l'escena. L'usuari sol estar representat per una entitat dins de l'escena anomenada avatar. L'avatar està sotmés a la gravetat i per tant només pot caminar per superfícies planes, pujar pendents poc pronunciades i xoca contra les parets. Els moviments típics de l'avatar són desplaçar-se en qualsevol de les quatre direccions (endavant, endarrera, esquerra i dreta) i gir de la càmara per enfocar cap a qualsevol direcció possible. En aquest paradigma la visió pot ser en primera persona o en tercera persona. A la visió primera persona, la càmara es situa als ulls de l'avatar, veient-se allò que veuria l'avatar, per tant, de l'avatar només es sol veure les mans i peus. A la visió en tercera persona la càmara es situa fora de l'avatar, normalment per darrera d'ell, de forma que ens permet veure la situació de l'avatar d'una manera més global. Aquesta càmara té més problemes de gestió, ja que s'ha d'anar amb compte de que la càmara no atravesi parets quan l'avatar s'apropa a elles, ja que si ho fes no veuriem l'avatar, sinó la paret. A més a més la visió en primera persona sol donar més sensació d'inmersió, per tant la majoria de programes 3D que utilitzen el paradigma walk solen optar per ella.
+
+\subsubsection{Paradigma fly}
+El paradigma fly és gairabé igual al paradigma walk, sent la no existència de la gravetat la diferència més gran. El paradigma fly se sol utilitzar en simuladors espaials o bé en els mateixos escenaris que utilitzen el paradigma walk per donar-li a l'usuari més llibertat a l'hora de reconèixer l'escena, per exemple es molt possible que als dissenyadors de pantalles els interesi poder volar per l'escenari per així poder desplaçar-se entre diferents alçades de forma més ràpida. Així mateix a vegades el paradigma fly desactiva la detecció de col·lisions permetent que l'avatar atravesi les parets.
+
+\subsubsection{Paradigma examine}
 
 
 \subsection{Representació interactiva de superfícies en 3D}
+\paragraph{}
 La representació de interactiva superfícies en 3D tracta de com aconseguir malles de triangles que representin una superfície 3D tant de forma acurada com de forma eficient. La eficiència ve donada per la interactivitat, ja que com s'ha comentat anteriorment, els gràfics interactius necesiten acualitzar la imatge vàries vegades per segon. Per aconseguir tots dos objectius, que en principi es contradiuen, el que fan la majoria d'algorismes és generar una malla de triangles potencialment diferent per cada posició de l'observador. D'aquesta manera s'intenta generar una malla de triangles que sigui la òptima per aquesta posició, on òptima significa ser el més acurada possible per allò que és aprop de l'observador i alhora suficientment ràpida per poder-se visualitzar de forma interactiva.
 
 \subsection{L'algorisme ROAM}
@@ -185,6 +198,7 @@ La llibreria inclou una gran part de classes per a la construcció d'interfícies 
 \paragraph{}
 Qt té un sistema de llicències dual que permet desenvolupar tant aplicacions lliures (sota la llicència GPL) com aplicacions propietàries. Actualment, aquest sistema està disponible per totes les plataformes excepte per a Qt/Windows, però la versió Qt 4.0, esperada per finals del segon quatrimestre del 2005, també usarà aquest sistema.
 
+\newpage
 \section{Especificació}
 \subsection{Què és r3v?}
 \subsection{Què és libroam?}
@@ -204,6 +218,7 @@ Qt té un sistema de llicències dual que permet desenvolupar tant aplicacions lli
 \paragraph{}
 Com es pot veure a la figura \ref{fig: casosUs} l'aplicació $r3v$ disposa d'un petit número de casos d'ús.
 
+\newpage
 \section{Disseny}
 
 \subsection{Arbres binaris de triangles}
@@ -273,15 +288,45 @@ En primera instància es pot pensar que no seria necessari que l'operació de spli
 \subsection{Escala de colors}
 \paragraph{}
 
+\newpage
 \section{Implementació}
+
+\subsection{Generació de Makefiles}
+\paragraph{}
+Qt té la seva pròpia eina per la generació automàtica de Makefiles anomenada Qt, però com ja s'ha comentat no volem que el programa depengui de Qt, per tant, hi havia dos opcions, la creació manual dels Makefiles o usar un generador automàtic de Makefiles que sigui \textit{neutre}. La creació manual de Makefiles va quedar descartada ràpidament, ja que era una opció més pesada i menys potent, per tant s'havia de decidir quin generador automàtic usar. Aquesta decisió tampoc va ser gaire complicada, ja que encara que hi ha una varies eines que poden fer aquesta tasca, autotools és la més comú i es pot trobar a quasi totes les distribucions de Linux i a també funciona a quasi tots els Unix.
+
+\subsection{Autotools}
+\paragraph{}
+Encara que sovient es parla d'Autotools (tal i com es farà en aquest document), Autotools és en realitat un paraula utilitzada per referir-se a un conjunt d'eines el nom de les quals comença per auto-, com autoheader, automake i autoconf. La sintaxi dels fitxers utilitzats per les autotools pot semblar complicada inicialment però si ens limitem a fer coses simples com les que fa aquest projecte (compilar una llibreria i un ejecutable que depèn d'ella) es força potent i fàcil de fer servir.
+
+\paragraph{}
+Autoconf és l'eina que serveix per comprovar que la plataforma en la que es compilarà el programa té les eines i llibreries que calen. A part, també serveix per detectar particularitats de la plataforma, per exemple si en aquesta plataforma una funció te uns paràmetres no estàndard, i definir uns símbols que més tard farem servir en el codi font per adaptar-nos a totes les plataformes. Per part del programador només s'ha de crear el fitxer configure.in que conté paraules clau que indiquen totes les comprovacions que volem fer, a partir d'aquest fitxer, autoconf genera un script anomenat configure que en executar-se en l'ordinador que està compilant el programa fa les comprovacions i avisa en cas de que alguna condició no és compleixi.
+
+\paragraph{}
+Per aquest projecte el fitxer configure.in es limita a comprovar l'existència d'un compilador de C++, que l'eina libtool es trobi instal·lada al sistema i finalment fa la comprovació de si Qt està instal·lat. En el cas de Qt es comprova si la versió instal·lada és 3.x o 4.0 i es defineix el simbol Qt4 de forma que el programa funcioni tant amb les versions 3.x com amb la versió 4.0 (que com s'ha esmentat anteriorment encara no té versió final, però ja hi ha versions preliminars suficientment funcionals per compilar aquest projecte).
+
+\paragraph{}
+Automake és l'eina que serveix per generar els Makefile. De forma ràpida un Makefile és un fitxer que indica com s'ha de compilar un programa i la depèndencia dels fitxers entre si, de forma que en canviar un fitxer es tornin a recompilar només aquells que tenen alguna relació. Aquesta eina genera fitxers Makefile.in a partir de fitxers Makefile.am, els fitxers Makefile.in es converteixen en fitxers Makefile al executar-se el configure creat per Autoconf. Als fitxers Makefile.am només cal indicar quines són les llibreries i els fitxers de codi font que utilitza en nostre programa/libreria i Automake s'encarrega de generar un Makefile complet amb els típics install, clean, uninstall, etc.
+
+\paragraph{}
+Per aquest projecte hem utilitzat fitxers Makefile.am per generar la llibreria libroam i per generar l'executable r3v, les opcions usades han estat bastant simples, al fitxer Makefile.am de libroam s'ha indicat que volem que sigui una llibreria estàtica generada per libtool formada per tots els fitxers .cpp del directori i a més a més usant les llibreries GL i GLU. Per a l'executable r3v, s'ha indicat que es volia generar un executable usant el codi de la interfície en Qt i usant la llibreria libtool així com la llibreria Qt.
+
+\paragraph{}
+L'ús de les autotools presenta un \textit{petit problema} en quant a la portabilitat del projecte, ja que no hi ha versió nativa de les autotools per a Windows. Això significa que el projecte no pot ser compilat directament sota Windows, cal adaptar-lo a les eines del compilador de C++ que s'usi; un petit problema de portabilitat però que no afecta de cap manera que el codi del programa continui sent portable.
+
 \subsection{Lector de format DEM}
+
 \paragraph{}
 
+\newpage
 \section{Recursos i Anàlisi de costos}
 \subsection{Recursos humans i tecnològics}
 \subsection{Anàlisi de costos}
+\newpage
 \section{Conclusions}
+\newpage
 \section{Bibliografia}
+\newpage
 \section{Index de figures}
 \listoffigures
 \end{document}
