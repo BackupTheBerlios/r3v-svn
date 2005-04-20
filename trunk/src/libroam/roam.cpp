@@ -86,7 +86,7 @@ ROAM::Error ROAM::open(const std::string &file)
 	m_splitQueue -> insert(d -> t1());
 	m_splitQueue -> insert(d -> t2());
 	
-/*	triangle *t;
+	/*triangle *t;
 	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
 	for (int kk = 0; kk < 500; kk++)
 	{
@@ -131,6 +131,7 @@ void ROAM::paint()
 		t -> calcPriority(modelViewMatrix);
 		newSplitQueue->insert(t);
 	}
+// 	printf("%d %d\n", m_splitQueue->count(), newSplitQueue->count());
 	delete m_splitQueue;
 	m_splitQueue = newSplitQueue;
 	
@@ -143,24 +144,31 @@ void ROAM::paint()
 		d -> t2() -> calcPriority(modelViewMatrix);
 		newMergeQueue->insert(d);
 	}
+// 	printf("%d %d\n", m_mergeQueue->count(), newMergeQueue->count());
 	delete m_mergeQueue;
 	m_mergeQueue = newMergeQueue;
 	
-// 	while (m_map -> leaves() < 5000 ||
-// 	       m_splitQueue -> last() -> priority() > m_mergeQueue -> first() -> priority())
-// 	{
-// 		if (m_map -> leaves() < 5000)
-// 		{
-// 			t = m_splitQueue -> last();
-// 			t -> split(m_splitQueue, m_mergeQueue, modelViewMatrix);
-// 		}
-// 		else
-// 		{
-// 			d = m_mergeQueue -> first();
-// 			d -> merge(m_splitQueue, m_mergeQueue);
-// 		}
-// 	}
-	
+	bool b = true;
+	while (m_map -> leaves() < 5000 ||
+	       (m_mergeQueue -> count() &&
+	       m_splitQueue -> last() -> priority() > m_mergeQueue -> first() -> priority()))
+	{
+		if (b) printf("ENTRAMOS\n");
+		b = false;
+		if (m_mergeQueue -> count()) printf("A partir: %f A fusionar: %f\n", m_splitQueue -> last() -> priority(), m_mergeQueue -> first() -> priority());
+		if (m_map -> leaves() < 5000)
+		{
+			printf("Partimos\n");
+			t = m_splitQueue -> last();
+			t -> split(m_splitQueue, m_mergeQueue, modelViewMatrix);
+		}
+		else
+		{
+			printf("Fusionamos\n");
+			d = m_mergeQueue -> first();
+			d -> merge(m_splitQueue, m_mergeQueue);
+		}
+	}
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glBegin(GL_TRIANGLES);

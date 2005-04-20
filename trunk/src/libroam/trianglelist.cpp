@@ -43,3 +43,8 @@ triangle *triangleList::last() const
 	--it;
 	return (*it).second;
 }
+
+int triangleList::count() const
+{
+	return m_triangles.size();
+}

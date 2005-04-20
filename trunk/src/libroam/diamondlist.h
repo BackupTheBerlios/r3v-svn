@@ -30,7 +30,7 @@ class diamondList
 		diamondListConstIterator begin() const;
 		diamondListConstIterator end() const;
 		diamond *first() const;
-// 		void print() const;
+		int count() const;
 		
 	private:
 		std::multimap<double, diamond*> m_diamonds;

@@ -29,7 +29,7 @@ class triangleList
 		triangleListConstIterator end() const;
 		triangle *last() const;
 		void print() const;
-		
+		int count() const;
 		
 	private:
 		std::multimap<double, triangle*> m_triangles;
