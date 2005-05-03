@@ -18,7 +18,7 @@ class frustum
 		frustum(double *pjm, double *mvm);
 		
 		void setTriangleStatus(triangle *t) const;
-	
+		
 	private:
 		double m_frustum[6][4];
 };

@@ -87,7 +87,7 @@ void frustum::setTriangleStatus(triangle *t) const
 {
 	int p;
 	
-	triangle::FRUSTUMSTATUS s;
+	triangle::FRUSTUMSTATUS s = triangle::UNKNOWN;
 	
 	if (t -> parent() && t -> parent() -> frustumStatus() == triangle::COMPLETELYINSIDE) s = triangle::COMPLETELYINSIDE;
 	else if (t -> parent() && t -> parent() -> frustumStatus() == triangle::OUTSIDE) s = triangle::OUTSIDE;
@@ -122,7 +122,7 @@ void frustum::setTriangleStatus(triangle *t) const
 			// All three points are in front of all the planes
 			s = triangle::COMPLETELYINSIDE;
 		}
-		else if (count > 1) s = triangle::INSIDE;
+		else if (s == triangle::UNKNOWN) s = triangle::INSIDE;
 	}
 	
 	if (s == triangle::INSIDE)
