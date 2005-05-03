@@ -25,6 +25,8 @@ class triangle
 		triangle(r3vMap &m, node *apex, node *left, node *right, triangle *parentTriangle);
 		~triangle();
 		
+		enum FRUSTUMSTATUS {UNKNOWN, OUTSIDE, INSIDE, COMPLETELYINSIDE};
+		
 		bool isLeaf() const;
 		void deleteLeaves(triangleList *splitQueue);
 		
@@ -51,8 +53,11 @@ class triangle
 		triangleListIterator ownIterator() const;
 		
 		void setDiamond(diamond *d);
+		
+		FRUSTUMSTATUS frustumStatus() const;
+		void setFrustumStatus(FRUSTUMSTATUS s);
 	
-// 	private:
+	private:
 		r3vMap &m_map;
 		
 		node *m_apex;
@@ -71,6 +76,7 @@ class triangle
 		triangleListIterator m_it;
 		
 		diamond *m_mergeableDiamond;
+		FRUSTUMSTATUS m_status;
 };
 
 #endif
