@@ -60,6 +60,11 @@ triangle::~triangle()
 	delete m_rightTriangle;
 }
 
+bool triangle::isVisible() const
+{
+	return m_status == INSIDE || m_status == COMPLETELYINSIDE;
+}
+
 bool triangle::isLeaf() const
 {
 	return !m_leftTriangle && !m_rightTriangle;

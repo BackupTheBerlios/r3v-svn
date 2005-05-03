@@ -27,6 +27,7 @@ class triangle
 		
 		enum FRUSTUMSTATUS {UNKNOWN, OUTSIDE, INSIDE, COMPLETELYINSIDE};
 		
+		bool isVisible() const;
 		bool isLeaf() const;
 		void deleteLeaves(triangleList *splitQueue);
 		
