@@ -245,16 +245,22 @@ void ROAM::paintTriangle(const triangle *t, bool color) const
 {
 	if (t -> isLeaf())
 	{
-		node *nodes[3];
-		nodes[0] = t -> apex();
-		nodes[1] = t -> rightVertex();
-		nodes[2] = t -> leftVertex();
-		
-		if (!color) glColor3d(0.0, 0.0, 0.0);
-		for (int i = 0; i < 3; i++)
+		if (t -> isVisible())
 		{
-			if (color) glColor3dv(nodes[i] -> color());
-			glVertex3dv(nodes[i] -> coords());
+			node *nodes[3];
+			nodes[0] = t -> apex();
+			nodes[1] = t -> rightVertex();
+			nodes[2] = t -> leftVertex();
+			
+			if (!color) glColor3d(0.0, 0.0, 0.0);
+			for (int i = 0; i < 3; i++)
+			{
+				if (color) glColor3dv(nodes[i] -> color());
+				if (t->frustumStatus() == triangle::INSIDE) glColor3d(0.0, 0.0, 1.0);
+				if (t->frustumStatus() == triangle::COMPLETELYINSIDE) glColor3d(1.0, 0.0, 0.0);
+				
+				glVertex3dv(nodes[i] -> coords());
+			}
 		}
 	}
 	else
