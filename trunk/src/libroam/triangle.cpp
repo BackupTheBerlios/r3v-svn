@@ -19,7 +19,7 @@
 #include "node.h"
 #include "triangle.h"
 
-triangle::triangle(r3vMap &m, node *apex, node *left, node *right, triangle *parentTriangle) : m_map(m), m_apex(apex), m_leftVertex(left), m_rightVertex(right), m_leftTriangle(0), m_rightTriangle(0), m_parentTriangle(parentTriangle), m_mergeableDiamond(0)
+triangle::triangle(r3vMap &m, node *apex, node *left, node *right, triangle *parentTriangle) : m_map(m), m_apex(apex), m_leftVertex(left), m_rightVertex(right), m_leftTriangle(0), m_rightTriangle(0), m_parentTriangle(parentTriangle), m_mergeableDiamond(0), m_status(UNKNOWN)
 {
 	assert(*apex != *left);
 	assert(*apex != *right);
@@ -289,4 +289,14 @@ triangleListIterator triangle::ownIterator() const
 void triangle::setDiamond(diamond *d)
 {
 	m_mergeableDiamond = d;
+}
+
+triangle::FRUSTUMSTATUS triangle::frustumStatus() const
+{
+	return m_status;
+}
+
+void triangle::setFrustumStatus(FRUSTUMSTATUS s)
+{
+	m_status = s;
 }
