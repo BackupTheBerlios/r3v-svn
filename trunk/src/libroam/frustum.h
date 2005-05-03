@@ -10,10 +10,14 @@
 #ifndef FRUSTUM_H
 #define FRUSTUM_H
 
+class triangle;
+
 class frustum
 {
 	public:
 		frustum(double *pjm, double *mvm);
+		
+		void setTriangleStatus(triangle *t) const;
 	
 	private:
 		double m_frustum[6][4];

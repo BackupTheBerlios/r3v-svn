@@ -11,6 +11,8 @@
 #include <stdio.h>
 
 #include "frustum.h"
+#include "node.h"
+#include "triangle.h"
 
 frustum::frustum(double *pjm, double *mvm)
 {
@@ -71,12 +73,67 @@ frustum::frustum(double *pjm, double *mvm)
 	m_frustum[5][3] = clip[15] + clip[14];
 	
 	// normalize the planes
-	for (int i = 0; i < 6; i++)
+// 	for (int i = 0; i < 6; i++)
+// 	{
+// 		normal = sqrt(m_frustum[i][0] * m_frustum[i][0] + m_frustum[i][1] * m_frustum[i][1] + m_frustum[i][2] * m_frustum[i][2]);
+// 		m_frustum[i][0] /= normal;
+// 		m_frustum[i][1] /= normal;
+// 		m_frustum[i][2] /= normal;
+// 		m_frustum[i][3] /= normal;
+// 	}
+}
+
+void frustum::setTriangleStatus(triangle *t) const
+{
+	int p;
+	
+	triangle::FRUSTUMSTATUS s;
+	
+	if (t -> parent() && t -> parent() -> frustumStatus() == triangle::COMPLETELYINSIDE) s = triangle::COMPLETELYINSIDE;
+	else if (t -> parent() && t -> parent() -> frustumStatus() == triangle::OUTSIDE) s = triangle::OUTSIDE;
+	else
 	{
-		normal = sqrt(m_frustum[i][0] * m_frustum[i][0] + m_frustum[i][1] * m_frustum[i][1] + m_frustum[i][2] * m_frustum[i][2]);
-		m_frustum[i][0] /= normal;
-		m_frustum[i][1] /= normal;
-		m_frustum[i][2] /= normal;
-		m_frustum[i][3] /= normal;
+		int count = 0;
+		for (p = 0; p < 6; p++)
+		{
+			int aux = 0;
+			
+			if (m_frustum[p][0] * t->apex()->getX() + m_frustum[p][1] * t->apex()->getHeight() + m_frustum[p][2] * t->apex()->getZ() + m_frustum[p][3] > 0) aux++;
+			
+			if (m_frustum[p][0] * t->leftVertex()->getX() + m_frustum[p][1] * t->leftVertex()->getHeight() + m_frustum[p][2] * t->leftVertex()->getZ() + m_frustum[p][3] > 0) aux++;
+		
+			if (m_frustum[p][0] * t->rightVertex()->getX() + m_frustum[p][1] * t->rightVertex()->getHeight() + m_frustum[p][2] * t->rightVertex()->getZ() + m_frustum[p][3] > 0) aux++;
+
+			if (aux == 0)
+			{
+				// All three points of a triangle are behind the plane p so it is not visible
+				s = triangle::OUTSIDE;
+				break;
+			}
+			else if (aux == 3)
+			{
+				// All three points of a triangle are in front of the plane p
+				count++;
+			}
+		}
+		
+		if (count == 6)
+		{
+			// All three points are in front of all the planes
+			s = triangle::COMPLETELYINSIDE;
+		}
+		else if (count > 1) s = triangle::INSIDE;
+	}
+	
+	if (s == triangle::INSIDE)
+	{
+	}
+	
+	t->setFrustumStatus(s);
+	
+	if (t -> leftTriangle())
+	{
+		setTriangleStatus(t -> leftTriangle());
+		setTriangleStatus(t -> rightTriangle());
 	}
 }
