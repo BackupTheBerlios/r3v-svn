@@ -44,10 +44,10 @@ class triangle
 		
 		void updateWedgie();
 		
-		void split(triangleList *splitQueue, diamondList *mergeQueue, double *modelViewMatrix, const frustum &f);
+		void split(triangleList *splitQueue, diamondList *mergeQueue, const frustum &f);
 		
 		double priority() const;
-		void calcPriority(double *modelViewMatrix);
+		void calcPriority(const frustum &f);
 		
 		void setMergeable(bool mergeable, diamondList *mergeQueue, triangle *baseTriangle);
 		

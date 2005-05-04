@@ -80,20 +80,13 @@ ROAM::Error ROAM::open(const std::string &file)
 	m_splitQueue = new triangleList();
 	m_mergeQueue = new diamondList();
 	
-	double modelViewMatrix[16];
-	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
-	d -> t1() -> calcPriority(modelViewMatrix);
-	d -> t2() -> calcPriority(modelViewMatrix);
+
+	frustum f = getFrustum();
+	d -> t1() -> calcPriority(f);
+	d -> t2() -> calcPriority(f);
 	m_splitQueue -> insert(d -> t1());
 	m_splitQueue -> insert(d -> t2());
 	
-	/*triangle *t;
-	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
-	for (int kk = 0; kk < 500; kk++)
-	{
-		t = m_splitQueue -> last();
-		t -> split(m_splitQueue, m_mergeQueue, modelViewMatrix);
-	}*/
 	return OK;
 }
 
@@ -115,63 +108,61 @@ void ROAM::paint()
 	diamondList *newMergeQueue;
 	diamondListConstIterator mqIt, mqEndIt;
 	diamond *d;
-	double modelViewMatrix[16], projectionMatrix[16];
-	
+		
 	float ox, oy, oz, vrpx, vrpy, vrpz;
 	m_observer -> position(&ox, &oy, &oz);
 	m_observer -> vrp(&vrpx, &vrpy, &vrpz);
 	gluLookAt(ox, oy, oz, vrpx, vrpy, vrpz, 0, 1, 0);
 	
-	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
-	glGetDoublev(GL_PROJECTION_MATRIX, projectionMatrix);
-	frustum f(projectionMatrix, modelViewMatrix);
 	
-	newSplitQueue = new triangleList();
-	sqEndIt = m_splitQueue -> end();
-	for (sqIt = m_splitQueue -> begin(); sqIt != sqEndIt; ++sqIt)
-	{
-		t = (*sqIt).second;
-		t -> calcPriority(modelViewMatrix);
-		newSplitQueue->insert(t);
-	}
-// 	printf("%d %d\n", m_splitQueue->count(), newSplitQueue->count());
-	delete m_splitQueue;
-	m_splitQueue = newSplitQueue;
+	frustum f = getFrustum();
 	
-	newMergeQueue = new diamondList();
-	mqEndIt = m_mergeQueue -> end();
-	for (mqIt = m_mergeQueue -> begin(); mqIt != mqEndIt; ++mqIt)
-	{
-		d = (*mqIt).second;
-		d -> t1() -> calcPriority(modelViewMatrix);
-		d -> t2() -> calcPriority(modelViewMatrix);
-		newMergeQueue->insert(d);
-	}
-// 	printf("%d %d\n", m_mergeQueue->count(), newMergeQueue->count());
-	delete m_mergeQueue;
-	m_mergeQueue = newMergeQueue;
-	
-	bool b = true;
-	while (m_map -> leaves() < 5000 ||
-	       (m_mergeQueue -> count() &&
-	       m_splitQueue -> last() -> priority() > m_mergeQueue -> first() -> priority()))
-	{
-		if (b) printf("ENTRAMOS\n");
-		b = false;
-		if (m_mergeQueue -> count()) printf("A partir: %f A fusionar: %f\n", m_splitQueue -> last() -> priority(), m_mergeQueue -> first() -> priority());
-		if (m_map -> leaves() < 5000)
-		{
-			printf("Partimos\n");
-			t = m_splitQueue -> last();
-			t -> split(m_splitQueue, m_mergeQueue, modelViewMatrix, f);
-		}
-		else
-		{
-			printf("Fusionamos\n");
-			d = m_mergeQueue -> first();
-			d -> merge(m_splitQueue, m_mergeQueue);
-		}
-	}
+// 	newSplitQueue = new triangleList();
+// 	sqEndIt = m_splitQueue -> end();
+// 	for (sqIt = m_splitQueue -> begin(); sqIt != sqEndIt; ++sqIt)
+// 	{
+// 		t = (*sqIt).second;
+// 		t -> calcPriority(f);
+// 		newSplitQueue->insert(t);
+// 	}
+// // 	printf("%d %d\n", m_splitQueue->count(), newSplitQueue->count());
+// 	delete m_splitQueue;
+// 	m_splitQueue = newSplitQueue;
+// 	
+// 	newMergeQueue = new diamondList();
+// 	mqEndIt = m_mergeQueue -> end();
+// 	for (mqIt = m_mergeQueue -> begin(); mqIt != mqEndIt; ++mqIt)
+// 	{
+// 		d = (*mqIt).second;
+// 		d -> t1() -> calcPriority(f);
+// 		d -> t2() -> calcPriority(f);
+// 		newMergeQueue->insert(d);
+// 	}
+// // 	printf("%d %d\n", m_mergeQueue->count(), newMergeQueue->count());
+// 	delete m_mergeQueue;
+// 	m_mergeQueue = newMergeQueue;
+// 	
+// 	bool b = true;
+// 	while (m_map -> leaves() < 5000 ||
+// 	       (m_mergeQueue -> count() &&
+// 	       m_splitQueue -> last() -> priority() > m_mergeQueue -> first() -> priority()))
+// 	{
+// 		if (b) printf("ENTRAMOS\n");
+// 		b = false;
+// 		if (m_mergeQueue -> count()) printf("A partir: %f A fusionar: %f\n", m_splitQueue -> last() -> priority(), m_mergeQueue -> first() -> priority());
+// 		if (m_map -> leaves() < 5000)
+// 		{
+// 			printf("Partimos\n");
+// 			t = m_splitQueue -> last();
+// 			t -> split(m_splitQueue, m_mergeQueue, f);
+// 		}
+// 		else
+// 		{
+// 			printf("Fusionamos\n");
+// 			d = m_mergeQueue -> first();
+// 			d -> merge(m_splitQueue, m_mergeQueue);
+// 		}
+// 	}
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glBegin(GL_TRIANGLES);
@@ -230,13 +221,10 @@ void ROAM::rotateObserver(float x, float y)
 
 void ROAM::splitOne()
 {
-	double modelViewMatrix[16], projectionMatrix[16];
 	triangle *t;
-	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
-	glGetDoublev(GL_PROJECTION_MATRIX, projectionMatrix);
-	frustum f(projectionMatrix, modelViewMatrix);
+	frustum f = getFrustum();
 	t = m_splitQueue->last();
-	t -> split(m_splitQueue, m_mergeQueue, modelViewMatrix, f);
+	t -> split(m_splitQueue, m_mergeQueue, f);
 }
 
 void ROAM::mergeOne()
@@ -259,16 +247,10 @@ void ROAM::renew()
 	m_splitQueue = new triangleList();
 	m_mergeQueue = new diamondList();
 	
-	double modelViewMatrix[16], projectionMatrix[16];
-	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
-	glGetDoublev(GL_PROJECTION_MATRIX, projectionMatrix);
-	frustum f(projectionMatrix, modelViewMatrix);
+	frustum f = getFrustum();
 	
-	f.setTriangleStatus(d -> t1());
-	f.setTriangleStatus(d -> t2());
-	
-	d -> t1() -> calcPriority(modelViewMatrix);
-	d -> t2() -> calcPriority(modelViewMatrix);
+	d -> t1() -> calcPriority(f);
+	d -> t2() -> calcPriority(f);
 	m_splitQueue -> insert(d -> t1());
 	m_splitQueue -> insert(d -> t2());
 	
@@ -276,15 +258,23 @@ void ROAM::renew()
 	for (int kk = 0; kk < 500; kk++)
 	{
 		t = m_splitQueue -> last();
-		t -> split(m_splitQueue, m_mergeQueue, modelViewMatrix, f);
+		t -> split(m_splitQueue, m_mergeQueue, f);
 	}
+}
+
+frustum ROAM::getFrustum() const
+{
+	double modelViewMatrix[16], projectionMatrix[16];
+	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
+	glGetDoublev(GL_PROJECTION_MATRIX, projectionMatrix);
+	return frustum(projectionMatrix, modelViewMatrix);
 }
 
 void ROAM::paintTriangle(const triangle *t, bool color) const
 {
-	if (t -> isVisible())
+	if (t -> isLeaf())
 	{
-		if (t -> isLeaf())
+		if (t -> isVisible())
 		{
 			node *nodes[3];
 			nodes[0] = t -> apex();
@@ -295,8 +285,8 @@ void ROAM::paintTriangle(const triangle *t, bool color) const
 			for (int i = 0; i < 3; i++)
 			{
 				if (color) glColor3dv(nodes[i] -> color());
-				if (t->frustumStatus() == triangle::INSIDE) glColor3d(0.0, 0.0, 1.0);
-				if (t->frustumStatus() == triangle::COMPLETELYINSIDE) glColor3d(1.0, 0.0, 0.0);
+/*				if (t->frustumStatus() == triangle::INSIDE) glColor3d(0.0, 0.0, 1.0);
+				if (t->frustumStatus() == triangle::COMPLETELYINSIDE) glColor3d(1.0, 0.0, 0.0);*/
 				
 				glVertex3dv(nodes[i] -> coords());
 			}

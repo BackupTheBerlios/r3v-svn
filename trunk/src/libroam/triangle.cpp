@@ -126,7 +126,7 @@ void triangle::updateWedgie()
 	if (m_parentTriangle) m_parentTriangle -> updateWedgie();
 }
 
-void triangle::split(triangleList *splitQueue, diamondList *mergeQueue, double *modelViewMatrix, const frustum &f)
+void triangle::split(triangleList *splitQueue, diamondList *mergeQueue, const frustum &f)
 {
 	assert(!m_leftTriangle);
 	assert(!m_rightTriangle);
@@ -136,7 +136,7 @@ void triangle::split(triangleList *splitQueue, diamondList *mergeQueue, double *
 	triangle *baseTriangle = m_rightVertex -> getTriangle(m_leftVertex, this);
 	if (baseTriangle && baseTriangle -> level() < m_level)
 	{
-		baseTriangle -> split(splitQueue, mergeQueue, modelViewMatrix, f);
+		baseTriangle -> split(splitQueue, mergeQueue, f);
 		
 		// our base triangle has changed
 		baseTriangle = m_rightVertex -> getTriangle(m_leftVertex, this);
@@ -150,19 +150,17 @@ void triangle::split(triangleList *splitQueue, diamondList *mergeQueue, double *
 	
 	m_leftTriangle = new triangle(m_map, newApex, m_apex, m_leftVertex, this);
 	m_rightTriangle = new triangle(m_map, newApex, m_rightVertex, m_apex, this);
-	f.setTriangleStatus(m_leftTriangle);
-	f.setTriangleStatus(m_rightTriangle);
 	
 	// TODO place in other function?
 	m_map.addTriangles(2);
 	m_map.addLeaves(1);
-	m_leftTriangle -> calcPriority(modelViewMatrix);
-	m_rightTriangle -> calcPriority(modelViewMatrix);
+	m_leftTriangle -> calcPriority(f);
+	m_rightTriangle -> calcPriority(f);
 	splitQueue->insert(m_leftTriangle);
 	splitQueue->insert(m_rightTriangle);
 	
 	// baseTriangle -> m_leftTriangle to stop recurring splitting between base neighbours
-	if (baseTriangle && !baseTriangle -> m_leftTriangle) baseTriangle -> split(splitQueue, mergeQueue, modelViewMatrix, f);
+	if (baseTriangle && !baseTriangle -> m_leftTriangle) baseTriangle -> split(splitQueue, mergeQueue, f);
 	
 	if (m_parentTriangle) m_parentTriangle -> setMergeable(false, mergeQueue, baseTriangle);
 	if (baseTriangle)
@@ -185,14 +183,17 @@ double triangle::priority() const
 	return m_priority;
 }
 
-void triangle::calcPriority(double *modelViewMatrix)
+void triangle::calcPriority(const frustum &f)
 {
-	assert(m_status != UNKNOWN);
+	f.setTriangleStatus(this);
+	
 	if (!isVisible())
 	{
 		m_priority = DBL_MIN;
 		return;
 	}
+	
+	const double *modelViewMatrix = f.modelViewMatrix();
 
 	double a, b, c, p1, q1, r1, p2, q2, r2, p3, q3, r3, d1, d2, d3, csq, r1sq, r2sq, r3sq;
 	a = modelViewMatrix[0] * 0.0 + modelViewMatrix[4] * m_wedgie + modelViewMatrix[8] * 0.0;

@@ -18,9 +18,11 @@ class frustum
 		frustum(double *pjm, double *mvm);
 		
 		void setTriangleStatus(triangle *t) const;
+		const double *modelViewMatrix() const;
 		
 	private:
 		double m_frustum[6][4];
+		double m_mvm[16];
 };
 
 #endif

@@ -19,6 +19,8 @@ frustum::frustum(double *pjm, double *mvm)
 	double normal;
 	double clip[16];
 	
+	for (int i = 0; i < 16; i++) m_mvm[i] = mvm[i];
+	
 	clip[ 0] = mvm[ 0] * pjm[ 0] + mvm[ 1] * pjm[ 4] + mvm[ 2] * pjm[ 8] + mvm[ 3] * pjm[12];
 	clip[ 1] = mvm[ 0] * pjm[ 1] + mvm[ 1] * pjm[ 5] + mvm[ 2] * pjm[ 9] + mvm[ 3] * pjm[13];
 	clip[ 2] = mvm[ 0] * pjm[ 2] + mvm[ 1] * pjm[ 6] + mvm[ 2] * pjm[10] + mvm[ 3] * pjm[14];
@@ -136,4 +138,9 @@ void frustum::setTriangleStatus(triangle *t) const
 		setTriangleStatus(t -> leftTriangle());
 		setTriangleStatus(t -> rightTriangle());
 	}
+}
+
+const double *frustum::modelViewMatrix() const
+{
+	return m_mvm;
 }

@@ -11,6 +11,7 @@
 #define ROAM_H
 
 class diamondList;
+class frustum;
 class observer;
 class r3vMap;
 class triangle;
@@ -47,6 +48,7 @@ class ROAM
 		
 	private:
 		void clean();
+		frustum getFrustum() const;
 		void paintTriangle(const triangle *t, bool color) const;
 		
 		r3vMap *m_map;
