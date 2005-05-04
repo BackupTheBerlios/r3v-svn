@@ -11,6 +11,7 @@
 #include "GL/glu.h"
 
 #include "diamond.h"
+#include "frustum.h"
 #include "map.h"
 #include "node.h"
 #include "roam.h"
@@ -114,7 +115,7 @@ void ROAM::paint()
 	diamondList *newMergeQueue;
 	diamondListConstIterator mqIt, mqEndIt;
 	diamond *d;
-	double modelViewMatrix[16];
+	double modelViewMatrix[16], projectionMatrix[16];
 	
 	float ox, oy, oz, vrpx, vrpy, vrpz;
 	m_observer -> position(&ox, &oy, &oz);
@@ -122,6 +123,8 @@ void ROAM::paint()
 	gluLookAt(ox, oy, oz, vrpx, vrpy, vrpz, 0, 1, 0);
 	
 	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
+	glGetDoublev(GL_PROJECTION_MATRIX, projectionMatrix);
+	frustum f(projectionMatrix, modelViewMatrix);
 	
 	newSplitQueue = new triangleList();
 	sqEndIt = m_splitQueue -> end();
@@ -160,7 +163,7 @@ void ROAM::paint()
 		{
 			printf("Partimos\n");
 			t = m_splitQueue -> last();
-			t -> split(m_splitQueue, m_mergeQueue, modelViewMatrix);
+			t -> split(m_splitQueue, m_mergeQueue, modelViewMatrix, f);
 		}
 		else
 		{
@@ -227,11 +230,13 @@ void ROAM::rotateObserver(float x, float y)
 
 void ROAM::splitOne()
 {
-	double modelViewMatrix[16];
+	double modelViewMatrix[16], projectionMatrix[16];
 	triangle *t;
 	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
+	glGetDoublev(GL_PROJECTION_MATRIX, projectionMatrix);
+	frustum f(projectionMatrix, modelViewMatrix);
 	t = m_splitQueue->last();
-	t -> split(m_splitQueue, m_mergeQueue, modelViewMatrix);
+	t -> split(m_splitQueue, m_mergeQueue, modelViewMatrix, f);
 }
 
 void ROAM::mergeOne()
