@@ -246,11 +246,45 @@ void ROAM::mergeOne()
 	d -> merge(m_splitQueue, m_mergeQueue);
 }
 
+void ROAM::renew()
+{
+	diamond *d = m_map -> baseDiamond();
+	
+	d->t1()->deleteLeaves(m_splitQueue);
+	d->t2()->deleteLeaves(m_splitQueue);
+
+	delete m_splitQueue;
+	delete m_mergeQueue;
+	
+	m_splitQueue = new triangleList();
+	m_mergeQueue = new diamondList();
+	
+	double modelViewMatrix[16], projectionMatrix[16];
+	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
+	glGetDoublev(GL_PROJECTION_MATRIX, projectionMatrix);
+	frustum f(projectionMatrix, modelViewMatrix);
+	
+	f.setTriangleStatus(d -> t1());
+	f.setTriangleStatus(d -> t2());
+	
+	d -> t1() -> calcPriority(modelViewMatrix);
+	d -> t2() -> calcPriority(modelViewMatrix);
+	m_splitQueue -> insert(d -> t1());
+	m_splitQueue -> insert(d -> t2());
+	
+	triangle *t;
+	for (int kk = 0; kk < 500; kk++)
+	{
+		t = m_splitQueue -> last();
+		t -> split(m_splitQueue, m_mergeQueue, modelViewMatrix, f);
+	}
+}
+
 void ROAM::paintTriangle(const triangle *t, bool color) const
 {
-	if (t -> isLeaf())
+	if (t -> isVisible())
 	{
-		if (t -> isVisible())
+		if (t -> isLeaf())
 		{
 			node *nodes[3];
 			nodes[0] = t -> apex();

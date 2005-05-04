@@ -43,6 +43,8 @@ class ROAM
 		void mergeOne();
 		void splitOne();
 		
+		void renew();
+		
 	private:
 		void clean();
 		void paintTriangle(const triangle *t, bool color) const;
