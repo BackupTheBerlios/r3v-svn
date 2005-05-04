@@ -15,6 +15,7 @@
 #include <math.h>
 
 #include "diamondlist.h"
+#include "frustum.h"
 #include "map.h"
 #include "node.h"
 #include "triangle.h"
@@ -72,14 +73,16 @@ bool triangle::isLeaf() const
 
 void triangle::deleteLeaves(triangleList *splitQueue)
 {
-// 	printf("%d\n", m_leftTriangle->m_level);
-	splitQueue -> remove(m_leftTriangle);
-	delete m_leftTriangle;
-	m_leftTriangle = 0;
-	splitQueue -> remove(m_rightTriangle);
-	delete m_rightTriangle;
-	m_rightTriangle = 0;
-	m_map.addLeaves(1);
+	if (m_leftTriangle)
+	{
+		splitQueue -> remove(m_leftTriangle);
+		delete m_leftTriangle;
+		m_leftTriangle = 0;
+		splitQueue -> remove(m_rightTriangle);
+		delete m_rightTriangle;
+		m_rightTriangle = 0;
+		m_map.addLeaves(1);
+	}
 }
 
 node *triangle::apex() const
@@ -123,17 +126,17 @@ void triangle::updateWedgie()
 	if (m_parentTriangle) m_parentTriangle -> updateWedgie();
 }
 
-void triangle::split(triangleList *splitQueue, diamondList *mergeQueue, double *modelViewMatrix)
+void triangle::split(triangleList *splitQueue, diamondList *mergeQueue, double *modelViewMatrix, const frustum &f)
 {
-// 	assert(!m_leftTriangle);
-// 	assert(!m_rightTriangle);
+	assert(!m_leftTriangle);
+	assert(!m_rightTriangle);
 	
 	splitQueue->remove(this);
 	
 	triangle *baseTriangle = m_rightVertex -> getTriangle(m_leftVertex, this);
 	if (baseTriangle && baseTriangle -> level() < m_level)
 	{
-		baseTriangle -> split(splitQueue, mergeQueue, modelViewMatrix);
+		baseTriangle -> split(splitQueue, mergeQueue, modelViewMatrix, f);
 		
 		// our base triangle has changed
 		baseTriangle = m_rightVertex -> getTriangle(m_leftVertex, this);
@@ -145,23 +148,12 @@ void triangle::split(triangleList *splitQueue, diamondList *mergeQueue, double *
 	
 	node *newApex = m_map.getNode(x, y);
 	
-	/*
-	if (*newApex == *m_leftVertex)
-	{
-		printf("1\n");
-	}
-	else if (*m_apex == *newApex)
-	{
-		printf("2\n");
-	}
-	else if (*m_rightVertex == *m_leftVertex)
-	{
-		printf("3\n");
-	}*/
-	
 	m_leftTriangle = new triangle(m_map, newApex, m_apex, m_leftVertex, this);
 	m_rightTriangle = new triangle(m_map, newApex, m_rightVertex, m_apex, this);
-	// TODO place in other funciton?=
+	f.setTriangleStatus(m_leftTriangle);
+	f.setTriangleStatus(m_rightTriangle);
+	
+	// TODO place in other function?
 	m_map.addTriangles(2);
 	m_map.addLeaves(1);
 	m_leftTriangle -> calcPriority(modelViewMatrix);
@@ -170,16 +162,19 @@ void triangle::split(triangleList *splitQueue, diamondList *mergeQueue, double *
 	splitQueue->insert(m_rightTriangle);
 	
 	// baseTriangle -> m_leftTriangle to stop recurring splitting between base neighbours
-	if (baseTriangle && !baseTriangle -> m_leftTriangle) baseTriangle -> split(splitQueue, mergeQueue, modelViewMatrix);
+	if (baseTriangle && !baseTriangle -> m_leftTriangle) baseTriangle -> split(splitQueue, mergeQueue, modelViewMatrix, f);
 	
 	if (m_parentTriangle) m_parentTriangle -> setMergeable(false, mergeQueue, baseTriangle);
 	if (baseTriangle)
 	{
+		assert(m_leftTriangle -> isLeaf());
+		assert(m_rightTriangle -> isLeaf());
+		assert(baseTriangle -> m_leftTriangle -> isLeaf());
+		assert(baseTriangle -> m_rightTriangle -> isLeaf());
 		if (m_leftTriangle -> isLeaf() && m_rightTriangle -> isLeaf() && baseTriangle -> m_leftTriangle -> isLeaf() && baseTriangle -> m_rightTriangle -> isLeaf())
 		{
 			setMergeable(true, mergeQueue, baseTriangle);
 		}
-		else printf("NO PASA NUNCA\n");
 	}
 	
 	updateWedgie();
@@ -192,7 +187,12 @@ double triangle::priority() const
 
 void triangle::calcPriority(double *modelViewMatrix)
 {
-// 	qDebug("%f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f", modelViewMatrix[0], modelViewMatrix[1], modelViewMatrix[2], modelViewMatrix[3], modelViewMatrix[4], modelViewMatrix[5], modelViewMatrix[6], modelViewMatrix[7], modelViewMatrix[8], modelViewMatrix[9], modelViewMatrix[10], modelViewMatrix[11], modelViewMatrix[12], modelViewMatrix[13], modelViewMatrix[14], modelViewMatrix[15]);
+	assert(m_status != UNKNOWN);
+	if (!isVisible())
+	{
+		m_priority = DBL_MIN;
+		return;
+	}
 
 	double a, b, c, p1, q1, r1, p2, q2, r2, p3, q3, r3, d1, d2, d3, csq, r1sq, r2sq, r3sq;
 	a = modelViewMatrix[0] * 0.0 + modelViewMatrix[4] * m_wedgie + modelViewMatrix[8] * 0.0;
@@ -248,13 +248,13 @@ void triangle::calcPriority(double *modelViewMatrix)
 	r2sq = r2 * r2;
 	r3sq = r3 * r3;
 	
-	if (r1sq > csq) d1 = 2 / (r1sq - csq) * sqrt(pow(a * r1 - c * p1, 2) + pow(b * r1 - c * q1, 2));
+	if (r1sq > csq + 0.01) d1 = 2 / (r1sq - csq) * sqrt(pow(a * r1 - c * p1, 2) + pow(b * r1 - c * q1, 2));
 	else d1 = DBL_MIN;
 	
-	if (r2sq > csq) d2 = 2 / (r2sq - csq) * sqrt(pow(a * r2 - c * p2, 2) + pow(b * r2 - c * q2, 2));
+	if (r2sq > csq + 0.01) d2 = 2 / (r2sq - csq) * sqrt(pow(a * r2 - c * p2, 2) + pow(b * r2 - c * q2, 2));
 	else d2 = DBL_MIN;
 	
-	if (r3sq > csq) d3 = 2 / (r3sq - csq) * sqrt(pow(a * r3 - c * p3, 2) + pow(b * r3 - c * q3, 2));
+	if (r3sq > csq + 0.01) d3 = 2 / (r3sq - csq) * sqrt(pow(a * r3 - c * p3, 2) + pow(b * r3 - c * q3, 2));
 	else d3 = DBL_MIN;
 		
 // 	printf("%f %f %f\n", d1, d2, d3);
@@ -262,8 +262,8 @@ void triangle::calcPriority(double *modelViewMatrix)
 	m_priority = std::max(d1, d2);
 	m_priority = std::max(m_priority, d3);
 	
-	// TODO usar un define o algo ese 1.0 es el ZNear
-// 	if (r1 >= -1.0 || r2 >= -1.0 || r3 >= -1.0) m_priority = DBL_MIN;
+	// TODO HACE FALTA AHORA QUE HACEMOS VIEW FRUSTUM CULLING??? usar un define o algo ese 1.0 es el ZNear
+	if (r1sq < 1.0 || r2sq < 1.0 || r3sq < 1.0) m_priority = DBL_MIN;
 	
 // 	if (d1 == d2 && d2 == d3 && d3 == 0) m_priority = DBL_MIN;
 // 	qDebug("wedgie  %f prio %f", m_wedgie, m_priority);
