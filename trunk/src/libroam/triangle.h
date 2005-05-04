@@ -16,6 +16,7 @@
 
 class diamond;
 class diamondList;
+class frustum;
 class node;
 class r3vMap;
 
@@ -43,7 +44,7 @@ class triangle
 		
 		void updateWedgie();
 		
-		void split(triangleList *splitQueue, diamondList *mergeQueue, double *modelViewMatrix);
+		void split(triangleList *splitQueue, diamondList *mergeQueue, double *modelViewMatrix, const frustum &f);
 		
 		double priority() const;
 		void calcPriority(double *modelViewMatrix);
