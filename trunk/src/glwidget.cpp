@@ -43,12 +43,29 @@ glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false), m_F
 	m_lastTime = QTime::currentTime();*/
 
 	showFullScreen();
-	
-	openMap();
 }
 
 glWidget::~glWidget()
 {
+}
+
+void glWidget::openMap(const QString &file)
+{
+#if QT4
+	ROAM::Error e = m_roam.open(file.toStdString());
+#else
+	ROAM::Error e = m_roam.open(file);
+#endif
+	if (e != ROAM::OK)
+	{
+		if (e == ROAM::openingError) QMessageBox::critical(this, "Error", QString("Could not open the map, check you have read permission on %1").arg(file), QMessageBox::Ok, QMessageBox::NoButton);
+		else if (e == ROAM::unknownFormat) QMessageBox::critical(this, "Error", "There is no parser available for that kind of file.", QMessageBox::Ok, QMessageBox::NoButton);
+		return;
+	}
+	updateGL();
+	
+	QCursor::setPos(width() / 2, height() / 2);
+	m_fromPopup = true;
 }
 
 void glWidget::resizeGL(int width, int height)
@@ -281,21 +298,7 @@ void glWidget::openMap()
 	setCursor(Qt::BlankCursor);
 	if (file.isNull()) return;
 	
-#if QT4
-	ROAM::Error e = m_roam.open(file.toStdString());
-#else
-	ROAM::Error e = m_roam.open(file);
-#endif
-	if (e != ROAM::OK)
-	{
-		if (e == ROAM::openingError) QMessageBox::critical(this, "Error", QString("Could not open the map, check you have read permission on %1").arg(file), QMessageBox::Ok, QMessageBox::NoButton);
-		else if (e == ROAM::unknownFormat) QMessageBox::critical(this, "Error", "There is no parser available for that kind of file.", QMessageBox::Ok, QMessageBox::NoButton);
-		return;
-	}
-	updateGL();
-	
-	QCursor::setPos(width() / 2, height() / 2);
-	m_fromPopup = true;
+	openMap(file);
 }
 
 void glWidget::closeMap()

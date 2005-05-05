@@ -24,6 +24,9 @@ int main(int argc, char *argv[])
 	a.setMainWidget(g);
 #endif
 
+	if (a.argc() == 2) g->openMap(a.argv()[1]);
+	else g->openMap();
+
 	a.exec();
 	
 	delete g;

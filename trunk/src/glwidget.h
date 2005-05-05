@@ -23,6 +23,9 @@ Q_OBJECT
 	public:
 		glWidget(QWidget *parent);
 		~glWidget();
+		
+		void openMap();
+		void openMap(const QString &file);
 	
 	protected:
 		void paintGL();
@@ -34,7 +37,6 @@ Q_OBJECT
 		void mousePressEvent(QMouseEvent *e);
 	
 	private slots:
-		void openMap();
 		void closeMap();
 		void updateFPS();
 
