@@ -108,7 +108,7 @@ triangle *node::getTriangle(node *n, const triangle *t) const
 	}
 }
 
-std::list<triangle *> node::triangles()
+const std::list<triangle *> &node::triangles()
 {
 	return m_triangles;
 }
