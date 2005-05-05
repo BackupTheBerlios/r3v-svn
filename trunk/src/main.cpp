@@ -10,6 +10,9 @@
 #include <config.h>
 
 #include <qapplication.h>
+#include <qcursor.h>
+#include <qfile.h>
+#include <qmessagebox.h>
 
 #include "glwidget.h"
 
@@ -24,7 +27,20 @@ int main(int argc, char *argv[])
 	a.setMainWidget(g);
 #endif
 
-	if (a.argc() == 2) g->openMap(a.argv()[1]);
+	if (a.argc() == 2)
+	{
+		QString file = a.argv()[1];
+		if (QFile::exists(file))
+		{
+			QCursor::setPos(g -> width() / 2, g -> height() / 2);
+			g->openMap(file);
+		}
+		else
+		{
+			QMessageBox::critical(g, "Error", QString("File %1 does not exist").arg(file), QMessageBox::Ok, QMessageBox::NoButton);
+			g->openMap();
+		}
+	}
 	else g->openMap();
 
 	a.exec();

@@ -51,6 +51,9 @@ glWidget::~glWidget()
 
 void glWidget::openMap(const QString &file)
 {
+	setCursor(Qt::BlankCursor);
+	if (file.isNull()) return;
+	
 #if QT4
 	ROAM::Error e = m_roam.open(file.toStdString());
 #else
@@ -295,8 +298,6 @@ void glWidget::openMap()
 #else
 	QString file = QFileDialog::getOpenFileName(QString::null, "DEM files (*.dem);;Plain maps (*.pm)", this);
 #endif
-	setCursor(Qt::BlankCursor);
-	if (file.isNull()) return;
 	
 	openMap(file);
 }

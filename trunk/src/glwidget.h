@@ -24,8 +24,10 @@ Q_OBJECT
 		glWidget(QWidget *parent);
 		~glWidget();
 		
-		void openMap();
 		void openMap(const QString &file);
+	
+	public slots:
+		void openMap();
 	
 	protected:
 		void paintGL();
