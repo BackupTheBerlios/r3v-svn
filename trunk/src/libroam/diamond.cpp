@@ -25,20 +25,21 @@ void diamond::clean()
 void diamond::merge(triangleList *splitQueue, diamondList *mergeQueue)
 {
 	m_t1 -> deleteLeaves(splitQueue);
-	m_t2 -> deleteLeaves(splitQueue);
+	if (m_t2) m_t2 -> deleteLeaves(splitQueue);
 	splitQueue -> insert(m_t1);
-	splitQueue -> insert(m_t2);
+	if (m_t2) splitQueue -> insert(m_t2);
 	if (m_t1 -> parent())
 	{
 		m_t1 -> parent() -> updateMergeableStatus(mergeQueue, m_t1 -> parent() -> getBaseTriangle());
-		m_t2 -> parent() -> updateMergeableStatus(mergeQueue, m_t2 -> parent() -> getBaseTriangle());
+		if (m_t2) m_t2 -> parent() -> updateMergeableStatus(mergeQueue, m_t2 -> parent() -> getBaseTriangle());
 	}
 	mergeQueue -> remove(this);
 }
 
 double diamond::priority() const
 {
-	return std::max(m_t1 -> priority(), m_t2 -> priority());
+	if (m_t2) return std::max(m_t1 -> priority(), m_t2 -> priority());
+	else return m_t1 -> priority();
 }
 
 triangle *diamond::t1() const

@@ -244,13 +244,21 @@ void triangle::calcPriority(const frustum &f)
 	r2sq = r2 * r2;
 	r3sq = r3 * r3;
 	
-	if (r1sq > csq + 0.01) d1 = 2 / (r1sq - csq) * sqrt(pow(a * r1 - c * p1, 2) + pow(b * r1 - c * q1, 2));
+	double aux1, aux2;
+	aux1 = (a * r1 - c * p1) * (a * r1 - c * p1);
+	aux2 = (b * r1 - c * q1) * (b * r1 - c * q1);
+	
+	if (r1sq > csq + 0.01) d1 = 2 / (r1sq - csq) * sqrt(aux1 + aux2);
 	else d1 = DBL_MIN;
 	
-	if (r2sq > csq + 0.01) d2 = 2 / (r2sq - csq) * sqrt(pow(a * r2 - c * p2, 2) + pow(b * r2 - c * q2, 2));
+	aux1 = (a * r2 - c * p2) * (a * r2 - c * p2);
+	aux2 = (b * r2 - c * q2) * (b * r2 - c * q2);
+	if (r2sq > csq + 0.01) d2 = 2 / (r2sq - csq) * sqrt(aux1 + aux2);
 	else d2 = DBL_MIN;
 	
-	if (r3sq > csq + 0.01) d3 = 2 / (r3sq - csq) * sqrt(pow(a * r3 - c * p3, 2) + pow(b * r3 - c * q3, 2));
+	aux1 = (a * r3 - c * p3) * (a * r3 - c * p3);
+	aux2 = (b * r3 - c * q3) * (b * r3 - c * q3);
+	if (r3sq > csq + 0.01) d3 = 2 / (r3sq - csq) * sqrt(aux1 + aux2);
 	else d3 = DBL_MIN;
 		
 // 	printf("%f %f %f\n", d1, d2, d3);
@@ -273,6 +281,13 @@ void triangle::updateMergeableStatus(diamondList *mergeQueue, triangle *baseTria
 		if (m_leftTriangle -> isLeaf() && m_rightTriangle -> isLeaf() && baseTriangle -> m_leftTriangle -> isLeaf() && baseTriangle -> m_rightTriangle -> isLeaf())
 		{
 			setMergeable(true, mergeQueue, baseTriangle);
+		}
+	}
+	else
+	{
+		if (m_leftTriangle -> isLeaf() && m_rightTriangle -> isLeaf())
+		{
+			setMergeable(true, mergeQueue, 0);
 		}
 	}
 }

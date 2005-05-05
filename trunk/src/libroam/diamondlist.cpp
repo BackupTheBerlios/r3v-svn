@@ -23,7 +23,7 @@ void diamondList::insert(triangle *t1, triangle *t2)
 	d = new diamond(t1, t2);
 	insert(d);
 	t1 -> setDiamond(d);
-	t2 -> setDiamond(d);
+	if (t2) t2 -> setDiamond(d);
 }
 
 void diamondList::insert(diamond *d)
@@ -40,7 +40,7 @@ void diamondList::remove(diamond *d)
 {
 	m_diamonds.erase(d->ownIterator());
 	d -> t1() -> setDiamond(0);
-	d -> t2() -> setDiamond(0);
+	if (d -> t2()) d -> t2() -> setDiamond(0);
 	delete d;
 }
 

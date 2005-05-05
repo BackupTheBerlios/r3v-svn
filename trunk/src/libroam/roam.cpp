@@ -141,7 +141,7 @@ void ROAM::paint()
 	{
 		d = (*mqIt).second;
 		d -> t1() -> calcPriority(f);
-		d -> t2() -> calcPriority(f);
+		if (d -> t2()) d -> t2() -> calcPriority(f);
 		newMergeQueue->insert(d);
 	}
 // 	printf("%d %d\n", m_mergeQueue->count(), newMergeQueue->count());
