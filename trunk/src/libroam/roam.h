@@ -44,7 +44,7 @@ class ROAM
 		void mergeOne();
 		void splitOne();
 		
-		void renew();
+// 		void renew();
 		
 	private:
 		void clean();

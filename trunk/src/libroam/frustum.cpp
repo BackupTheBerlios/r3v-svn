@@ -96,7 +96,7 @@ void frustum::setTriangleStatus(triangle *t) const
 	else
 	{
 		int count = 0;
-		for (p = 0; p < 6; p++)
+		for (p = 0; p < 4; p++)
 		{
 			int aux = 0;
 			
@@ -119,7 +119,7 @@ void frustum::setTriangleStatus(triangle *t) const
 			}
 		}
 		
-		if (count == 6)
+		if (count == 4)
 		{
 			// All three points are in front of all the planes
 			s = triangle::COMPLETELYINSIDE;

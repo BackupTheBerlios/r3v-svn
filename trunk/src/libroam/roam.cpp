@@ -82,6 +82,8 @@ ROAM::Error ROAM::open(const std::string &file)
 	
 
 	frustum f = getFrustum();
+	f.setTriangleStatus(d -> t1());
+	f.setTriangleStatus(d -> t2());
 	d -> t1() -> calcPriority(f);
 	d -> t2() -> calcPriority(f);
 	m_splitQueue -> insert(d -> t1());
@@ -117,52 +119,60 @@ void ROAM::paint()
 	
 	frustum f = getFrustum();
 	
-// 	newSplitQueue = new triangleList();
-// 	sqEndIt = m_splitQueue -> end();
-// 	for (sqIt = m_splitQueue -> begin(); sqIt != sqEndIt; ++sqIt)
-// 	{
-// 		t = (*sqIt).second;
-// 		t -> calcPriority(f);
-// 		newSplitQueue->insert(t);
-// 	}
-// // 	printf("%d %d\n", m_splitQueue->count(), newSplitQueue->count());
-// 	delete m_splitQueue;
-// 	m_splitQueue = newSplitQueue;
-// 	
-// 	newMergeQueue = new diamondList();
-// 	mqEndIt = m_mergeQueue -> end();
-// 	for (mqIt = m_mergeQueue -> begin(); mqIt != mqEndIt; ++mqIt)
-// 	{
-// 		d = (*mqIt).second;
-// 		d -> t1() -> calcPriority(f);
-// 		d -> t2() -> calcPriority(f);
-// 		newMergeQueue->insert(d);
-// 	}
-// // 	printf("%d %d\n", m_mergeQueue->count(), newMergeQueue->count());
-// 	delete m_mergeQueue;
-// 	m_mergeQueue = newMergeQueue;
-// 	
-// 	bool b = true;
-// 	while (m_map -> leaves() < 5000 ||
-// 	       (m_mergeQueue -> count() &&
-// 	       m_splitQueue -> last() -> priority() > m_mergeQueue -> first() -> priority()))
-// 	{
+	d = m_map -> baseDiamond();
+	f.setTriangleStatus(d -> t1());
+	f.setTriangleStatus(d -> t2());
+	
+	newSplitQueue = new triangleList();
+	sqEndIt = m_splitQueue -> end();
+	for (sqIt = m_splitQueue -> begin(); sqIt != sqEndIt; ++sqIt)
+	{
+		t = (*sqIt).second;
+		t -> calcPriority(f);
+		newSplitQueue->insert(t);
+	}
+// 	printf("%d %d\n", m_splitQueue->count(), newSplitQueue->count());
+	delete m_splitQueue;
+	m_splitQueue = newSplitQueue;
+	
+	newMergeQueue = new diamondList();
+	mqEndIt = m_mergeQueue -> end();
+	for (mqIt = m_mergeQueue -> begin(); mqIt != mqEndIt; ++mqIt)
+	{
+		d = (*mqIt).second;
+		d -> t1() -> calcPriority(f);
+		d -> t2() -> calcPriority(f);
+		newMergeQueue->insert(d);
+	}
+// 	printf("%d %d\n", m_mergeQueue->count(), newMergeQueue->count());
+	delete m_mergeQueue;
+	m_mergeQueue = newMergeQueue;
+	
+// 	printf("%d\n", m_mergeQueue -> count());
+	
+	bool b = true;
+	while (m_map -> leaves() < 5000 ||
+	       (m_mergeQueue -> count() &&
+	       m_splitQueue -> last() -> priority() > m_mergeQueue -> first() -> priority()))
+	{
 // 		if (b) printf("ENTRAMOS\n");
-// 		b = false;
+		b = false;
 // 		if (m_mergeQueue -> count()) printf("A partir: %f A fusionar: %f\n", m_splitQueue -> last() -> priority(), m_mergeQueue -> first() -> priority());
-// 		if (m_map -> leaves() < 5000)
-// 		{
+		if (m_map -> leaves() < 5000)
+		{
 // 			printf("Partimos\n");
-// 			t = m_splitQueue -> last();
-// 			t -> split(m_splitQueue, m_mergeQueue, f);
-// 		}
-// 		else
-// 		{
+			t = m_splitQueue -> last();
+			t -> split(m_splitQueue, m_mergeQueue, f);
+		}
+		else
+		{
 // 			printf("Fusionamos\n");
-// 			d = m_mergeQueue -> first();
-// 			d -> merge(m_splitQueue, m_mergeQueue);
-// 		}
-// 	}
+			d = m_mergeQueue -> first();
+			d -> merge(m_splitQueue, m_mergeQueue);
+		}
+	}
+
+// 	renew();
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glBegin(GL_TRIANGLES);
@@ -222,9 +232,8 @@ void ROAM::rotateObserver(float x, float y)
 void ROAM::splitOne()
 {
 	triangle *t;
-	frustum f = getFrustum();
 	t = m_splitQueue->last();
-	t -> split(m_splitQueue, m_mergeQueue, f);
+	t -> split(m_splitQueue, m_mergeQueue, getFrustum());
 }
 
 void ROAM::mergeOne()
@@ -234,33 +243,33 @@ void ROAM::mergeOne()
 	d -> merge(m_splitQueue, m_mergeQueue);
 }
 
-void ROAM::renew()
-{
-	diamond *d = m_map -> baseDiamond();
-	
-	d->t1()->deleteLeaves(m_splitQueue);
-	d->t2()->deleteLeaves(m_splitQueue);
-
-	delete m_splitQueue;
-	delete m_mergeQueue;
-	
-	m_splitQueue = new triangleList();
-	m_mergeQueue = new diamondList();
-	
-	frustum f = getFrustum();
-	
-	d -> t1() -> calcPriority(f);
-	d -> t2() -> calcPriority(f);
-	m_splitQueue -> insert(d -> t1());
-	m_splitQueue -> insert(d -> t2());
-	
-	triangle *t;
-	for (int kk = 0; kk < 500; kk++)
-	{
-		t = m_splitQueue -> last();
-		t -> split(m_splitQueue, m_mergeQueue, f);
-	}
-}
+// void ROAM::renew()
+// {
+// 	diamond *d = m_map -> baseDiamond();
+// 	
+// 	d->t1()->deleteLeaves(m_splitQueue);
+// 	d->t2()->deleteLeaves(m_splitQueue);
+// 
+// 	delete m_splitQueue;
+// 	delete m_mergeQueue;
+// 	
+// 	m_splitQueue = new triangleList();
+// 	m_mergeQueue = new diamondList();
+// 	
+// 	frustum f = getFrustum();
+// 	
+// 	d -> t1() -> calcPriority(f);
+// 	d -> t2() -> calcPriority(f);
+// 	m_splitQueue -> insert(d -> t1());
+// 	m_splitQueue -> insert(d -> t2());
+// 	
+// 	triangle *t;
+// 	for (int kk = 0; kk < 500; kk++)
+// 	{
+// 		t = m_splitQueue -> last();
+// 		t -> split(m_splitQueue, m_mergeQueue, f);
+// 	}
+// }
 
 frustum ROAM::getFrustum() const
 {
@@ -274,8 +283,8 @@ void ROAM::paintTriangle(const triangle *t, bool color) const
 {
 	if (t -> isLeaf())
 	{
-		if (t -> isVisible())
-		{
+// 		if (t -> isVisible())
+// 		{
 			node *nodes[3];
 			nodes[0] = t -> apex();
 			nodes[1] = t -> rightVertex();
@@ -290,7 +299,7 @@ void ROAM::paintTriangle(const triangle *t, bool color) const
 				
 				glVertex3dv(nodes[i] -> coords());
 			}
-		}
+// 		}
 	}
 	else
 	{

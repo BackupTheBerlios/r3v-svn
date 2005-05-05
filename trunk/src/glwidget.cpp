@@ -170,9 +170,9 @@ double modelViewMatrix[16], projectionMatrix[16];
 			if (m_roam.hasMap()) m_roam.mergeOne();
 		break;
 		
-		case Qt::Key_3:
+/*		case Qt::Key_3:
 			if (m_roam.hasMap()) m_roam.renew();
-		break;
+		break;*/
 		
 // 		case Key_3:
 // 			for (int i = 0; i < 10; i++)

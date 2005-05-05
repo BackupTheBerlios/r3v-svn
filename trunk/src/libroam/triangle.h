@@ -49,6 +49,7 @@ class triangle
 		double priority() const;
 		void calcPriority(const frustum &f);
 		
+		void updateMergeableStatus(diamondList *mergeQueue, triangle *baseTriangle);
 		void setMergeable(bool mergeable, diamondList *mergeQueue, triangle *baseTriangle);
 		
 		void setOwnIterator(triangleListIterator it);
@@ -58,6 +59,8 @@ class triangle
 		
 		FRUSTUMSTATUS frustumStatus() const;
 		void setFrustumStatus(FRUSTUMSTATUS s);
+		
+		triangle *getBaseTriangle() const;
 	
 	private:
 		r3vMap &m_map;

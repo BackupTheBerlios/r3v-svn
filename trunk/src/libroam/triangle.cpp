@@ -82,6 +82,7 @@ void triangle::deleteLeaves(triangleList *splitQueue)
 		delete m_rightTriangle;
 		m_rightTriangle = 0;
 		m_map.addLeaves(1);
+		updateWedgie();
 	}
 }
 
@@ -122,7 +123,8 @@ unsigned int triangle::level() const
 
 void triangle::updateWedgie()
 {
-	m_wedgie = m_ownWedgie + std::max(m_leftTriangle -> m_wedgie, m_rightTriangle -> m_wedgie);
+	m_wedgie = m_ownWedgie;
+	if (m_leftTriangle) m_wedgie += std::max(m_leftTriangle -> m_wedgie, m_rightTriangle -> m_wedgie);
 	if (m_parentTriangle) m_parentTriangle -> updateWedgie();
 }
 
@@ -133,13 +135,13 @@ void triangle::split(triangleList *splitQueue, diamondList *mergeQueue, const fr
 	
 	splitQueue->remove(this);
 	
-	triangle *baseTriangle = m_rightVertex -> getTriangle(m_leftVertex, this);
+	triangle *baseTriangle = getBaseTriangle();
 	if (baseTriangle && baseTriangle -> level() < m_level)
 	{
 		baseTriangle -> split(splitQueue, mergeQueue, f);
 		
 		// our base triangle has changed
-		baseTriangle = m_rightVertex -> getTriangle(m_leftVertex, this);
+		baseTriangle = getBaseTriangle();
 	}
 	
 	double x, y;
@@ -154,28 +156,21 @@ void triangle::split(triangleList *splitQueue, diamondList *mergeQueue, const fr
 	// TODO place in other function?
 	m_map.addTriangles(2);
 	m_map.addLeaves(1);
+	f.setTriangleStatus(m_leftTriangle);
+	f.setTriangleStatus(m_rightTriangle);
 	m_leftTriangle -> calcPriority(f);
 	m_rightTriangle -> calcPriority(f);
 	splitQueue->insert(m_leftTriangle);
 	splitQueue->insert(m_rightTriangle);
 	
 	// baseTriangle -> m_leftTriangle to stop recurring splitting between base neighbours
+	// TODO quiza podemos usar el nivel q sera mas elegante?
 	if (baseTriangle && !baseTriangle -> m_leftTriangle) baseTriangle -> split(splitQueue, mergeQueue, f);
 	
-	if (m_parentTriangle) m_parentTriangle -> setMergeable(false, mergeQueue, baseTriangle);
-	if (baseTriangle)
-	{
-		assert(m_leftTriangle -> isLeaf());
-		assert(m_rightTriangle -> isLeaf());
-		assert(baseTriangle -> m_leftTriangle -> isLeaf());
-		assert(baseTriangle -> m_rightTriangle -> isLeaf());
-		if (m_leftTriangle -> isLeaf() && m_rightTriangle -> isLeaf() && baseTriangle -> m_leftTriangle -> isLeaf() && baseTriangle -> m_rightTriangle -> isLeaf())
-		{
-			setMergeable(true, mergeQueue, baseTriangle);
-		}
-	}
-	
 	updateWedgie();
+	calcPriority(f);
+	
+	updateMergeableStatus(mergeQueue, baseTriangle);
 }
 
 double triangle::priority() const
@@ -185,8 +180,8 @@ double triangle::priority() const
 
 void triangle::calcPriority(const frustum &f)
 {
-	f.setTriangleStatus(this);
-	
+	assert(m_status != UNKNOWN);
+
 	if (!isVisible())
 	{
 		m_priority = DBL_MIN;
@@ -270,6 +265,18 @@ void triangle::calcPriority(const frustum &f)
 // 	qDebug("wedgie  %f prio %f", m_wedgie, m_priority);
 }
 
+void triangle::updateMergeableStatus(diamondList *mergeQueue, triangle *baseTriangle)
+{
+	if (m_parentTriangle) m_parentTriangle -> setMergeable(false, mergeQueue, 0);
+	if (baseTriangle)
+	{
+		if (m_leftTriangle -> isLeaf() && m_rightTriangle -> isLeaf() && baseTriangle -> m_leftTriangle -> isLeaf() && baseTriangle -> m_rightTriangle -> isLeaf())
+		{
+			setMergeable(true, mergeQueue, baseTriangle);
+		}
+	}
+}
+
 void triangle::setMergeable(bool mergeable, diamondList *mergeQueue, triangle *baseTriangle)
 {
 	if (mergeable)
@@ -305,4 +312,9 @@ triangle::FRUSTUMSTATUS triangle::frustumStatus() const
 void triangle::setFrustumStatus(FRUSTUMSTATUS s)
 {
 	m_status = s;
+}
+
+triangle *triangle::getBaseTriangle() const
+{
+	return m_rightVertex -> getTriangle(m_leftVertex, this);
 }

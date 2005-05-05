@@ -72,13 +72,13 @@ void node::removeTriangle(triangle *t)
 	m_triangles.remove(t);
 }
 
-triangle *node::getTriangle(node *n, triangle *t) const
+triangle *node::getTriangle(node *n, const triangle *t) const
 {
 	std::list<triangle *> both, other;
 	std::list<triangle *>::const_iterator it, it2, end, oBegin, oEnd;
 	
 	other = n -> triangles();
-	other.remove(t);
+	other.remove(const_cast<triangle*>(t));
 	other.remove(t -> parent());
 	
 	end = m_triangles.end();

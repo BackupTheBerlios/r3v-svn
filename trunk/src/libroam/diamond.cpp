@@ -28,6 +28,11 @@ void diamond::merge(triangleList *splitQueue, diamondList *mergeQueue)
 	m_t2 -> deleteLeaves(splitQueue);
 	splitQueue -> insert(m_t1);
 	splitQueue -> insert(m_t2);
+	if (m_t1 -> parent())
+	{
+		m_t1 -> parent() -> updateMergeableStatus(mergeQueue, m_t1 -> parent() -> getBaseTriangle());
+		m_t2 -> parent() -> updateMergeableStatus(mergeQueue, m_t2 -> parent() -> getBaseTriangle());
+	}
 	mergeQueue -> remove(this);
 }
 
