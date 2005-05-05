@@ -80,18 +80,9 @@ void glWidget::paintGL()
 	if (m_roam.hasMap()) m_roam.paint();
 	swapBuffers();
 }
-// TODO quitame
-#include "libroam/frustum.h"
-#include "libroam/map.h"
-#include "libroam/diamond.h"
+
 void glWidget::keyPressEvent(QKeyEvent *e)
 {
-double modelViewMatrix[16], projectionMatrix[16];
-			
-			glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
-			glGetDoublev(GL_PROJECTION_MATRIX, projectionMatrix);
-			
-			frustum f(projectionMatrix, modelViewMatrix);
 	switch(e->key())
 	{
 		case Qt::Key_Up:
