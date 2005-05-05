@@ -263,8 +263,7 @@ void triangle::calcPriority(const frustum &f)
 		
 // 	printf("%f %f %f\n", d1, d2, d3);
 // 	printf("%f %f %f\n", r1, r2, r3);
-	m_priority = std::max(d1, d2);
-	m_priority = std::max(m_priority, d3);
+	m_priority = std::max(std::max(d1, d2), d3);
 	
 	// TODO HACE FALTA AHORA QUE HACEMOS VIEW FRUSTUM CULLING??? usar un define o algo ese 1.0 es el ZNear
 	if (r1sq < 1.0 || r2sq < 1.0 || r3sq < 1.0) m_priority = DBL_MIN;
