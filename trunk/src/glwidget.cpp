@@ -29,8 +29,6 @@
 
 glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false), m_FPSEnabled(true)
 {
-	setMouseTracking(true);
-	
 /*	QTimer *t = new QTimer(this);
 	connect(t, SIGNAL(timeout()), this, SLOT(updateGL()));
 	t -> start(40);
@@ -65,10 +63,10 @@ void glWidget::openMap(const QString &file)
 		else if (e == ROAM::unknownFormat) QMessageBox::critical(this, "Error", "There is no parser available for that kind of file.", QMessageBox::Ok, QMessageBox::NoButton);
 		return;
 	}
-	updateGL();
 	
 	QCursor::setPos(width() / 2, height() / 2);
 	m_fromPopup = true;
+	setMouseTracking(true);
 }
 
 void glWidget::resizeGL(int width, int height)
@@ -300,6 +298,7 @@ void glWidget::openMap()
 #endif
 	
 	openMap(file);
+	updateGL();
 }
 
 void glWidget::closeMap()

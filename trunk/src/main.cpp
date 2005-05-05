@@ -32,7 +32,6 @@ int main(int argc, char *argv[])
 		QString file = a.argv()[1];
 		if (QFile::exists(file))
 		{
-			QCursor::setPos(g -> width() / 2, g -> height() / 2);
 			g->openMap(file);
 		}
 		else
