@@ -21,7 +21,7 @@ typedef std::multimap<double, diamond*>::const_iterator diamondListConstIterator
 class diamondList
 {
 	public:
-		void clear();
+		void clean();
 		
 		void insert(triangle *t1, triangle *t2);
 		void insert(diamond *d);

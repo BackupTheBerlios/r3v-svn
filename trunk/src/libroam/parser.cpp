@@ -15,7 +15,9 @@
 
 r3vMap *DEMParser::parse(const std::string &file)
 {
+	r3vMap *m;
 	m_file = new std::ifstream(file.c_str());
+	m = 0;
 	if (m_file -> is_open())
 	{
 		char aux[1025];
@@ -23,7 +25,7 @@ r3vMap *DEMParser::parse(const std::string &file)
 		std::string name, descriptorField, originCode, sectionalIndicator;
 		int DEMLevel, elevationPattern, groundPlanimetricReferenceSystem, zoneCode, groundCoordsUnit, elevationCoordsUnit, polygonSides;
 		
-		r3vMap *m = new r3vMap();
+		m = new r3vMap();
 		
 		/* name */
 		name = readString(40, aux);
@@ -381,10 +383,9 @@ r3vMap *DEMParser::parse(const std::string &file)
 			delete v;
 		}
 		m->m_heights.resize(x);
-	
-		return m;
 	}
-	return 0;
+	delete m_file;
+	return m;
 }
 
 char DEMParser::readChar()

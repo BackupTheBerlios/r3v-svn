@@ -11,9 +11,11 @@
 #include "diamond.h"
 #include "triangle.h"
 
-void diamondList::clear()
+void diamondList::clean()
 {
-	m_diamonds.clear();
+	diamondListConstIterator it = m_diamonds.begin();
+	diamondListConstIterator itEnd = m_diamonds.end();
+	for ( ; it != itEnd; ++it) delete (*it).second;
 }
 
 void diamondList::insert(triangle *t1, triangle *t2)

@@ -35,6 +35,7 @@ void ROAM::clean()
 	m_observer = 0;
 	delete m_splitQueue;
 	m_splitQueue = 0;
+	m_mergeQueue -> clean();
 	delete m_mergeQueue;
 	m_mergeQueue = 0;
 }

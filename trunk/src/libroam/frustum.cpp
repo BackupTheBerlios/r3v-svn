@@ -19,7 +19,7 @@ frustum::frustum(double *pjm, double *mvm)
 	double normal;
 	double clip[16];
 	
-	for (int i = 0; i < 16; i++) m_mvm[i] = mvm[i];
+	memcpy(m_mvm, mvm, sizeof(double) * 16);
 	
 	clip[ 0] = mvm[ 0] * pjm[ 0] + mvm[ 1] * pjm[ 4] + mvm[ 2] * pjm[ 8] + mvm[ 3] * pjm[12];
 	clip[ 1] = mvm[ 0] * pjm[ 1] + mvm[ 1] * pjm[ 5] + mvm[ 2] * pjm[ 9] + mvm[ 3] * pjm[13];
@@ -89,10 +89,13 @@ void frustum::setTriangleStatus(triangle *t) const
 {
 	int p;
 	
-	triangle::FRUSTUMSTATUS s = triangle::UNKNOWN;
+	triangle::FRUSTUMSTATUS newStatus, oldStatus;
 	
-	if (t -> parent() && t -> parent() -> frustumStatus() == triangle::COMPLETELYINSIDE) s = triangle::COMPLETELYINSIDE;
-	else if (t -> parent() && t -> parent() -> frustumStatus() == triangle::OUTSIDE) s = triangle::OUTSIDE;
+	oldStatus = t -> frustumStatus();
+	newStatus = triangle::UNKNOWN;
+	
+	if (t -> parent() && t -> parent() -> frustumStatus() == triangle::COMPLETELYINSIDE) newStatus = triangle::COMPLETELYINSIDE;
+	else if (t -> parent() && t -> parent() -> frustumStatus() == triangle::OUTSIDE) newStatus = triangle::OUTSIDE;
 	else
 	{
 		int count = 0;
@@ -109,7 +112,7 @@ void frustum::setTriangleStatus(triangle *t) const
 			if (aux == 0)
 			{
 				// All three points of a triangle are behind the plane p so it is not visible
-				s = triangle::OUTSIDE;
+				newStatus = triangle::OUTSIDE;
 				break;
 			}
 			else if (aux == 3)
@@ -122,21 +125,27 @@ void frustum::setTriangleStatus(triangle *t) const
 		if (count == 4)
 		{
 			// All three points are in front of all the planes
-			s = triangle::COMPLETELYINSIDE;
+			newStatus = triangle::COMPLETELYINSIDE;
 		}
-		else if (s == triangle::UNKNOWN) s = triangle::INSIDE;
+		else if (newStatus == triangle::UNKNOWN) newStatus = triangle::INSIDE;
 	}
 	
-	if (s == triangle::INSIDE)
-	{
-	}
+// 	if (s == triangle::INSIDE)
+// 	{
+// 	}
 	
-	t->setFrustumStatus(s);
+	t->setFrustumStatus(newStatus);
+	
 	
 	if (t -> leftTriangle())
 	{
-		setTriangleStatus(t -> leftTriangle());
-		setTriangleStatus(t -> rightTriangle());
+		if ((newStatus != oldStatus) || newStatus == triangle::INSIDE)
+		{
+			// when newStatus == oldStatus and status is either COMPLETELYINSIDE or OUTSIDE
+			// there no need to keep recurring as children already have the correct status
+			setTriangleStatus(t -> leftTriangle());
+			setTriangleStatus(t -> rightTriangle());
+		}
 	}
 }
 
