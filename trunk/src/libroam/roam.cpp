@@ -132,7 +132,6 @@ void ROAM::paint()
 		t -> calcPriority(f);
 		newSplitQueue->insert(t);
 	}
-// 	printf("%d %d\n", m_splitQueue->count(), newSplitQueue->count());
 	delete m_splitQueue;
 	m_splitQueue = newSplitQueue;
 	
@@ -145,19 +144,14 @@ void ROAM::paint()
 		if (d -> t2()) d -> t2() -> calcPriority(f);
 		newMergeQueue->insert(d);
 	}
-// 	printf("%d %d\n", m_mergeQueue->count(), newMergeQueue->count());
+
 	delete m_mergeQueue;
 	m_mergeQueue = newMergeQueue;
 	
-// 	printf("%d\n", m_mergeQueue -> count());
-	
-	bool b = true;
 	while (m_map -> leaves() < 5000 ||
 	       (m_splitQueue -> last() -> priority() > m_mergeQueue -> first() -> priority()))
 	{
-// 		if (b) printf("ENTRAMOS\n");
-		b = false;
-// 		if (m_mergeQueue -> count()) printf("A partir: %f A fusionar: %f\n", m_splitQueue -> last() -> priority(), m_mergeQueue -> first() -> priority());
+// 		printf("A partir: %f A fusionar: %f\n", m_splitQueue -> last() -> priority(), m_mergeQueue -> first() -> priority());
 		if (m_map -> leaves() < 5000)
 		{
 // 			printf("Partimos\n");
