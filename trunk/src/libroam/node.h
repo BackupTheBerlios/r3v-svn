@@ -32,7 +32,6 @@ class node
 		void addTriangle(triangle *t);
 		void removeTriangle(triangle *t);
 		triangle *getTriangle(node *n, const triangle *t) const;
-		const std::list<triangle *> &triangles();
 		
 		void print() const;
 		

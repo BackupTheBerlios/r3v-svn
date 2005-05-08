@@ -77,7 +77,7 @@ triangle *node::getTriangle(node *n, const triangle *t) const
 	std::list<triangle *> both, other;
 	std::list<triangle *>::const_iterator it, it2, end, oBegin, oEnd;
 	
-	other = n -> triangles();
+	other = n -> m_triangles;
 	other.remove(const_cast<triangle*>(t));
 	other.remove(t -> parent());
 	
@@ -106,11 +106,6 @@ triangle *node::getTriangle(node *n, const triangle *t) const
 		if (l1 > l2) return t1;
 		else return t2;
 	}
-}
-
-const std::list<triangle *> &node::triangles()
-{
-	return m_triangles;
 }
 
 void node::print() const
