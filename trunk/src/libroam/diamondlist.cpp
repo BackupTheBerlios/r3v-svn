@@ -61,8 +61,3 @@ diamond *diamondList::first() const
 	diamondListConstIterator it = m_diamonds.begin();
 	return (*it).second;
 }
-
-int diamondList::count() const
-{
-	return m_diamonds.size();
-}

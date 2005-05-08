@@ -153,8 +153,7 @@ void ROAM::paint()
 	
 	bool b = true;
 	while (m_map -> leaves() < 5000 ||
-	       (m_mergeQueue -> count() &&
-	       m_splitQueue -> last() -> priority() > m_mergeQueue -> first() -> priority()))
+	       (m_splitQueue -> last() -> priority() > m_mergeQueue -> first() -> priority()))
 	{
 // 		if (b) printf("ENTRAMOS\n");
 		b = false;
