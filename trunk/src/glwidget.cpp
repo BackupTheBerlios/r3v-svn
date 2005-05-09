@@ -59,8 +59,8 @@ void glWidget::openMap(const QString &file)
 #endif
 	if (e != ROAM::OK)
 	{
-		if (e == ROAM::openingError) QMessageBox::critical(this, "Error", QString("Could not open the map, check you have read permission on %1").arg(file), QMessageBox::Ok, QMessageBox::NoButton);
-		else if (e == ROAM::unknownFormat) QMessageBox::critical(this, "Error", "There is no parser available for that kind of file.", QMessageBox::Ok, QMessageBox::NoButton);
+		if (e == ROAM::openingError) QMessageBox::critical(this, tr("Error"), tr("Could not open the map, check you have read permission on %1").arg(file), QMessageBox::Ok, QMessageBox::NoButton);
+		else if (e == ROAM::unknownFormat) QMessageBox::critical(this, tr("Error"), tr("There is no parser available for that kind of file."), QMessageBox::Ok, QMessageBox::NoButton);
 		return;
 	}
 	
@@ -273,15 +273,15 @@ void glWidget::mousePressEvent(QMouseEvent *e)
 		m_fromPopup = true;
 #if QT4
 		QMenu popup;
-		popup.addAction("&Open", this, SLOT(openMap()));
-		QAction *a = popup.addAction("&Close", this, SLOT(closeMap()));
-		popup.addAction("&Quit", qApp, SLOT(quit()));
+		popup.addAction(tr("&Open"), this, SLOT(openMap()));
+		QAction *a = popup.addAction(tr("&Close"), this, SLOT(closeMap()));
+		popup.addAction(tr("&Quit"), qApp, SLOT(quit()));
 		a->setEnabled(m_roam.hasMap());
 #else
 		QPopupMenu popup;
-		popup.insertItem("&Open", this, SLOT(openMap()));
-		int id = popup.insertItem("&Close", this, SLOT(closeMap()));
-		popup.insertItem("&Quit", qApp, SLOT(quit()));
+		popup.insertItem(tr("&Open"), this, SLOT(openMap()));
+		int id = popup.insertItem(tr("&Close"), this, SLOT(closeMap()));
+		popup.insertItem(tr("&Quit"), qApp, SLOT(quit()));
 		popup.setItemEnabled(id, m_roam.hasMap());
 #endif
 		popup.exec(e->pos());
@@ -292,9 +292,9 @@ void glWidget::openMap()
 {
 	setCursor(Qt::ArrowCursor);
 #if QT4
-	QString file = QFileDialog::getOpenFileName(this, QString(), QString(), "DEM files (*.dem);;Plain maps (*.pm)");
+	QString file = QFileDialog::getOpenFileName(this, QString(), QString(), tr("DEM files (*.dem);;Plain maps (*.pm)"));
 #else
-	QString file = QFileDialog::getOpenFileName(QString::null, "DEM files (*.dem);;Plain maps (*.pm)", this);
+	QString file = QFileDialog::getOpenFileName(QString::null, tr("DEM files (*.dem);;Plain maps (*.pm)"), this);
 #endif
 	
 	openMap(file);

@@ -29,14 +29,14 @@ int main(int argc, char *argv[])
 
 	if (a.argc() == 2)
 	{
-		QString file = a.argv()[1];
+		QString file = QFile::decodeName(a.argv()[1]);
 		if (QFile::exists(file))
 		{
 			g->openMap(file);
 		}
 		else
 		{
-			QMessageBox::critical(g, "Error", QString("File %1 does not exist").arg(file), QMessageBox::Ok, QMessageBox::NoButton);
+			QMessageBox::critical(g, a.tr("Error"), a.tr("File %1 does not exist").arg(file), QMessageBox::Ok, QMessageBox::NoButton);
 			g->openMap();
 		}
 	}
