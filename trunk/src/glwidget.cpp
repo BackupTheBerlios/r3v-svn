@@ -41,6 +41,18 @@ glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false), m_F
 	m_lastTime = QTime::currentTime();*/
 
 	showFullScreen();
+	
+	QDir d(QString("%1/share/apps/r3v/translations").arg(PATH));
+	d.setNameFilter("*.qm");
+	QStringList list = d.entryList();
+	QTranslator tra;
+	for (QStringList::Iterator it = list.begin(); it != list.end(); ++it)
+	{
+		tra.load(*it);
+		qApp -> installTranslator(&tra);
+		m_langs.insert(*it, qApp -> translate("Language", "English", "Here put the name of the language you are translating. Example: If you are doing the Spanish Translation write Español"));
+		qApp -> removeTranslator(&tra);
+	}
 }
 
 glWidget::~glWidget()
@@ -283,6 +295,19 @@ void glWidget::mousePressEvent(QMouseEvent *e)
 		int id = popup.insertItem(tr("&Close"), this, SLOT(closeMap()));
 		popup.insertItem(tr("&Quit"), qApp, SLOT(quit()));
 		popup.setItemEnabled(id, m_roam.hasMap());
+		if (!m_langs.isEmpty())
+		{
+			QPopupMenu *langs = new QPopupMenu(this);
+			QStringList list = m_langs.values();
+			int i = 1;
+			for (QStringList::const_iterator it = list.begin(); it != list.end(); ++it)
+			{
+				langs->insertItem(*it, i);
+				i++;
+			}
+			popup.insertItem(tr("Languages"), langs);
+			connect(langs, SIGNAL(activated(int)), this, SLOT(canviarIdioma(int)));
+		}
 #endif
 		popup.exec(e->pos());
 	}
@@ -305,6 +330,24 @@ void glWidget::closeMap()
 {
 	m_roam.close();
 	updateGL();
+}
+
+void glWidget::canviarIdioma(int i)
+{
+	QStringList list = m_langs.keys();
+	QStringList::const_iterator it = list.begin();
+	while (it != list.end())
+	{
+		printf("%s\n", (*it).latin1());
+		++it;
+	}
+	printf("%d\n", i);
+	for (; i > 0; i--) ++it;
+	
+	QTranslator tra;
+	tra.load(*it);
+	printf("%s\n", (*it).latin1());
+	qApp -> installTranslator(&tra);
 }
 
 void glWidget::updateFPS()

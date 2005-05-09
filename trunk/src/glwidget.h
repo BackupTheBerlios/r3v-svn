@@ -11,6 +11,7 @@
 #define GLWIDGET_H
 
 #include <qdatetime.h>
+#include <qmap.h>
 #include <qgl.h>
 
 #include "libroam/roam.h"
@@ -41,6 +42,7 @@ Q_OBJECT
 	private slots:
 		void closeMap();
 		void updateFPS();
+		void canviarIdioma(int i);
 
 	private:
 		void initFPSTimer();
@@ -54,6 +56,8 @@ Q_OBJECT
 		QTime m_lastTime;
 		int m_lastFPS, m_newFPSSum, m_FPSTimes;
 		int m_fontHeight;
+		
+		QMap<QString, QString> m_langs;
 		
 		ROAM m_roam;
 };
