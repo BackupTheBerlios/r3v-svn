@@ -31,17 +31,10 @@ triangle::triangle(r3vMap &m, node *apex, node *left, node *right, triangle *par
 	
 	double currentHeight, realHeight;
 	
-// 	qDebug("NOMBRE: %s", n.latin1());
-	
 	currentHeight = (left -> getHeight() + right -> getHeight()) / 2;
-// 	qDebug("Altura actual %f", currentHeight);
-//  	qDebug("Pido la altura de %f %f", (left -> getX() + right -> getX()) / 2, (left -> getZ() + right -> getZ()) / 2);
 	realHeight = m.height((left -> getX() + right -> getX()) / 2, (left -> getZ() + right -> getZ()) / 2);
-//  	qDebug("Altura real %f", realHeight);
 	m_ownWedgie = fabs(currentHeight - realHeight);
 	m_wedgie = m_ownWedgie;
-	
-// 	qDebug("wedgie %f", m_wedgie);
 	
 	apex -> addTriangle(this);
 	left -> addTriangle(this);
@@ -208,9 +201,6 @@ void triangle::calcPriority(const frustum &f)
 	     modelViewMatrix[10] * m_apex -> getZ() + 
 	     modelViewMatrix[14];
 	
-// 	qDebug("Triangulo %s", nom.latin1());
-// 	qDebug("Apex %f %f %f en camera-space %f %f %f", m_apex -> getX(), m_apex -> getHeight(), m_apex -> getZ(), p1, q1, r1);
-	
 	p2 = modelViewMatrix[0] * m_rightVertex -> getX() + 
 	     modelViewMatrix[4] * m_rightVertex -> getHeight() + 
 	     modelViewMatrix[8] * m_rightVertex -> getZ() + 
@@ -223,7 +213,6 @@ void triangle::calcPriority(const frustum &f)
 	     modelViewMatrix[6] * m_rightVertex -> getHeight() + 
 	     modelViewMatrix[10] * m_rightVertex -> getZ() + 
 	     modelViewMatrix[14];
-// 	qDebug("RV %f %f %f en camera-space %f %f %f", m_rightVertex -> getX(), m_rightVertex -> getHeight(), m_rightVertex -> getZ(), p2, q2, r2);
 	
 	p3 = modelViewMatrix[0] * m_leftVertex -> getX() + 
 	     modelViewMatrix[4] * m_leftVertex -> getHeight() + 
@@ -237,7 +226,6 @@ void triangle::calcPriority(const frustum &f)
 	     modelViewMatrix[6] * m_leftVertex -> getHeight() + 
 	     modelViewMatrix[10] * m_leftVertex -> getZ() + 
 	     modelViewMatrix[14];
-// 	qDebug("LV %f %f %f en camera-space %f %f %f", m_leftVertex -> getX(), m_leftVertex -> getHeight(), m_leftVertex -> getZ(), p3, q3, r3);
 	
 	csq = c * c;
 	r1sq = r1 * r1;
@@ -269,7 +257,6 @@ void triangle::calcPriority(const frustum &f)
 	if (r1sq < 1.0 || r2sq < 1.0 || r3sq < 1.0) m_priority = DBL_MIN;
 	
 // 	if (d1 == d2 && d2 == d3 && d3 == 0) m_priority = DBL_MIN;
-// 	qDebug("wedgie  %f prio %f", m_wedgie, m_priority);
 }
 
 void triangle::updateMergeableStatus(diamondList *mergeQueue, triangle *baseTriangle)

@@ -131,17 +131,8 @@ double r3vMap::height(double i, double j) const
 	if (d4y < res && d4x != 0) res = d4x;
 	if (d4y < res && d4y != 0) res = d4y;
 	
-// 	qDebug("%f", res);
-	
-// 	qDebug("%f %f %f %f", d1x / res * d1y / res, d2x / res * d2y / res, d3x / res * d3y / res, d4x / res * d4y / res);
-	
 	return (h1 * d1x / res * d1y / res + h2 * d2x / res * d2y / res + h3 * d3x / res * d3y / res + h4 * d4x / res * d4y / res) / ((1 / res) * (1 / res));
 }
-
-// int r3vMap::heights(int column) const
-// {
-// 	return m_heights[column]->size();
-// }
 
 int r3vMap::size() const
 {
@@ -159,11 +150,7 @@ node *r3vMap::getNode(double x, double y)
 	std::pair<double, double> p(x, y);
 	
 	it = m_nodes.find(p);
-	if (it != m_nodes.end())
-	{
-// 		qDebug("ME piden uno que existe %f %f", x, y);
-		return (*it).second;
-	}
+	if (it != m_nodes.end()) return (*it).second;
 	
 	double h;
 	int r, g, b;
