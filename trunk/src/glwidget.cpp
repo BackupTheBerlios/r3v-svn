@@ -409,3 +409,34 @@ int glWidget::findTranslation(const QString &locale)
 	if (it == itEnd) return -1;
 	else return i;
 }
+
+void noop()
+{
+	/* only here to cheat lupdate*/
+	QT_TRANSLATE_NOOP("QFileDialog", "Open");
+	QT_TRANSLATE_NOOP("QFileDialog", "File &name:");
+	QT_TRANSLATE_NOOP("QFileDialog", "File &type:");
+	QT_TRANSLATE_NOOP("QFileDialog", "Cancel");
+	QT_TRANSLATE_NOOP("QFileDialog", "Look &in:");
+	QT_TRANSLATE_NOOP("QFileDialog", "Back");
+	QT_TRANSLATE_NOOP("QFileDialog", "One directory up");
+	QT_TRANSLATE_NOOP("QFileDialog", "Create New Folder");
+	QT_TRANSLATE_NOOP("QFileDialog", "List View");
+	QT_TRANSLATE_NOOP("QFileDialog", "Detail View");
+	QT_TRANSLATE_NOOP("QFileDialog", "&Rename");
+	QT_TRANSLATE_NOOP("QFileDialog", "&Delete");
+	QT_TRANSLATE_NOOP("QFileDialog", "R&eload");
+	QT_TRANSLATE_NOOP("QFileDialog", "Sort");
+	QT_TRANSLATE_NOOP("QFileDialog", "Show &hidden files");
+	QT_TRANSLATE_NOOP("QFileDialog", "Sort by &Name");
+	QT_TRANSLATE_NOOP("QFileDialog", "Sort by &Size");
+	QT_TRANSLATE_NOOP("QFileDialog", "Sort by &Date");
+	QT_TRANSLATE_NOOP("QFileDialog", "&Unsorted");
+	QT_TRANSLATE_NOOP("QLineEdit", "&Undo");
+	QT_TRANSLATE_NOOP("QLineEdit", "&Redo");
+	QT_TRANSLATE_NOOP("QLineEdit", "Cu&t");
+	QT_TRANSLATE_NOOP("QLineEdit", "&Copy");
+	QT_TRANSLATE_NOOP("QLineEdit", "&Paste");
+	QT_TRANSLATE_NOOP("QLineEdit", "Clear");
+	QT_TRANSLATE_NOOP("QLineEdit", "Select All");
+}
