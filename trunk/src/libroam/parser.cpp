@@ -94,12 +94,12 @@ r3vMap *DEMParser::parse(const std::string &file)
 		
 		/* groundCoordsUnit */
 		groundCoordsUnit = readInt(6, aux);
-		printf("groundCoordsUnit:%d", groundCoordsUnit);
+// 		printf("groundCoordsUnit:%d", groundCoordsUnit);
 		if (groundCoordsUnit == 0 || groundCoordsUnit == 3) perror("No soportamos radians ni arc-segundos como unidad de medida");
 		
 		/* elevationCoordsUnit */
 		elevationCoordsUnit = readInt(6, aux);
-		printf("elevationCoordsUnit:%d", elevationCoordsUnit);
+// 		printf("elevationCoordsUnit:%d", elevationCoordsUnit);
 		
 		/* polygonSides */
 		polygonSides = readInt(6, aux);
@@ -144,9 +144,9 @@ r3vMap *DEMParser::parse(const std::string &file)
 		rx = readDouble(12, aux);
 		ry = readDouble(12, aux);
 		rz = readDouble(12, aux);
-		printf("Resolucion X:%f", rx);
-		printf("Resolucion Y:%f", ry);
-		printf("Resolucion Z:%f", rz);
+// 		printf("Resolucion X:%f", rx);
+// 		printf("Resolucion Y:%f", ry);
+// 		printf("Resolucion Z:%f", rz);
 		
 // 		TODO assert(rx == ry);
 		
@@ -170,7 +170,7 @@ r3vMap *DEMParser::parse(const std::string &file)
 				conversionFactor = conversionFactor * 0.3048;
 			}
 		}
-		printf("Factor conversion %f", conversionFactor);
+// 		printf("Factor conversion %f", conversionFactor);
 		
 		/* perfiles */
 		int row, n;
@@ -318,15 +318,14 @@ r3vMap *DEMParser::parse(const std::string &file)
 			allHeights.push_back(heights);
 		}
 		m_file -> close();
-		m->setMap(allHeights, true);
 		
 		// SQUARE THE MAP
 		int x = 0; // maximum square side size
 		int p = 0; // position where the maximum square side size begins
-		int col = m->size();
+		int col = allHeights.size();
 		for (int i = 0; i < col; i++)
 		{
-			n = m->m_heights[i]->size();
+			n = allHeights[i]->size();
 
 			if (i + n >= col) n = col - i;
 			if (n > x)
@@ -335,7 +334,7 @@ r3vMap *DEMParser::parse(const std::string &file)
 				int j = i;
 				while(good && j < n + i)
 				{
-					good = good && m->m_heights[j]->size() >= n;
+					good = good && allHeights[j]->size() >= n;
 					j++;
 				}
 				
@@ -365,24 +364,26 @@ r3vMap *DEMParser::parse(const std::string &file)
 		std::vector<std::vector<double>*>::iterator it;
 		for (int i = 0; i < p; i++)
 		{
-			it = m->m_heights.begin();
+			it = allHeights.begin();
 			delete *it;
-			m->m_heights.erase(it);
+			allHeights.erase(it);
 		}
 	
 		std::vector<double> *v;
 		for (int i = 0; i < x; i++)
 		{
-			v = m->m_heights[i];
+			v = allHeights[i];
 			v -> resize(x);
 		}
 		
 		for (int i = 0; i < col - p - x; i++)
 		{
-			v = m->m_heights[i + x];
+			v = allHeights[i + x];
 			delete v;
 		}
-		m->m_heights.resize(x);
+		allHeights.resize(x);
+		
+		m->setMap(allHeights, true);
 	}
 	delete m_file;
 	return m;

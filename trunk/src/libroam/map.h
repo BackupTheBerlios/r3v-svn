@@ -20,8 +20,6 @@ class node;
 
 class r3vMap
 {
-	friend class DEMParser;
-	
 	public:
 		r3vMap();
 		~r3vMap();
