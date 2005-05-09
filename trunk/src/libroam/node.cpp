@@ -107,8 +107,3 @@ triangle *node::getTriangle(node *n, const triangle *t) const
 		else return t2;
 	}
 }
-
-void node::print() const
-{
-	printf("x:%f y:%f z:%f", m_coords[0], m_coords[1], m_coords[2]);
-}

@@ -33,8 +33,6 @@ class node
 		void removeTriangle(triangle *t);
 		triangle *getTriangle(node *n, const triangle *t) const;
 		
-		void print() const;
-		
 	private:
 		node(double x, double y, double z, int r, int g, int b);
 	
