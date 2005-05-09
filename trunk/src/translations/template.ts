@@ -12,11 +12,6 @@
 </context>
 <context>
     <name>Language</name>
-    <message>
-        <source>English</source>
-        <comment>Here put the name of the language you are translating. Example: If you are doing the Spanish Translation write Espa&#xc3;&#xb1;ol</comment>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>glWidget</name>
@@ -46,10 +41,6 @@
     </message>
     <message>
         <source>DEM files (*.dem);;Plain maps (*.pm)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Languages</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -15,7 +15,7 @@
     <message>
         <source>English</source>
         <comment>Here put the name of the language you are translating. Example: If you are doing the Spanish Translation write Espa&#xc3;&#xb1;ol</comment>
-        <translation>Català</translation>
+        <translation type="obsolete">Català</translation>
     </message>
 </context>
 <context>
@@ -54,7 +54,7 @@
     </message>
     <message>
         <source>&amp;Languages</source>
-        <translation type="unfinished">&amp;Idiomes</translation>
+        <translation type="obsolete">&amp;Idiomes</translation>
     </message>
 </context>
 </TS>
