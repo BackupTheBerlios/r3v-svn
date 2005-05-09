@@ -12,12 +12,12 @@ echo "checking for Qt ..."
 
 if test -z $QTDIR; then
 	# Debian does not set $QTDIR but has things in place, checking for Debian
-	if !(test -e /usr/include/qt3/qapplication.h && test -e /usr/bin/moc && test -e /usr/lib/libqt-mt.so.3 && test -e /usr/lib/libqt-mt.la); then
+	if !(test -e /usr/include/qt3/qapplication.h && test -e /usr/bin/moc && test -e /usr/bin/lrelease && test -e /usr/bin/lupdate && test -e /usr/lib/libqt-mt.so.3 && test -e /usr/lib/libqt-mt.la); then
 		echo "You don't Qt or Qt-devel packages installed, if you have them please set \$QTDIR to point to your Qt installation"
 		exit
 	else
 		QT_INCLUDES="/usr/include/qt3"
-		QT_MOC_PATH="/usr/bin"
+		QT_BIN_PATH="/usr/bin"
 		QT_LIBS="/usr/lib"
 	fi
 else
@@ -46,6 +46,16 @@ else
 		exit
 	fi
 
+	if !(test -e $QTDIR/bin/lrelease) then
+		echo "You have \$QTDIR set, but it does not seem to point to a valid Qt installation, could not find the lrelease executable"
+		exit
+	fi
+
+	if !(test -e $QTDIR/bin/lupdate) then
+		echo "You have \$QTDIR set, but it does not seem to point to a valid Qt installation, could not find the lupdate executable"
+		exit
+	fi
+
 	QT4=no;
 	if !(test -e $QTDIR/lib/libqt-mt.so.3) then
 		if !(test -e $QTDIR/lib/libQtOpenGL.so.4) then
@@ -69,14 +79,13 @@ else
 	fi
 	
 	QT_INCLUDES="$QTDIR/include"
-	QT_MOC_PATH="$QTDIR/bin"
+	QT_BIN_PATH="$QTDIR/bin"
 	QT_LIBS="$QTDIR/lib"
 fi
 
 echo "    Qt libs found at $QT_LIBS"
 echo "    Qt includes found at $QT_INCLUDES"
-echo "    Qt binaries found at $QT_MOC_PATH"
-
+echo "    Qt binaries found at $QT_BIN_PATH"
 
 if (test x$QT4 = xyes) then
 	AC_DEFINE_UNQUOTED(QT4, 1, [Defines if your system has QT4 library])
@@ -88,8 +97,13 @@ else
 	QT_LIB_LA="$QT_LIBS/libqt-mt.la"
 fi
 
+if (test x$prefix = xNONE) then
+	prefix=/usr/local
+fi
+AC_DEFINE_UNQUOTED(PREFIX, "$prefix", [Defines the installation prefix])
+
 AC_SUBST(QT_LIB_LA)
 AC_SUBST(QT_INCLUDES)
-AC_SUBST(QT_MOC_PATH)
+AC_SUBST(QT_BIN_PATH)
 
-AC_OUTPUT(Makefile src/Makefile src/libroam/Makefile)
+AC_OUTPUT(Makefile src/Makefile src/libroam/Makefile src/translations/Makefile)
