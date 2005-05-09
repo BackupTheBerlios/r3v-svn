@@ -17,6 +17,7 @@
 #include <qevent.h> 
 #include <qfiledialog.h>
 #include <qfontmetrics.h>
+#include <qlocale.h>
 #include <qmessagebox.h>
 #if QT4
 #include <qmenu.h>
@@ -41,17 +42,37 @@ glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false), m_F
 	m_lastTime = QTime::currentTime();*/
 
 	showFullScreen();
-	
-	QDir d(QString("%1/share/apps/r3v/translations").arg(PATH));
-	d.setNameFilter("*.qm");
-	QStringList list = d.entryList();
-	QTranslator tra;
-	for (QStringList::Iterator it = list.begin(); it != list.end(); ++it)
+
+	QString locale = QLocale::system().name();
+	// remove the .encoding from the locale
+#if QT4
+	locale = locale.left(locale.indexOf(".", -1));
+#else
+	locale = locale.left(locale.findRev("."));
+#endif
+
+	findTranslationFiles(QString("%1/share/apps/r3v/translations").arg(PREFIX));
+	// if did not found any translation file installed try to look for non installed ones
+	if (m_langs.count() == 0) findTranslationFiles("translations");
+
+	// look if we find any translation matching the current locale
+	int i = findTranslation(locale);
+	if (i == -1)
 	{
-		tra.load(*it);
-		qApp -> installTranslator(&tra);
-		m_langs.insert(*it, qApp -> translate("Language", "English", "Here put the name of the language you are translating. Example: If you are doing the Spanish Translation write Español"));
-		qApp -> removeTranslator(&tra);
+		// failed finding a translation for the current locale, if the locale is foo_bar try finding
+		// one for foo
+#if QT4
+		locale = locale.left(locale.indexOf("_", -1));
+#else
+		locale = locale.left(locale.findRev("_"));
+#endif
+		i = findTranslation(locale);
+	}
+	
+	if (i != -1)
+	{
+		m_tra.load(m_langs[i]);
+		qApp -> installTranslator(&m_tra);
 	}
 }
 
@@ -295,19 +316,6 @@ void glWidget::mousePressEvent(QMouseEvent *e)
 		int id = popup.insertItem(tr("&Close"), this, SLOT(closeMap()));
 		popup.insertItem(tr("&Quit"), qApp, SLOT(quit()));
 		popup.setItemEnabled(id, m_roam.hasMap());
-		if (!m_langs.isEmpty())
-		{
-			QPopupMenu *langs = new QPopupMenu(this);
-			QStringList list = m_langs.values();
-			int i = 1;
-			for (QStringList::const_iterator it = list.begin(); it != list.end(); ++it)
-			{
-				langs->insertItem(*it, i);
-				i++;
-			}
-			popup.insertItem(tr("Languages"), langs);
-			connect(langs, SIGNAL(activated(int)), this, SLOT(canviarIdioma(int)));
-		}
 #endif
 		popup.exec(e->pos());
 	}
@@ -332,24 +340,6 @@ void glWidget::closeMap()
 	updateGL();
 }
 
-void glWidget::canviarIdioma(int i)
-{
-	QStringList list = m_langs.keys();
-	QStringList::const_iterator it = list.begin();
-	while (it != list.end())
-	{
-		printf("%s\n", (*it).latin1());
-		++it;
-	}
-	printf("%d\n", i);
-	for (; i > 0; i--) ++it;
-	
-	QTranslator tra;
-	tra.load(*it);
-	printf("%s\n", (*it).latin1());
-	qApp -> installTranslator(&tra);
-}
-
 void glWidget::updateFPS()
 {
 	int aux;
@@ -366,4 +356,56 @@ void glWidget::initFPSTimer()
 	m_lastFPS = 0;
 	m_newFPSSum = 0;
 	m_FPSTimes = 0;
+}
+
+void glWidget::findTranslationFiles(const QString &path)
+{
+	QStringList list;
+	QString filePath;
+	QDir d(path);
+#if QT4
+	QStringList filters;
+	filters << "*.qm";
+	list = d.entryList(filters);
+#else
+	d.setNameFilter("*.qm");
+	list = d.entryList();
+#endif
+	
+	int i = m_langs.count();
+	for (QStringList::Iterator it = list.begin(); it != list.end(); ++it)
+	{
+		filePath = d.path()+"/"+*it;
+		m_tra.load(filePath);
+		qApp -> installTranslator(&m_tra);
+		m_langs.insert(i, filePath);
+		qApp -> removeTranslator(&m_tra);
+		i++;
+	}
+}
+
+int glWidget::findTranslation(const QString &locale)
+{
+	QStringList files = m_langs.values();
+	QStringList::const_iterator it, itEnd;
+	it = files.begin();
+	itEnd = files.end();
+	int i = 0;
+	for(; it != itEnd; ++it)
+	{
+#if QT4
+		QString file = (*it).right((*it).length() - (*it).indexOf("/", -1) - 1);
+		// remove the .qm from the file
+		file = file.left(file.indexOf(".", -1));
+		if (file.toLower() == locale.toLower()) break;
+#else
+		QString file = (*it).right((*it).length() - (*it).findRev("/") - 1);
+		// remove the .qm from the file
+		file = file.left(file.findRev("."));
+		if (file.lower() == locale.lower()) break;
+#endif
+		i++;
+	}
+	if (it == itEnd) return -1;
+	else return i;
 }

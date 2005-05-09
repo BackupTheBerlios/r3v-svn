@@ -13,6 +13,7 @@
 #include <qdatetime.h>
 #include <qmap.h>
 #include <qgl.h>
+#include <qtranslator.h>
 
 #include "libroam/roam.h"
 
@@ -42,9 +43,10 @@ Q_OBJECT
 	private slots:
 		void closeMap();
 		void updateFPS();
-		void canviarIdioma(int i);
-
+	
 	private:
+		void findTranslationFiles(const QString &path);
+		int findTranslation(const QString &locale);
 		void initFPSTimer();
 	
 		// popup
@@ -57,9 +59,11 @@ Q_OBJECT
 		int m_lastFPS, m_newFPSSum, m_FPSTimes;
 		int m_fontHeight;
 		
-		QMap<QString, QString> m_langs;
+		QMap<int, QString> m_langs;
 		
 		ROAM m_roam;
+		
+		QTranslator m_tra;
 };
 
 #endif
