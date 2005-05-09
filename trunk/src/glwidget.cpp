@@ -46,7 +46,7 @@ glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false), m_F
 	QString locale = QLocale::system().name();
 	// remove the .encoding from the locale
 #if QT4
-	locale = locale.left(locale.indexOf(".", -1));
+	locale = locale.left(locale.lastIndexOf("."));
 #else
 	locale = locale.left(locale.findRev("."));
 #endif
@@ -62,7 +62,7 @@ glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false), m_F
 		// failed finding a translation for the current locale, if the locale is foo_bar try finding
 		// one for foo
 #if QT4
-		locale = locale.left(locale.indexOf("_", -1));
+		locale = locale.left(locale.lastIndexOf("_"));
 #else
 		locale = locale.left(locale.findRev("_"));
 #endif
@@ -394,9 +394,9 @@ int glWidget::findTranslation(const QString &locale)
 	for(; it != itEnd; ++it)
 	{
 #if QT4
-		QString file = (*it).right((*it).length() - (*it).indexOf("/", -1) - 1);
+		QString file = (*it).right((*it).length() - (*it).lastIndexOf("/") - 1);
 		// remove the .qm from the file
-		file = file.left(file.indexOf(".", -1));
+		file = file.left(file.lastIndexOf("."));
 		if (file.toLower() == locale.toLower()) break;
 #else
 		QString file = (*it).right((*it).length() - (*it).findRev("/") - 1);
