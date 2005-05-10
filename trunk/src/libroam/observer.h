@@ -20,6 +20,9 @@ class observer
 		void left();
 		void right();
 		
+		void up();
+		void down();
+		
 		void rotate(float x, float y);
 		
 		void position(float *x, float *y, float *z) const;

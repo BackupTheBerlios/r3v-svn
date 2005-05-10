@@ -33,17 +33,28 @@ void observer::backward()
 
 void observer::left()
 {
-	m_posX += m_step * sin(m_rotY - M_PI / 2) * cos(m_rotX);
-	m_posZ += m_step * cos(m_rotY - M_PI / 2) * cos(m_rotX);
+	m_posX += m_step * sin(m_rotY - M_PI / 2);
+	m_posZ += m_step * cos(m_rotY - M_PI / 2);
 	m_changed = true;
 }
 
 void observer::right()
 {
-	m_posX += m_step * sin(m_rotY + M_PI / 2) * cos(m_rotX);
-	m_posZ += m_step * cos(m_rotY + M_PI / 2) * cos(m_rotX);
+	m_posX += m_step * sin(m_rotY + M_PI / 2);
+	m_posZ += m_step * cos(m_rotY + M_PI / 2);
 	m_changed = true;
 }
+
+void observer::up()
+{
+	m_posY += m_step;
+}
+
+void observer::down()
+{
+	m_posY -= m_step;
+}
+
 
 /*#include <stdio.h>
 void observer::pepe()

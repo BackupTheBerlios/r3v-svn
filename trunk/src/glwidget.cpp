@@ -156,6 +156,14 @@ void glWidget::keyPressEvent(QKeyEvent *e)
 			if (m_roam.hasMap()) m_roam.moveObserverRight();
 		break;
 		
+		case Qt::Key_Q:
+			if (m_roam.hasMap()) m_roam.moveObserverUp();
+		break;
+		
+		case Qt::Key_E:
+			if (m_roam.hasMap()) m_roam.moveObserverDown();
+		break;
+		
 		case Qt::Key_Escape:
 			qApp -> quit();
 		break;

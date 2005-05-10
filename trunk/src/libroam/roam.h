@@ -39,6 +39,8 @@ class ROAM
 		void moveObserverBackward();
 		void moveObserverLeft();
 		void moveObserverRight();
+		void moveObserverUp();
+		void moveObserverDown();
 		void rotateObserver(float x, float y);
 		
 // 		void mergeOne();

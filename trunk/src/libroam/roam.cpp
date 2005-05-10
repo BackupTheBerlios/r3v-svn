@@ -221,6 +221,16 @@ void ROAM::moveObserverRight()
 	m_observer -> right();
 }
 
+void ROAM::moveObserverUp()
+{
+	m_observer -> up();
+}
+
+void ROAM::moveObserverDown()
+{
+	m_observer -> down();
+}
+
 void ROAM::rotateObserver(float x, float y)
 {
 	m_observer -> rotate(x, y);
