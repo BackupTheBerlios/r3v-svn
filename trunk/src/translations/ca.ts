@@ -29,20 +29,12 @@
         <translation>Cancel·la</translation>
     </message>
     <message>
-        <source>Look &amp;in</source>
-        <translation type="obsolete">&amp;Busca a</translation>
-    </message>
-    <message>
         <source>Look &amp;in:</source>
         <translation>&amp;Busca a:</translation>
     </message>
     <message>
         <source>Back</source>
         <translation>Enrera</translation>
-    </message>
-    <message>
-        <source>One directory Up</source>
-        <translation type="obsolete">Puja un directori</translation>
     </message>
     <message>
         <source>Create New Folder</source>
