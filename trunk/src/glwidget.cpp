@@ -204,13 +204,13 @@ void glWidget::keyPressEvent(QKeyEvent *e)
 // 	
 // 		break;
 		
-		case Qt::Key_1:
+/*		case Qt::Key_1:
 			if (m_roam.hasMap()) m_roam.splitOne();
 		break;
 		
 		case Qt::Key_2:
 			if (m_roam.hasMap()) m_roam.mergeOne();
-		break;
+		break;*/
 		
 /*		case Qt::Key_3:
 			if (m_roam.hasMap()) m_roam.renew();

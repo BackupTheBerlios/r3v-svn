@@ -226,19 +226,19 @@ void ROAM::rotateObserver(float x, float y)
 	m_observer -> rotate(x, y);
 }
 
-void ROAM::splitOne()
-{
-	triangle *t;
-	t = m_splitQueue->last();
-	t -> split(m_splitQueue, m_mergeQueue, getFrustum());
-}
-
-void ROAM::mergeOne()
-{
-	diamond *d;
-	d = m_mergeQueue->first();
-	d -> merge(m_splitQueue, m_mergeQueue);
-}
+// void ROAM::splitOne()
+// {
+// 	triangle *t;
+// 	t = m_splitQueue->last();
+// 	t -> split(m_splitQueue, m_mergeQueue, getFrustum());
+// }
+// 
+// void ROAM::mergeOne()
+// {
+// 	diamond *d;
+// 	d = m_mergeQueue->first();
+// 	d -> merge(m_splitQueue, m_mergeQueue);
+// }
 
 // void ROAM::renew()
 // {
