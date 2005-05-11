@@ -28,7 +28,7 @@
 
 #include "glwidget.h"
 
-glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false), m_FPSEnabled(true)
+glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false)/*, m_FPSEnabled(true)*/
 {
 /*	QTimer *t = new QTimer(this);
 	connect(t, SIGNAL(timeout()), this, SLOT(updateGL()));
@@ -40,6 +40,26 @@ glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false), m_F
 	
 	m_fontHeight = QFontMetrics(font()).height();
 	m_lastTime = QTime::currentTime();*/
+	
+	QString iconPath = QString("%1/share/apps/r3v/icon/r3v.png").arg(PREFIX);
+	if (!QFile::exists(iconPath))
+	{
+		iconPath = "icon/r3v.png";
+		if (!QFile::exists(iconPath))
+		{
+			iconPath = "";
+		}
+	}
+	
+	
+	if (!iconPath.isEmpty())
+	{
+#if QT4
+		setWindowIcon(QIcon(iconPath));
+#else
+		setIcon(iconPath);
+#endif
+	}
 
 	showFullScreen();
 
@@ -51,12 +71,14 @@ glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false), m_F
 	locale = locale.left(locale.findRev("."));
 #endif
 
-	findTranslationFiles(QString("%1/share/apps/r3v/translations").arg(PREFIX));
+	QMap<int, QString> langs;
+
+	findTranslationFiles(QString("%1/share/apps/r3v/translations").arg(PREFIX), langs);
 	// if did not found any translation file installed try to look for non installed ones
-	if (m_langs.count() == 0) findTranslationFiles("translations");
+	if (langs.count() == 0) findTranslationFiles("translations", langs);
 
 	// look if we find any translation matching the current locale
-	int i = findTranslation(locale);
+	int i = findTranslation(locale, langs);
 	if (i == -1)
 	{
 		// failed finding a translation for the current locale, if the locale is foo_bar try finding
@@ -66,18 +88,29 @@ glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false), m_F
 #else
 		locale = locale.left(locale.findRev("_"));
 #endif
-		i = findTranslation(locale);
+		i = findTranslation(locale, langs);
 	}
 	
 	if (i != -1)
 	{
-		m_tra.load(m_langs[i]);
+		m_tra.load(langs[i]);
 		qApp -> installTranslator(&m_tra);
 	}
 }
 
 glWidget::~glWidget()
 {
+}
+
+void glWidget::openMapDeferred(const QString &file)
+{
+	m_deferredFile = file;
+	QTimer::singleShot(0, this, SLOT(openMapDeferredSlot()));
+}
+
+void glWidget::openMapDeferredSlot()
+{
+	openMap(m_deferredFile);
 }
 
 void glWidget::openMap(const QString &file)
@@ -100,13 +133,14 @@ void glWidget::openMap(const QString &file)
 	QCursor::setPos(width() / 2, height() / 2);
 	m_fromPopup = true;
 	setMouseTracking(true);
+	updateGL();
 }
 
 void glWidget::resizeGL(int width, int height)
 {
 	float aspect = (float)width / height;
 	glViewport(0, 0, width, height);
-
+	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(60, aspect, 1.0, 8000.0);
@@ -174,44 +208,6 @@ void glWidget::keyPressEvent(QKeyEvent *e)
 // 			else m_FPSTimer -> stop();
 // 		break;
 		
-// 		case Key_F1:
-// 		
-// 		int viewport[4];
-// 		double modelViewMatrix[16];
-// 		double projectionMatrix[16];
-// 		glGetIntegerv(GL_VIEWPORT, viewport);
-// 		glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
-// 		glGetDoublev(GL_PROJECTION_MATRIX, projectionMatrix);
-// 	
-// 		for (int i = 0; i < 4; i += 1)
-// 		{
-// 			qDebug("%f %f %f %f", modelViewMatrix[i], modelViewMatrix[i+4], modelViewMatrix[i+8], modelViewMatrix[i+12]);
-// 		}
-// 		
-// 		float x1, y1, z1, x2, y2, z2, x3, y3, z3;
-// 		
-// 		x1 = modelViewMatrix[0] * 10.0 + modelViewMatrix[4] * 11.0 + modelViewMatrix[8] * 12.0 + modelViewMatrix[12];
-// 		y1 = modelViewMatrix[1] * 10.0 + modelViewMatrix[5] * 11.0 + modelViewMatrix[8] * 12.0 + modelViewMatrix[13];
-// 		z1 = modelViewMatrix[2] * 10.0 + modelViewMatrix[6] * 11.0 + modelViewMatrix[10] * 12.0 + modelViewMatrix[14];
-// 		
-// 		x2 = modelViewMatrix[0] * 10.0 + modelViewMatrix[4] * 15.0 + modelViewMatrix[8] * 12.0 + modelViewMatrix[12];
-// 		y2 = modelViewMatrix[1] * 10.0 + modelViewMatrix[5] * 15.0 + modelViewMatrix[8] * 12.0 + modelViewMatrix[13];
-// 		z2 = modelViewMatrix[2] * 10.0 + modelViewMatrix[6] * 15.0 + modelViewMatrix[10] * 12.0 + modelViewMatrix[14];
-// 		
-// 		x3 = modelViewMatrix[0] * 0.0 + modelViewMatrix[4] * 4.0 + modelViewMatrix[8] * 0.0;
-// 		y3 = modelViewMatrix[1] * 0.0 + modelViewMatrix[5] * 4.0 + modelViewMatrix[8] * 0.0;
-// 		z3 = modelViewMatrix[2] * 0.0 + modelViewMatrix[6] * 4.0 + modelViewMatrix[10] * 0.0;
-// 		
-// 		qDebug("%f %f %f", x1, y1, z1);
-// 		qDebug("%f %f %f", x2, y2, z2);
-// 		
-// 		qDebug("%f %f %f", x2 - x1, y2 - y1, z2 - z1);
-// 		qDebug("%f %f %f", x3, y3, z3);
-// 
-// 		m_observer->pepe();
-// 	
-// 		break;
-		
 /*		case Qt::Key_1:
 			if (m_roam.hasMap()) m_roam.splitOne();
 		break;
@@ -224,59 +220,6 @@ void glWidget::keyPressEvent(QKeyEvent *e)
 			if (m_roam.hasMap()) m_roam.renew();
 		break;*/
 		
-// 		case Key_3:
-// 			for (int i = 0; i < 10; i++)
-// 			{
-// 				d = m_map -> height(1292, i);
-// 				qDebug("%f", d);
-// 				d = m_map -> height(1291, i);
-// 				qDebug("%f", d);
-// 			}
-// 			
-// 		break;
-		
-// 		case Key_2:
-// 		float a, b, c, p1, q1, r1, p2, q2, r2, p3, q3, r3, d1, d2, d3;
-// 		glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
-// 			a = modelViewMatrix[4];
-// 			b = modelViewMatrix[5];
-// 			c = modelViewMatrix[6];
-// 	
-// 			p1 = modelViewMatrix[0] * 646.5 + 
-// 	     		modelViewMatrix[4] * 446.7 + 
-// 	     		modelViewMatrix[8] * 2300.0 + 
-// 	     		modelViewMatrix[12];
-// 			q1 = modelViewMatrix[1] * 646.5 + 
-// 	     		modelViewMatrix[5] * 446.7 + 
-// 	     		modelViewMatrix[9] * 2300.0 + 
-// 	     	modelViewMatrix[13];
-// 	r1 = modelViewMatrix[2] * 646.5 + 
-// 	     modelViewMatrix[6] * 446.7 + 
-// 	     modelViewMatrix[10] * 2300.0 + 
-// 	     modelViewMatrix[14];
-// 		 
-// 		 d1 = 2 / (r1 * r1 - c * c) * sqrt(pow(a * r1 - c * p1, 2) + pow(b * r1 - c * q1, 2));
-// 		 qDebug("%f %f %f", p1, q1, r1);
-// 		 qDebug("Prioridad 1:%f", d1);
-// 		 
-// 		 p2 = modelViewMatrix[0] * 646.5 + 
-// 	     		modelViewMatrix[4] * 446.7 + 
-// 	     		modelViewMatrix[8] * 2400.0 + 
-// 	     		modelViewMatrix[12];
-// 			q2 = modelViewMatrix[1] * 646.5 + 
-// 	     		modelViewMatrix[5] * 446.7 + 
-// 	     		modelViewMatrix[9] * 2400.0 + 
-// 	     	modelViewMatrix[13];
-// 	r2 = modelViewMatrix[2] * 646.5 + 
-// 	     modelViewMatrix[6] * 446.7 + 
-// 	     modelViewMatrix[10] * 2400.0 + 
-// 	     modelViewMatrix[14];
-// 		 
-// 		 qDebug("%f %f %f", p2, q2, r2);
-// 		 d2 = 2 / (r2 * r2 - c * c) * sqrt(pow(a * r2 - c * p2, 2) + pow(b * r2 - c * q2, 2));
-// 		 qDebug("Prioridad 2:%f", d2);
-// 		break;
-		
 		default:
 		break;
 	}
@@ -287,20 +230,20 @@ void glWidget::mouseMoveEvent(QMouseEvent *e)
 {
 	int hw, hh, dify, difx;
 	
+	hw = width() / 2;
+	hh = height() / 2;
+	
 	if (m_fromPopup)
 	{
 		m_fromPopup = false;
+		QCursor::setPos(hw, hh);
 		return;
 	}
-	
-	hw = width() / 2;
-	hh = height() / 2;
 	
 	dify = hw - e -> x();
 	difx = hh - e -> y();
 	
-	// TODO that 25.0 should be box dependant ... or not?
-	if (m_roam.hasMap()) m_roam.rotateObserver(difx / 25.0, dify / 25.0);
+	if (m_roam.hasMap()) m_roam.rotateObserver(difx / 250.0, dify / 250.0);
 	
 	QCursor::setPos(hw, hh);
 	updateGL();
@@ -318,12 +261,16 @@ void glWidget::mousePressEvent(QMouseEvent *e)
 		QAction *a = popup.addAction(tr("&Close"), this, SLOT(closeMap()));
 		popup.addAction(tr("&Quit"), qApp, SLOT(quit()));
 		a->setEnabled(m_roam.hasMap());
+		a = popup.addAction(tr("&About"), this, SLOT(about()));
+		popup.insertSeparator(a);
 #else
 		QPopupMenu popup;
 		popup.insertItem(tr("&Open"), this, SLOT(openMap()));
 		int id = popup.insertItem(tr("&Close"), this, SLOT(closeMap()));
 		popup.insertItem(tr("&Quit"), qApp, SLOT(quit()));
 		popup.setItemEnabled(id, m_roam.hasMap());
+		popup.insertSeparator();
+		popup.insertItem(tr("&About"), this, SLOT(about()));
 #endif
 		popup.exec(e->pos());
 	}
@@ -339,7 +286,6 @@ void glWidget::openMap()
 #endif
 	
 	openMap(file);
-	updateGL();
 }
 
 void glWidget::closeMap()
@@ -348,25 +294,32 @@ void glWidget::closeMap()
 	updateGL();
 }
 
-void glWidget::updateFPS()
+void glWidget::about()
 {
-	int aux;
-	aux = m_newFPSSum / m_FPSTimes;
-	m_lastFPS = 1000 / aux;
-	m_FPSTimes = 0;
-	m_newFPSSum = 0;
+	setCursor(Qt::ArrowCursor);
+	QMessageBox::about(this, tr("About"), tr("Roam 3D Viewer\n\nDeveloped by Albert Astals Cid\nSupervised by Lluís Pérez Vidal\n\nThis program is Free Software"));
+	setCursor(Qt::BlankCursor);
 }
 
-void glWidget::initFPSTimer()
-{
-	m_FPSTimer -> start(1000);
-	m_lastTime = QTime::currentTime();
-	m_lastFPS = 0;
-	m_newFPSSum = 0;
-	m_FPSTimes = 0;
-}
+// void glWidget::updateFPS()
+// {
+// 	int aux;
+// 	aux = m_newFPSSum / m_FPSTimes;
+// 	m_lastFPS = 1000 / aux;
+// 	m_FPSTimes = 0;
+// 	m_newFPSSum = 0;
+// }
+// 
+// void glWidget::initFPSTimer()
+// {
+// 	m_FPSTimer -> start(1000);
+// 	m_lastTime = QTime::currentTime();
+// 	m_lastFPS = 0;
+// 	m_newFPSSum = 0;
+// 	m_FPSTimes = 0;
+// }
 
-void glWidget::findTranslationFiles(const QString &path)
+void glWidget::findTranslationFiles(const QString &path, QMap<int, QString> &langs)
 {
 	QStringList list;
 	QString filePath;
@@ -380,21 +333,21 @@ void glWidget::findTranslationFiles(const QString &path)
 	list = d.entryList();
 #endif
 	
-	int i = m_langs.count();
+	int i = langs.count();
 	for (QStringList::Iterator it = list.begin(); it != list.end(); ++it)
 	{
 		filePath = d.path()+"/"+*it;
 		m_tra.load(filePath);
 		qApp -> installTranslator(&m_tra);
-		m_langs.insert(i, filePath);
+		langs.insert(i, filePath);
 		qApp -> removeTranslator(&m_tra);
 		i++;
 	}
 }
 
-int glWidget::findTranslation(const QString &locale)
+int glWidget::findTranslation(const QString &locale, QMap<int, QString> &langs)
 {
-	QStringList files = m_langs.values();
+	QStringList files = langs.values();
 	QStringList::const_iterator it, itEnd;
 	it = files.begin();
 	itEnd = files.end();
@@ -447,4 +400,5 @@ void noop()
 	QT_TRANSLATE_NOOP("QLineEdit", "&Paste");
 	QT_TRANSLATE_NOOP("QLineEdit", "Clear");
 	QT_TRANSLATE_NOOP("QLineEdit", "Select All");
+	QT_TRANSLATE_NOOP("QMessageBox", "OK");
 }

@@ -74,32 +74,23 @@ frustum::frustum(double *pjm, double *mvm)
 	m_frustum[5][2] = clip[11] + clip[10];
 	m_frustum[5][3] = clip[15] + clip[14];
 	
-	// normalize the planes
-// 	for (int i = 0; i < 6; i++)
-// 	{
-// 		normal = sqrt(m_frustum[i][0] * m_frustum[i][0] + m_frustum[i][1] * m_frustum[i][1] + m_frustum[i][2] * m_frustum[i][2]);
-// 		m_frustum[i][0] /= normal;
-// 		m_frustum[i][1] /= normal;
-// 		m_frustum[i][2] /= normal;
-// 		m_frustum[i][3] /= normal;
-// 	}
 }
 
 void frustum::setTriangleStatus(triangle *t) const
 {
-	int p;
-	
 	triangle::FRUSTUMSTATUS newStatus, oldStatus;
+	triangle *parent;
 	
 	oldStatus = t -> frustumStatus();
 	newStatus = triangle::UNKNOWN;
+	parent = t -> parent();
 	
-	if (t -> parent() && t -> parent() -> frustumStatus() == triangle::COMPLETELYINSIDE) newStatus = triangle::COMPLETELYINSIDE;
-	else if (t -> parent() && t -> parent() -> frustumStatus() == triangle::OUTSIDE) newStatus = triangle::OUTSIDE;
+	if (parent && parent -> frustumStatus() == triangle::COMPLETELYINSIDE) newStatus = triangle::COMPLETELYINSIDE;
+	else if (parent && parent -> frustumStatus() == triangle::OUTSIDE) newStatus = triangle::OUTSIDE;
 	else
 	{
 		int count = 0;
-		for (p = 0; p < 4; p++)
+		for (int p = 0; p < 6; p++)
 		{
 			int aux = 0;
 			
@@ -122,7 +113,7 @@ void frustum::setTriangleStatus(triangle *t) const
 			}
 		}
 		
-		if (count == 4)
+		if (count == 6)
 		{
 			// All three points are in front of all the planes
 			newStatus = triangle::COMPLETELYINSIDE;
@@ -130,12 +121,7 @@ void frustum::setTriangleStatus(triangle *t) const
 		else if (newStatus == triangle::UNKNOWN) newStatus = triangle::INSIDE;
 	}
 	
-// 	if (s == triangle::INSIDE)
-// 	{
-// 	}
-	
 	t->setFrustumStatus(newStatus);
-	
 	
 	if (t -> leftTriangle())
 	{

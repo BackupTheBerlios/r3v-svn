@@ -27,12 +27,12 @@ int main(int argc, char *argv[])
 	a.setMainWidget(g);
 #endif
 
-	if (a.argc() == 2)
+	if (argc == 2)
 	{
-		QString file = QFile::decodeName(a.argv()[1]);
+		QString file = QFile::decodeName(argv[1]);
 		if (QFile::exists(file))
 		{
-			g->openMap(file);
+			g->openMapDeferred(file);
 		}
 		else
 		{
@@ -40,7 +40,11 @@ int main(int argc, char *argv[])
 			g->openMap();
 		}
 	}
-	else g->openMap();
+	else
+	{
+		if (argc > 2) QMessageBox::critical(g, a.tr("Error"), "Syntax error, correct syntax is\nr3v [mapFile]\n\tmapFile: path of a map file (optional)");
+		g->openMap();
+	}
 
 	a.exec();
 	

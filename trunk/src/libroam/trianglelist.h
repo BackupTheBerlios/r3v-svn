@@ -28,7 +28,6 @@ class triangleList
 		triangleListConstIterator begin() const;
 		triangleListConstIterator end() const;
 		triangle *last() const;
-		void print() const;
 		
 	private:
 		std::multimap<double, triangle*> m_triangles;

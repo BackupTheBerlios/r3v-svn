@@ -121,6 +121,13 @@
     </message>
 </context>
 <context>
+    <name>QMessageBox</name>
+    <message>
+        <source>OK</source>
+        <translation>Acepta</translation>
+    </message>
+</context>
+<context>
     <name>glWidget</name>
     <message>
         <source>Error</source>
@@ -149,6 +156,28 @@
     <message>
         <source>DEM files (*.dem);;Plain maps (*.pm)</source>
         <translation>Ficheros DEM (*.dem);;Mapas sencillos (*.pm)</translation>
+    </message>
+    <message>
+        <source>&amp;About</source>
+        <translation>&amp;Acerca de</translation>
+    </message>
+    <message>
+        <source>About</source>
+        <translation>Acerca de</translation>
+    </message>
+    <message>
+        <source>Roam 3D Viewer
+
+Developed by Albert Astals Cid
+Supervised by Llu&#xed;s P&#xe9;rez Vidal
+
+This program is Free Software</source>
+        <translation>Roam 3D Viewer
+
+Desarrollado por Albert Astals Cid
+Supervisado por Lluís Pérez Vidal
+
+Este programa es software libre</translation>
     </message>
 </context>
 </TS>
