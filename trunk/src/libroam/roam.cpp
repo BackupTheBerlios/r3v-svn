@@ -184,20 +184,6 @@ void ROAM::paint()
 	glDisable(GL_POLYGON_OFFSET_FILL);
 }
 
-// 	if (m_FPSEnabled)
-// 	{
-// 		if (m_lastFPS != 0)
-// 		{
-// 			glColor3f(1,1,1);
-// 			renderText(0, m_fontHeight, QString("%1 FPS").arg(m_lastFPS));
-// 		}
-// 		
-// 		QTime t = QTime::currentTime();
-// 		m_newFPSSum += m_lastTime.msecsTo(t);
-// 		m_FPSTimes++;
-// 		m_lastTime = t;
-
-
 void ROAM::moveObserverForward()
 {
 	m_observer -> forward();

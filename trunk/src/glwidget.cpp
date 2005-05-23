@@ -28,19 +28,8 @@
 
 #include "glwidget.h"
 
-glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false)/*, m_FPSEnabled(true)*/, m_roam(5000)
+glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false), m_roam(5000)
 {
-/*	QTimer *t = new QTimer(this);
-	connect(t, SIGNAL(timeout()), this, SLOT(updateGL()));
-	t -> start(40);
-	
-	m_FPSTimer = new QTimer(this);
-	connect(m_FPSTimer, SIGNAL(timeout()), this, SLOT(updateFPS()));
-	initFPSTimer();
-	
-	m_fontHeight = QFontMetrics(font()).height();
-	m_lastTime = QTime::currentTime();*/
-	
 	QString iconPath = QString("%1/share/apps/r3v/icon/r3v.png").arg(PREFIX);
 	if (!QFile::exists(iconPath))
 	{
@@ -202,12 +191,6 @@ void glWidget::keyPressEvent(QKeyEvent *e)
 			qApp -> quit();
 		break;
 		
-// 		case Key_F2:
-// 			m_FPSEnabled = !m_FPSEnabled;
-// 			if (m_FPSEnabled) initFPSTimer();
-// 			else m_FPSTimer -> stop();
-// 		break;
-		
 /*		case Qt::Key_1:
 			if (m_roam.hasMap()) m_roam.splitOne();
 		break;
@@ -297,27 +280,9 @@ void glWidget::closeMap()
 void glWidget::about()
 {
 	setCursor(Qt::ArrowCursor);
-	QMessageBox::about(this, tr("About"), tr("Roam 3D Viewer\n\nDeveloped by Albert Astals Cid\nSupervised by Lluís Pérez Vidal\n\nThis program is Free Software"));
+	QMessageBox::about(this, tr("About"), tr("Roam 3D Viewer\n\nDeveloped by Albert Astals Cid\nSupervised by Lluï¿½ Pï¿½ez Vidal\n\nThis program is Free Software"));
 	setCursor(Qt::BlankCursor);
 }
-
-// void glWidget::updateFPS()
-// {
-// 	int aux;
-// 	aux = m_newFPSSum / m_FPSTimes;
-// 	m_lastFPS = 1000 / aux;
-// 	m_FPSTimes = 0;
-// 	m_newFPSSum = 0;
-// }
-// 
-// void glWidget::initFPSTimer()
-// {
-// 	m_FPSTimer -> start(1000);
-// 	m_lastTime = QTime::currentTime();
-// 	m_lastFPS = 0;
-// 	m_newFPSSum = 0;
-// 	m_FPSTimes = 0;
-// }
 
 void glWidget::findTranslationFiles(const QString &path, QMap<int, QString> &langs)
 {

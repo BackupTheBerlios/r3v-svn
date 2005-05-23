@@ -42,7 +42,6 @@ Q_OBJECT
 	
 	private slots:
 		void closeMap();
-// 		void updateFPS();
 		void openMapDeferredSlot();
 		void about();
 	
@@ -50,20 +49,12 @@ Q_OBJECT
 		void openMap(const QString &file);
 		void findTranslationFiles(const QString &path, QMap<int, QString> &langs);
 		int findTranslation(const QString &locale, QMap<int, QString> &langs);
-// 		void initFPSTimer();
 
 		// deferred map opening
 		QString m_deferredFile;
 		
 		// popup
 		bool m_fromPopup;
-		
-		// FPS related
-// 		bool m_FPSEnabled;
-// 		QTimer *m_FPSTimer;
-// 		QTime m_lastTime;
-// 		int m_lastFPS, m_newFPSSum, m_FPSTimes;
-// 		int m_fontHeight;
 		
 		ROAM m_roam;
 		
