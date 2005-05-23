@@ -18,7 +18,7 @@
 #include "observer.h"
 #include "parser.h"
 
-ROAM::ROAM() : m_map(0), m_observer(0), m_splitQueue(0), m_mergeQueue(0)
+ROAM::ROAM(int leaves) : m_map(0), m_observer(0), m_splitQueue(0), m_mergeQueue(0), m_leaves(leaves)
 {
 }
 
@@ -151,19 +151,16 @@ void ROAM::paint()
 	delete m_mergeQueue;
 	m_mergeQueue = newMergeQueue;
 	
-	while (m_map -> leaves() < 5000 ||
+	while (m_map -> leaves() < m_leaves ||
 	       (m_splitQueue -> last() -> priority() > m_mergeQueue -> first() -> priority()))
 	{
-// 		printf("A partir: %f A fusionar: %f\n", m_splitQueue -> last() -> priority(), m_mergeQueue -> first() -> priority());
-		if (m_map -> leaves() < 5000)
+		if (m_map -> leaves() < m_leaves)
 		{
-// 			printf("Partimos\n");
 			t = m_splitQueue -> last();
 			t -> split(m_splitQueue, m_mergeQueue, f);
 		}
 		else
 		{
-// 			printf("Fusionamos\n");
 			d = m_mergeQueue -> first();
 			d -> merge(m_splitQueue, m_mergeQueue);
 		}
@@ -234,6 +231,16 @@ void ROAM::moveObserverDown()
 void ROAM::rotateObserver(float x, float y)
 {
 	m_observer -> rotate(x, y);
+}
+
+int ROAM::leaves() const
+{
+	return m_leaves;
+}
+
+void ROAM::setLeaves(int n)
+{
+	m_leaves = n;
 }
 
 // void ROAM::splitOne()

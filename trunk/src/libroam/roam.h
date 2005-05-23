@@ -20,7 +20,8 @@ class triangleList;
 class ROAM
 {
 	public:
-		ROAM();
+		// leaves is the number of leaves the resulting mesh is going to have
+		ROAM(int leaves);
 		~ROAM();
 		
 		// OK -> OK
@@ -43,6 +44,9 @@ class ROAM
 		void moveObserverDown();
 		void rotateObserver(float x, float y);
 		
+		int leaves() const;
+		void setLeaves(int n);
+		
 // 		void mergeOne();
 // 		void splitOne();
 		
@@ -58,6 +62,7 @@ class ROAM
 
 		triangleList *m_splitQueue;
 		diamondList *m_mergeQueue;
+		int m_leaves;
 };
 
 #endif

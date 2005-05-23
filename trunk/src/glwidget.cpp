@@ -28,7 +28,7 @@
 
 #include "glwidget.h"
 
-glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false)/*, m_FPSEnabled(true)*/
+glWidget::glWidget(QWidget *parent) : QGLWidget(parent), m_fromPopup(false)/*, m_FPSEnabled(true)*/, m_roam(5000)
 {
 /*	QTimer *t = new QTimer(this);
 	connect(t, SIGNAL(timeout()), this, SLOT(updateGL()));
