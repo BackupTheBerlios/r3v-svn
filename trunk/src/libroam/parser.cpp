@@ -29,11 +29,9 @@ r3vMap *DEMParser::parse(const std::string &file)
 		
 		/* name */
 		name = readString(40, aux);
-		// printf("Nombre:%s", name.latin1());
 		
 		/* description */
 		descriptorField = readString(40, aux);;
-		// printf("Descripci�:%s", descriptorField.latin1());
 		
 		/* filler */
 		m_file -> read(aux, 29);
@@ -49,39 +47,29 @@ r3vMap *DEMParser::parse(const std::string &file)
 		my = readInt(2, aux);
 		sy = readDouble(7, aux);
 		
-		//SE = new geoPoint(dx, mx, sx, dy, my, sy);
-		// printf("Punto SE:%s", SE->asString().latin1());
-		
 		/* process code */
 		processCode = readChar();
-		// printf("Process code:%c", processCode.latin1());
 		
 		/* filler */
 		m_file -> read(aux, 1);
 		
 		/* sectionalIndicator */
 		sectionalIndicator = readString(3, aux);
-		// printf("sectionalIndicator:%s", sectionalIndicator.latin1());
 		
 		/* origin code */
 		originCode = readString(4, aux);
-		// printf("Origin Code:%s", originCode.latin1());
 		
 		/* DEM LEVEL */
 		DEMLevel = readInt(6, aux);
-		// printf("Nivel DEM:%d", DEMLevel);
 		
 		/* Elevetion Pattern */
 		elevationPattern = readInt(6, aux);
-		// printf("Patr� de elevaci�:%d", elevationPattern);
 		
 		/* ground planimetric reference system */
 		groundPlanimetricReferenceSystem = readInt(6, aux);
-		// printf("groundPlanimetricReferenceSystem:%d", groundPlanimetricReferenceSystem);
 		
 		/* zone code */
 		zoneCode = readInt(6, aux);
-		// printf("zoneCode:%d", zoneCode);
 		
 		if (groundPlanimetricReferenceSystem >= 0 && groundPlanimetricReferenceSystem <= 2)
 		{
@@ -89,22 +77,31 @@ r3vMap *DEMParser::parse(const std::string &file)
 		}
 		else
 		{
-			perror("No tratamos groundPlanimetricReferenceSystem diferentes de 0, 1, o 2");
+			perror("groundPlanimetricReferenceSystem is different from 0, 1 and 2");
+			delete m_file;
+			return 0;
 		}
 		
 		/* groundCoordsUnit */
 		groundCoordsUnit = readInt(6, aux);
-// 		printf("groundCoordsUnit:%d", groundCoordsUnit);
-		if (groundCoordsUnit == 0 || groundCoordsUnit == 3) perror("No soportamos radians ni arc-segundos como unidad de medida");
+		if (groundCoordsUnit == 0 || groundCoordsUnit == 3)
+		{
+			perror("Radians and arc-seconds are units of mesure not supported");
+			delete m_file;
+			return 0;
+		}
 		
 		/* elevationCoordsUnit */
 		elevationCoordsUnit = readInt(6, aux);
-// 		printf("elevationCoordsUnit:%d", elevationCoordsUnit);
 		
 		/* polygonSides */
 		polygonSides = readInt(6, aux);
-		// printf("polygonSides:%d", polygonSides);
-		if (polygonSides != 4) perror("No tratamos polygonSides diferentes de 4");
+		if (polygonSides != 4)
+		{
+			perror("polygonSides different from 4 is not supported");
+			delete m_file;
+			return 0;
+		}
 		
 		/* coordenadas ? */
 		double SEx, SEy, SWx, SWy, NWx, NWy, NEx, NEy;
@@ -117,38 +114,27 @@ r3vMap *DEMParser::parse(const std::string &file)
 		NEx = readDouble(24, aux);
 		NEy = readDouble(24, aux);
 		
-		// printf("SE:%f %f", SEx, SEy);
-		// printf("SW:%f %f", SWx, SWy);
-		// printf("NW:%f %f", NWx, NWy);
-		// printf("NE:%f %f", NEx, NEy);
-		
 		/* elevacion */
 		double minEl, maxEl;
 		minEl = readDouble(24, aux);
 		maxEl = readDouble(24, aux);
-		// printf("Minima Elevacion:%f", minEl);
-		// printf("Maxima Elevacion:%f", maxEl);
 		
 		/* angulo de desviacion de noseque */
 		double degree;
 		degree = readDouble(24, aux);
-		// printf("AnguloDesv:%f", degree);
 		
 		/* accuracy */
 		int accuracy;
 		accuracy = readInt(6, aux);
-		// printf("Exactitud: %d", accuracy);
 		
 		/* resolution */
 		double rx, ry, rz;
 		rx = readDouble(12, aux);
 		ry = readDouble(12, aux);
 		rz = readDouble(12, aux);
-// 		printf("Resolucion X:%f", rx);
-// 		printf("Resolucion Y:%f", ry);
-// 		printf("Resolucion Z:%f", rz);
-		
-// 		TODO assert(rx == ry);
+#if DEBUG	
+ 		assert(rx == ry);
+#endif
 		
 		double conversionFactor = rz / rx;
 		if (groundCoordsUnit != elevationCoordsUnit)
@@ -157,90 +143,27 @@ r3vMap *DEMParser::parse(const std::string &file)
 			{
 				// groundCoordsUnit = 1
 				// elevationCoordsUnit = 2
-				// groundCoordsUnit = pies
-				// elevationCoordsUnit = metros
+				// groundCoordsUnit = feet 
+				// elevationCoordsUnit = meters
 				conversionFactor = conversionFactor / 0.3048;
 			}
 			else
 			{
 				// groundCoordsUnit = 2
 				// elevationCoordsUnit = 1
-				// groundCoordsUnit = metros
-				// elevationCoordsUnit = pies
+				// groundCoordsUnit = meters
+				// elevationCoordsUnit = feet
 				conversionFactor = conversionFactor * 0.3048;
 			}
 		}
-// 		printf("Factor conversion %f", conversionFactor);
 		
 		/* perfiles */
 		int row, n;
 		row = readInt(6, aux);
-		if (row != 1) perror("Hay mas de 1 fila");
+#if DEBUG
+		assert(row == 1);
+#endif
 		n = readInt(6, aux);
-		// printf("Columnas:%d", n);
-		
-		/*m_file -> read(aux, 5);
-		aux[5] = '\0';
-		printf("%s\n", aux);
-		
-		m_file -> read(aux, 1);
-		aux[1] = '\0';
-		printf("%s\n", aux);
-		
-		m_file -> read(aux, 5);
-		aux[5] = '\0';
-		printf("%s\n", aux);
-		
-		m_file -> read(aux, 1);
-		aux[1] = '\0';
-		printf("%s\n", aux);
-		
-		m_file -> read(aux, 4);
-		aux[4] = '\0';
-		printf("%s\n", aux);
-		
-		m_file -> read(aux, 4);
-		aux[4] = '\0';
-		printf("%s\n", aux);
-		
-		m_file -> read(aux, 1);
-		aux[1] = '\0';
-		printf("%s\n", aux);
-		
-		m_file -> read(aux, 1);
-		aux[1] = '\0';
-		printf("%s\n", aux);
-		
-		m_file -> read(aux, 2);
-		aux[2] = '\0';
-		printf("%s\n", aux);
-		
-		m_file -> read(aux, 2);
-		aux[2] = '\0';
-		printf("%s\n", aux);
-		
-		m_file -> read(aux, 2);
-		aux[2] = '\0';
-		printf("%s\n", aux);
-		
-		m_file -> read(aux, 4);
-		aux[4] = '\0';
-		printf("%s\n", aux);
-		
-		m_file -> read(aux, 4);
-		aux[4] = '\0';
-		printf("%s\n", aux);
-		
-		m_file -> read(aux, 8);
-		aux[8] = '\0';
-		printf("%s\n", aux);
-		
-		m_file -> read(aux, 7);
-		aux[7] = '\0';
-		printf("%s\n", aux);
-		
-		m_file -> read(aux, 109);
-		*/
 		
 		m_file -> read(aux, 160);
 		
@@ -250,42 +173,35 @@ r3vMap *DEMParser::parse(const std::string &file)
 		for (int i = 0; i < n; i++)
 		{
 			int l;
-			// printf("\nRecord Tipo B");
 			l = 0;
 		
 			/* fila columna */
 			int row, column;
 			row = readInt(6, aux);
 			column = readInt(6, aux);
-			// printf("Fila:%d", row);
-			// printf("Columna:%d", column);
 			l += 12;
 		
 			int rows, columns;
 			rows = readInt(6, aux);
-			// printf("Filas:%d", rows);
 			columns = readInt(6, aux);
-			if (columns != 1) perror("Columnas es diferente de 1");
-			// printf("Columnas:%d", columns);
+#if DEBUG
+			assert(columns == 1);
+#endif
 			l += 12;
 			
 			double xgp, ygp;
 			xgp = readDouble(24, aux);
 			ygp = readDouble(24, aux);
-			// printf("GP:%f %f", xgp,ygp);
 			l += 48;
 		
 			double elevation;
 			elevation = readDouble(24, aux);
-			// printf("Elevation:%f", elevation);
 			l += 24;
 		
 			/* elevacion local */
 			double minLocEl, maxLocEl;
 			minLocEl = readDouble(24, aux);
 			maxLocEl = readDouble(24, aux);
-			// printf("Minima Elevacion Loc:%f", minLocEl);
-			// printf("Maxima Elevacion Loc:%f", maxLocEl);
 			l += 48;
 			
 			heights = new std::vector<double>;

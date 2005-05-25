@@ -42,15 +42,18 @@ class ROAM
 		void moveObserverRight();
 		void moveObserverUp();
 		void moveObserverDown();
+		
+		void observerPosition(float *x, float *y, float *z) const;
+		void setObserverPosition(float x, float y, float z);
+		
+		void observerAngles(float *x, float *y) const;
 		void rotateObserver(float x, float y);
+		
+		float observerStep() const;
+		void setObserverStep(float step);
 		
 		int leaves() const;
 		void setLeaves(int n);
-		
-// 		void mergeOne();
-// 		void splitOne();
-		
-// 		void renew();
 		
 	private:
 		void clean();

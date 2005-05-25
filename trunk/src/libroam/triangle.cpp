@@ -22,9 +22,11 @@
 
 triangle::triangle(r3vMap &m, node *apex, node *left, node *right, triangle *parentTriangle) : m_map(m), m_apex(apex), m_leftVertex(left), m_rightVertex(right), m_leftTriangle(0), m_rightTriangle(0), m_parentTriangle(parentTriangle), m_mergeableDiamond(0), m_status(UNKNOWN)
 {
+#if DEBUG
 	assert(*apex != *left);
 	assert(*apex != *right);
 	assert(*left != *right);
+#endif
 
 	if (parentTriangle) m_level = parentTriangle -> m_level + 1;
 	else m_level = 0;

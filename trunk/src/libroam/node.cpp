@@ -28,7 +28,6 @@ node::node(double x, double y, double z, int r, int g, int b)
 
 const double *node::color() const
 {
-// 	printf("%f %f %f\n", m_color[0], m_color[1], m_color[2]);
 	return m_color;
 }
 
@@ -94,7 +93,9 @@ triangle *node::getTriangle(node *n, const triangle *t) const
 	else if (both.size() == 0) return 0;
 	else
 	{
+#if DEBUG
 		assert(both.size() == 2);
+#endif
 		int l1, l2;
 		triangle *t1, *t2;
 		
@@ -102,7 +103,9 @@ triangle *node::getTriangle(node *n, const triangle *t) const
 		l1 = t1 -> level();
 		t2 = both.back();
 		l2 = t2 -> level();
+#if DEBUG
 		assert(l1 != l2);
+#endif
 		if (l1 > l2) return t1;
 		else return t2;
 	}

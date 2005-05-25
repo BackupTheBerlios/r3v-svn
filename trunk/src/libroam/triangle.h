@@ -42,15 +42,12 @@ class triangle
 		
 		unsigned int level() const;
 		
-		void updateWedgie();
-		
 		void split(triangleList *splitQueue, diamondList *mergeQueue, const frustum &f);
 		
 		double priority() const;
 		void calcPriority(const frustum &f);
 		
 		void updateMergeableStatus(diamondList *mergeQueue, triangle *baseTriangle);
-		void setMergeable(bool mergeable, diamondList *mergeQueue, triangle *baseTriangle);
 		
 		void setOwnIterator(triangleListIterator it);
 		triangleListIterator ownIterator() const;
@@ -63,6 +60,9 @@ class triangle
 		triangle *getBaseTriangle() const;
 	
 	private:
+		void setMergeable(bool mergeable, diamondList *mergeQueue, triangle *baseTriangle);
+		void updateWedgie();
+		
 		r3vMap &m_map;
 		
 		node *m_apex;

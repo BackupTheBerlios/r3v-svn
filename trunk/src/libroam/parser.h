@@ -21,7 +21,7 @@ class r3vParser
 		virtual r3vMap* parse(const std::string &file) = 0;
 };
 
-class DEMParser : r3vParser
+class DEMParser : public r3vParser
 {
 	public:
 		r3vMap* parse(const std::string &file);
@@ -36,7 +36,7 @@ class DEMParser : r3vParser
 		std::ifstream *m_file;
 };
 
-class PMParser : r3vParser
+class PMParser : public r3vParser
 {
 	public:
 		r3vMap* parse(const std::string &file);

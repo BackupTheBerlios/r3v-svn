@@ -24,15 +24,19 @@ class observer
 		void down();
 		
 		void rotate(float x, float y);
+		void angles(float *x, float *y) const;
 		
 		void position(float *x, float *y, float *z) const;
+		void setPosition(float x, float y, float z);
 		void vrp(float *x, float *y, float *z) const;
+		
+		void setStep(float step);
+		float step() const;
 		
 	private:
 		float m_posX, m_posY, m_posZ;
 		float m_rotX, m_rotY;
-		const float m_step;
-		bool m_changed;
+		float m_step;
 };
 
 #endif

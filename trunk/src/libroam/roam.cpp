@@ -46,22 +46,17 @@ void ROAM::clean()
 ROAM::Error ROAM::open(const std::string &file)
 {
 	diamond *d;
+	r3vParser *parser;
 	
 	if (m_map) clean();
 	
-	if (file.substr(file.length() - 4, 4) == ".dem")
-	{
-		DEMParser dp;
-		m_map = dp.parse(file);
-		if (!m_map) return openingError;
-	}
-	else if (file.substr(file.length() - 3, 3) == ".pm")
-	{
-		PMParser pp;
-		m_map = pp.parse(file);
-		if (!m_map) return openingError;
-	}
+	if (file.substr(file.length() - 4, 4) == ".dem") parser = new DEMParser;
+	else if (file.substr(file.length() - 3, 3) == ".pm") parser = new PMParser;
 	else return unknownFormat;
+
+	m_map = parser -> parse(file);
+	if (!m_map) return openingError;
+	delete parser;
 	
 	m_map -> calcAmplitude();
 	
@@ -166,8 +161,6 @@ void ROAM::paint()
 		}
 	}
 
-// 	renew();
-
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glBegin(GL_TRIANGLES);
 	paintTriangle(m_map -> baseDiamond() -> t1(), false);
@@ -214,9 +207,34 @@ void ROAM::moveObserverDown()
 	m_observer -> down();
 }
 
+void ROAM::observerAngles(float *x, float *y) const
+{
+	m_observer -> angles(x, y);
+}
+
 void ROAM::rotateObserver(float x, float y)
 {
 	m_observer -> rotate(x, y);
+}
+
+float ROAM::observerStep() const
+{
+	m_observer -> step();
+}
+
+void ROAM::setObserverStep(float step)
+{
+	m_observer -> setStep(step);
+}
+
+void ROAM::observerPosition(float *x, float *y, float *z) const
+{
+	m_observer -> position(x, y, z);
+}
+
+void ROAM::setObserverPosition(float x, float y, float z)
+{
+	m_observer -> setPosition(x, y, z);
 }
 
 int ROAM::leaves() const
@@ -228,48 +246,6 @@ void ROAM::setLeaves(int n)
 {
 	m_leaves = n;
 }
-
-// void ROAM::splitOne()
-// {
-// 	triangle *t;
-// 	t = m_splitQueue->last();
-// 	t -> split(m_splitQueue, m_mergeQueue, getFrustum());
-// }
-// 
-// void ROAM::mergeOne()
-// {
-// 	diamond *d;
-// 	d = m_mergeQueue->first();
-// 	d -> merge(m_splitQueue, m_mergeQueue);
-// }
-
-// void ROAM::renew()
-// {
-// 	diamond *d = m_map -> baseDiamond();
-// 	
-// 	d->t1()->deleteLeaves(m_splitQueue);
-// 	d->t2()->deleteLeaves(m_splitQueue);
-// 
-// 	delete m_splitQueue;
-// 	delete m_mergeQueue;
-// 	
-// 	m_splitQueue = new triangleList();
-// 	m_mergeQueue = new diamondList();
-// 	
-// 	frustum f = getFrustum();
-// 	
-// 	d -> t1() -> calcPriority(f);
-// 	d -> t2() -> calcPriority(f);
-// 	m_splitQueue -> insert(d -> t1());
-// 	m_splitQueue -> insert(d -> t2());
-// 	
-// 	triangle *t;
-// 	for (int kk = 0; kk < 500; kk++)
-// 	{
-// 		t = m_splitQueue -> last();
-// 		t -> split(m_splitQueue, m_mergeQueue, f);
-// 	}
-// }
 
 frustum ROAM::getFrustum() const
 {
