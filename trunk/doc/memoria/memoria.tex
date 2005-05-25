@@ -19,11 +19,12 @@
 \newpage
 \section{Com usar aquesta memòria}
 \paragraph{}
-Aquest document està estructurat en ANTECION QUE NO CAMBIE EL NUMERO onze ANTECION QUE NO CAMBIE EL NUMERO seccions bàsiques. El document segueix una forma lògica i seqüencial d'explicar els conceptes de forma que no calgui anar endavant i enrera per entendre les idees, per aquesta raó pot semblar que en algun moment s'estigui repetint alguna explicació, però el que pasa es que s'està parlant del mateix però ampliant la explicació. Les seccions de la memòria són:
+%TODO ATECION QUE NO CAMBIE EL NUMERO de secciones
+Aquest document està estructurat en onze seccions bàsiques. El document segueix una forma lògica i seqüencial d'explicar els conceptes de forma que no calgui anar endavant i enrera per entendre les idees, per aquesta raó pot semblar que en algun moment s'estigui repetint alguna explicació, però el que pasa es que s'està parlant del mateix però ampliant la explicació. Les seccions de la memòria són:
 \begin{enumerate}
 \item \textit{Com usar aquesta memòria} - Aquesta secció explica quins continguts es poden trobar a cadascuna de les seccions per tal que el lector pugui decidir si pot saltar-se alguna ja que els conceptes dels quals es parlen ja li són coneguts així com veure quines seccions expliquen coses que ell desconeix i per tant ha d'estar més concentrat per la seva lectura.
 \item \textit{Objectius i motivacions} - En aquesta secció es parla dels objectius que es volen asolir amb la realització d'aquest projecte final de carrera i les motivacions que han dut a l'alumne a fer-lo.
-\item \textit{Introducció} - MODIFICAAAAAAAAAAAAAAR Aquesta part de la memòria és aquella part que algú que ja tingués coneixements sobre gràfics, interfícies gràfiques, l'algorisme ROAM, etc. podria saltar-se, es a dir, és la secció que explica els conceptes per entendre tot allò que s'utilitzarà en la realització del projecte.
+\item \textit{Introducció} - %TODO Aquesta part de la memòria és aquella part que algú que ja tingués coneixements sobre gràfics, interfícies gràfiques, l'algorisme ROAM, etc. podria saltar-se, es a dir, és la secció que explica els conceptes per entendre tot allò que s'utilitzarà en la realització del projecte.
 \item \textit{Especificació} - Aquesta secció explica tot allò relacionat amb l'especificació: el model conceptual, el model de casos d'ús, els requeriments funcionals i no funcionals, etc.
 \item \textit{Disseny} - Aquesta secció explica el pas de l'especificació al disseny, hi podem trobar un model conceptual modificat per acomodar-se als requeriments juntament amb els diagrames de sequència.
 \item \textit{Implementació} - Aquesta part de la memòria parla de tot allò relacionat amb la programació del projecte però que no forma part ni de l'especificació ni del disseny, com per exemple la explicació sobre l'eina escollida per la generació automàtica de Makefiles.
@@ -116,7 +117,7 @@ r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar u
 \subsection{Requeriments no funcionals}
 \label{sec:reqnf}
 
-EXPLICAR QUE SON???
+%TODO EXPLICAR QUE SON???
 
 \begin{itemize}
 \item \textbf{Traduibilitat:} Que la interfície gràfica del programa es pugui traduir a tots els idiomes que es desitgi és un requeriment important, així s'amplia el públic potencial al qual anirà dirigida l'aplicació, ja que no tothom té coneixement d'anglés.
@@ -128,10 +129,61 @@ EXPLICAR QUE SON???
 \subsection{Requeriments funcionals}
 
 
+\newpage
 \subsection{Model Conceptual}
 
-\subsubsection{Restriccions d'integritat}
+\paragraph{}
+\begin{figure}[h]
+\centering
+\includegraphics{images/especificacioSimple.png}
+\caption{Diagrama de classes del domini}
+\end{figure}
 
+\subsubsection{Restriccions d'integritat}
+\begin{itemize}
+\item %TODO ARGGGGGGGGG ERA ALGO CON LOS BUCLES
+\end{itemize}
+
+\newpage
+\subsubsection{r3vMap}
+\begin{figure}[h]
+\centering
+\includegraphics{images/mapa.png}
+\caption{Classe r3vMap}
+\end{figure}
+\paragraph{Descripció informal:} La classe $r3vMap$ és la classe encarregada d'emmagatzemar la informació dels mapes, per aquest fi té els següents membres i operacions:
+\begin{itemize}
+\item $heights$: emmagatzema les alçades de tots els punts disponibles al mapa en forma de vector de vectors.
+\item $byColumns$: indica si aquest vector de vectors és un vector de files o un vector de columnes. 
+\item $minHeight$: indica la alçada mínima del mapa.
+\item $amplitude$: indica la diferència entre alçada màxima i alçada mínima al mapa.
+\item $baseDiamond$: retorna el diamant que forma la base del mapa
+\item $calcAmplitude$: calcula els valors $minHeight$ i $amplitude$
+\item $height$: retorna l'alçada del punt donat
+\item $triangles$: retorna el nombre de triangles que hi representant el mapa actualment
+\item $leaves$: retorna el nombre de triangles fulla que hi representant el mapa actualment
+\item $getNode$: retorna el nodre que representa el punt donat
+\item $size$: retorna la mida del mapa, és a dir, la longitud de cadascun dels vectors de $heights$
+\item $color$: retorna el color que ha de representar l'alçada donada
+\end{itemize}  
+
+\newpage
+\subsubsection{Parsers}
+\paragraph{}
+\begin{figure}[h]
+\centering
+\includegraphics{images/parsers.png}
+\caption{Classes parsers}
+\end{figure}
+Aquestes clases són les encarregades de interpretar fitxers que representen mapes i retornar la representació en forma de $r3vMap$.
+\begin{itemize}
+\item \textbf{\textit{r3vParser}} és una clase abstracte que defineix la operació $parse$ que tots els interprets de mapes han d'implementar.
+\item \textbf{DEMParser} és un clase que implementa un interpret de mapes en format DEM.
+\item \textbf{PMParser} és un clase que implementa un interpret de mapes en format pla %TODO EXPLICAR QUE ES UN MAPA EN FORMAT PLA.
+\end{itemize}
+
+
+\newpage
 \subsection{Model de casos d'ús}
 
 \subsubsection{Diagrama de casos d'ús}
@@ -205,6 +257,14 @@ EXPLICAR QUE SON???
 \newpage
 \section{Disseny}
 
+\subsection{Model Conceptual}
+%TODO
+AQUI ANIRAN LES DIFERENCIES ENTRE EL MODEL CONCEPTUAL ESPECIFICAT I EL DISSENY FINAL, PER EXEMPLE NODE TINDRA EL SEU COLOR PER NO HABERLO DE PREGUTNAR(I CALCULAR) AL MAPA CADA VEGADA.
+
+\subsection{Diagrames de seqüència}
+%TODO Tots o els més importants?
+
+%TODO AQUI, ARRIBA CON EL ROAM O EN EL ANNEX?
 \subsection{Arbres binaris de triangles}
 \paragraph{}
 Un arbre binari de triangles és un arbre per organitzar triangles de forma jeràrquica. El triangle arrel $T = (v_a, v_0, v_1)$ és un triangle isòsceles amb àpex $v_a$. Els fills de l'arrel es defineixen partint l'arrel en dos parts fent crent una nova aresta que va des del vèrtex $v_a$ al punt mig $v_c$ de l'aresta base (aresta entre $v_0$ i $v_1$). El fill esquerre de $T$ és $T_0 = (v_c, v_a, v_0)$ mentre que el fill dret és $T_1 = (v_c, v_1, v_a)$. La resta de de l'estructura de l'arbre de triangles és una repetició recursiva del procés de partició explicat anteriorment. Dins de l'arbre cada triangle té un nivell $l$ definit pel nombre de vegades que s'ha partit al triangle arrel per arribar a generar aquell triangle en concret. A la figura \ref{fig: triangles} podem veure una representació dels nivells 0 a 5 d'un arbre binari de triangles.
@@ -271,7 +331,7 @@ En primera instància es pot pensar que no seria necessari que l'operació de spli
 
 \subsection{Escala de colors}
 \paragraph{}
-A l'hora de visualitzar el terreny s'ha decidit assignar-li a cada triangle un color que tingui a veure amb la seva alçada, d'aquesta manera és més fàcil per l'observador diferenciar les alçades de cada terreny. L'esquema que s'ha utilitzat es bastant simple, el punt més baix té el color clau, segons es va pujant d'alçada es va degradant el color cap el verd, de forma que els punts amb l'açada mitja tenen color verd, la resta de punts a més alçada tenen un color que es va degradant del verd al vermell, que és el color dels punts més alts del terreny.
+A l'hora de visualitzar el terreny s'ha decidit assignar-li a cada vèrtex un color que tingui a veure amb la seva alçada, d'aquesta manera és més fàcil per l'observador diferenciar les alçades de cada terreny. L'esquema que s'ha utilitzat es bastant simple, el punt més baix és de color blau, segons es va pujant d'alçada es va degradant el color cap al verd, de forma que els punts amb l'açada mitja tenen color verd, la resta de punts a més alçada tenen un color que es va degradant del verd al vermell, que és el color dels punts més alts del terreny.
 \begin{figure}[h]
 \centering
 \includegraphics{images/cube.png}
