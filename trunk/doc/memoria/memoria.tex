@@ -3,10 +3,9 @@
 \usepackage{vmargin}
 \usepackage[catalan]{babel}
 \usepackage{graphicx}
+\usepackage{fancyhdr}
 
-\setmargnohfrb{2.5cm}{2.5cm}{2.5cm}{2.5cm}
-
-\pagestyle{plain}
+\pagestyle{fancy}
 
 \renewcommand{\baselinestretch}{1.3}
 
@@ -20,14 +19,14 @@
 \section{Com usar aquesta memòria}
 \paragraph{}
 %TODO ATECION QUE NO CAMBIE EL NUMERO de secciones
-Aquest document està estructurat en onze seccions bàsiques. El document segueix una forma lògica i seqüencial d'explicar els conceptes de forma que no calgui anar endavant i enrera per entendre les idees, per aquesta raó pot semblar que en algun moment s'estigui repetint alguna explicació, però el que pasa es que s'està parlant del mateix però ampliant la explicació. Les seccions de la memòria són:
+Aquest document està estructurat en onze seccions bàsiques. El document segueix una forma lògica i seqüencial d'explicar els conceptes de forma que no calgui anar endavant i enrera per entendre les idees, per aquesta raó pot semblar que en algun moment s'estigui repetint alguna explicació, però serà perquè s'està ampliant l'explicació d'algun concepte. Les seccions de la memòria són:
 \begin{enumerate}
-\item \textit{Com usar aquesta memòria} - Aquesta secció explica quins continguts es poden trobar a cadascuna de les seccions per tal que el lector pugui decidir si pot saltar-se alguna ja que els conceptes dels quals es parlen ja li són coneguts així com veure quines seccions expliquen coses que ell desconeix i per tant ha d'estar més concentrat per la seva lectura.
-\item \textit{Objectius i motivacions} - En aquesta secció es parla dels objectius que es volen asolir amb la realització d'aquest projecte final de carrera i les motivacions que han dut a l'alumne a fer-lo.
-\item \textit{Introducció} - %TODO Aquesta part de la memòria és aquella part que algú que ja tingués coneixements sobre gràfics, interfícies gràfiques, l'algorisme ROAM, etc. podria saltar-se, es a dir, és la secció que explica els conceptes per entendre tot allò que s'utilitzarà en la realització del projecte.
+\item \textit{Com usar aquesta memòria} - Aquesta secció explica quins continguts es poden trobar a cadascuna de les seccions per tal que el lector pugui decidir si pot saltar-se alguna ja que els conceptes dels quals es parlen ja li són coneguts així com veure quines seccions expliquen coses que ell desconeix i per tant ha d'estar més concentrat en la seva lectura.
+\item \textit{Objectius i motivacions} - En aquesta secció es parla dels objectius que es volen asolir amb la realització d'aquest projecte final de carrera així com de les motivacions que han dut a l'alumne a realitzar-lo.
+\item \textit{Introducció} - Aquesta part de la memòria introdueix el concepte bàsic en el que es basa el projecte, l'algorisme ROAM, així com un petita explicació de perquè és necessari tenir algorismes per la representació de terrenys i explicació dels dos formats de fitxer acceptats, DEM i mapes simples.
 \item \textit{Especificació} - Aquesta secció explica tot allò relacionat amb l'especificació: el model conceptual, el model de casos d'ús, els requeriments funcionals i no funcionals, etc.
 \item \textit{Disseny} - Aquesta secció explica el pas de l'especificació al disseny, hi podem trobar un model conceptual modificat per acomodar-se als requeriments juntament amb els diagrames de sequència.
-\item \textit{Implementació} - Aquesta part de la memòria parla de tot allò relacionat amb la programació del projecte però que no forma part ni de l'especificació ni del disseny, com per exemple la explicació sobre l'eina escollida per la generació automàtica de Makefiles.
+\item \textit{Implementació} - Aquesta part de la memòria parla de tot allò relacionat amb la programació del projecte però que no forma part ni de l'especificació ni del disseny, com per exemple l'explicació sobre l'eina escollida per la generació automàtica de Makefiles.
 \item \textit{Recursos i Anàlisi de costos} - En aquesta secció es parla de tot allò que ha fet falta per realitzar el projecte, la seva planificació i l'anàlisi de quan hauria costat desenvolupar aquest projecte en cas qe s'haguès tractar d'un projecte comercial.
 \item \textit{Conclusions} - Aquesta part de la memòria explica que s'ha après en la realització d'aquest projecte així com possibles modificacions futures que es podrien dur a terme.
 \item \textit{Bibliografia} - Aquesta secció és una relació de totes les fonts consultades en la realització del projecte.
@@ -71,13 +70,15 @@ A les aplicacions del primer grup, usar un algorisme especial per representar el
 \end{figure}
 
 \paragraph{}
-Degut a aquesta necessitat d'optimització surgeixen els algorismes de representació dinàmica de superfícies. Aquests algoritmes intenten aconseguir malles de triangles que representin la superfície de forma tridimensional el més acuradament possible d'una forma eficient. El requisit de la eficiència ve donada per la interactivitat, ja que com es comenta a l'annex \ref{sec:intvsreal} \textit{(Gràfics interactius vs Gràfics realistes)}, els gràfics interactius necessiten acualitzar la imatge vàries vegades per segon. Per aconseguir tots dos objectius (representació acurada i velocitat), que en principi es contradiuen, el que fa la majoria d'algorismes és generar una malla de triangles potencialment diferent per cada posició de l'observador. D'aquesta manera s'intenta generar una malla de triangles que sigui la òptima per aquesta posició, on òptima significa ser el més acurada possible per allò que és aprop de l'observador i alhora suficientment ràpida per poder-se visualitzar de forma interactiva. La posició de l'observador és clau en aquest aspecte ja que no cal tenir una gran exactitud en la representació de parts de la superfície que es trobin molt lluny de l'observador.
+Degut a aquesta necessitat d'optimització surgeixen els algorismes de representació dinàmica de superfícies. Aquests algoritmes intenten aconseguir malles de triangles que representin la superfície de forma tridimensional el més acuradament possible d'una forma eficient. El requisit de l'eficiència ve donada per la interactivitat, ja que com es comenta a l'annex \ref{sec:intvsreal} \textit{(Gràfics interactius vs Gràfics realistes)}, els gràfics interactius necessiten actualitzar la imatge vàries vegades per segon. Per aconseguir tots dos objectius (representació acurada i velocitat), que en principi es contradiuen, el que fa la majoria d'algorismes és generar una malla de triangles potencialment diferent per cada posició de l'observador. D'aquesta manera s'intenta generar una malla de triangles que sigui la òptima per aquesta posició, on òptima significa ser el més acurada possible per allò que és aprop de l'observador i alhora suficientment ràpida per poder-se visualitzar de forma interactiva. La posició de l'observador és clau en aquest aspecte ja que no cal tenir una gran exactitud en la representació de parts de la superfície que es trobin molt lluny de l'observador.
 
 \subsection{L'algorisme ROAM}
+\paragraph{}
+L'algorisme ROAM \textit{(Real-time Optimally Adapting Meshes)} és un algorisme de visualització dinàmica de terrenys. Com hem explicat en el punt anterior això significa que la malla de triangles utilitzada per representar el terreny es genera tenint en compte la posició de l'observador. A més a més, la malla va evolucionant segons l'observador es mou. ROAM utilitza arbres binaris de triangles (si teniu dubtes de que són els arbres binaris de triangles consulteu la secció \ref{sec:abt}) com a estructura per representar la superfície.
 
 \subsection{El format DEM}
 \paragraph{}
-El format DEM\footnote{Especificació: http://rockyweb.cr.usgs.gov/nmpstds/acrodocs/dem/2DEM0198.PDF} (Digital Elevation Model) va ser creat per l'USGS \textit{(United States Geological Survey)} per guardar la informació de les seves mesures de la superfície dels Estats Units.
+El format DEM (Digital Elevation Model) va ser creat per l'USGS \textit{(United States Geological Survey)} per guardar la informació de les seves mesures de la superfície dels Estats Units.
 \paragraph{}
 Un fitxer DEM està organitzat en tres tipus de registres lògics: A, B i C. 
 \begin{itemize}
@@ -86,7 +87,7 @@ Un fitxer DEM està organitzat en tres tipus de registres lògics: A, B i C.
 \item El tipus de registre C conté estàdistiques en quant a l'exactitud de les dades del fitxer.
 \end{itemize}
 \paragraph{}
-Degut a que el format DEM estava pensat per emmagatzemar-se en cintes magnètiques, l'especificació del format parla de registres físics, cadascun de 1024 bytes. En un registre físic no hi pot haver més d'un registre lògic, en canvi és usual que els registres lògics de tipus B ocupin més d'un registre lògic. Les parts d'un registre físic no ocupades per la informació d'un registre lògic s'han d'omplir amb blancs. Els registres lògics de tipus A i C mai ocupen més d'un registre físic.
+El format DEM estava pensat per emmagatzemar-se en cintes magnètiques i es per això que l'especificació del format parla de registres físics, cadascun de 1024 bytes. En un registre físic no hi pot haver més d'un registre lògic, en canvi és usual que els registres lògics de tipus B ocupin més d'un registre lògic. Les parts d'un registre físic no ocupades per la informació d'un registre lògic s'han d'omplir amb blancs. Els registres lògics de tipus A i C mai ocupen més d'un registre físic.
 \paragraph{}
 Els fitxers DEM divideixen el mapa en una graella i proporcionen l'alçada de cadascun dels punts de la graella. Cada registre de tipus B té la informació de les alçades d'una columna d'aquesta graella, es a dir, si la graella d'un mapa tinguès n columnes i m files hi hauria n registres de tipus B cadascun amb m alçades.
 \paragraph{}
@@ -104,6 +105,10 @@ Hi ha tres tipus de fitxers DEM:
 \label{fig: dem}
 \end{figure}
 
+\subsection{El format de mapes simples}
+\paragraph{}
+El format de mapes simples \textit{(extensió PM)} és un format inventat per mi. El vaig fer servir per poder provar les primeres implementacions de l'algorisme abans d'haver desenvolupat el lector de fitxers DEM. Els mapes simples tenen una sintaxi molt simple, la primera linea conté un nombre $k$ que representa el nombre de files i columnes del mapa (els mapes han de ser quadrats), a partir d'aquí hi ha $k*k$ nombres, que representen les $k$ files del mapa, on cada fila té $k$ elements.
+
 \newpage
 \section{Especificació}
 \label{sec:especificacio}
@@ -116,18 +121,17 @@ r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar u
 
 \subsection{Requeriments no funcionals}
 \label{sec:reqnf}
-
-%TODO EXPLICAR QUE SON???
+\paragraph{Definició:} Els requeriments no funcionals (o qualitats del sistema), capturen les propietats requerides pel sistema software, com el rendiment, la segurentat, la mantenibilitat, etc., en altres paraules, com de bé s'ha de complir un aspece estructural o de comportament del sistema.
 
 \begin{itemize}
 \item \textbf{Traduibilitat:} Que la interfície gràfica del programa es pugui traduir a tots els idiomes que es desitgi és un requeriment important, així s'amplia el públic potencial al qual anirà dirigida l'aplicació, ja que no tothom té coneixement d'anglés.
-\item \textbf{Portabilitat:} Es Vol que tant r3v com libroam es puguin compilar, i per tant, executar a la majoria de sistemes disponibles.
+\item \textbf{Portabilitat:} Es vol que tant r3v com libroam es puguin compilar, i per tant, executar a la majoria de sistemes disponibles.
 \item \textbf{Independència entre la interfície i l'algorisme:} Es vol que la implementació de la interfície gràfica sigui el més independent possible de l'algorisme ROAM, per tal que si en algun moment es vol fer una interfície gràfica usant un altre toolkit que no sigui Qt es pugui reutilitzar la majoria del codi.
 
 \end{itemize}
 
 \subsection{Requeriments funcionals}
-
+\paragraph{Definició:} Els requeriments funcionals capturen el comportament que es vol que tingui el sistema software. Aquest comportament es pot expressar com a serveis, tasques o funcions que cal que el sistema sigui capaç de fer.
 
 \newpage
 \subsection{Model Conceptual}
@@ -139,13 +143,14 @@ r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar u
 \caption{Diagrama de classes del domini}
 \end{figure}
 
-\subsubsection{Restriccions d'integritat}
+\subsubsection{Restriccions d'integritat textuals}
 \begin{itemize}
+\item Un triangle o bé te dos fills o no en té cap, no pot tenir-ne només un.
 \item %TODO ARGGGGGGGGG ERA ALGO CON LOS BUCLES
 \end{itemize}
 
 \newpage
-\subsubsection{r3vMap}
+\subsubsection{Classe r3vMap}
 \begin{figure}[h]
 \centering
 \includegraphics{images/mapa.png}
@@ -155,7 +160,7 @@ r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar u
 \begin{itemize}
 \item $heights$: emmagatzema les alçades de tots els punts disponibles al mapa en forma de vector de vectors.
 \item $byColumns$: indica si aquest vector de vectors és un vector de files o un vector de columnes. 
-\item $minHeight$: indica la alçada mínima del mapa.
+\item $minHeight$: indica l'alçada mínima del mapa.
 \item $amplitude$: indica la diferència entre alçada màxima i alçada mínima al mapa.
 \item $baseDiamond$: retorna el diamant que forma la base del mapa
 \item $calcAmplitude$: calcula els valors $minHeight$ i $amplitude$
@@ -167,8 +172,132 @@ r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar u
 \item $color$: retorna el color que ha de representar l'alçada donada
 \end{itemize}  
 
+
 \newpage
-\subsubsection{Parsers}
+\subsubsection{Classe diamond}
+\begin{figure}[h]
+\centering
+\includegraphics{images/diamond.png}
+\caption{Classe diamond}
+\end{figure}
+\paragraph{Descripció informal:} La classe $diamond$ representa la unió de dos triangles que comparteixen la seva base en un diamant. S'utilitza per dues funcions: obtenir el diamant base del mapa per tenir així el bosc de triangles que formen el mapa i per mantenir la llista de diamants potencialment fusionables que necessita l'algorisme. Descripció dels membres:
+\begin{itemize}
+\item $t1$: dóna un dels triangles del diamant.
+\item $t2$: dóna l'altre triangle del diamant.
+\item $priority$: retorna la prioritat del diamant, que és la màxima de la prioritat dels dos triangles que el formen.
+\item $merge$: fusiona el diamant actualitzant les llistes de triangles partibles i diamants fusionables.
+\item $clean$: elimina els triangles que formen el diamant, només s'utilitza quan es tanca el mapa.
+\end{itemize}
+
+
+\newpage
+\subsubsection{Classe frustum}
+\begin{figure}[h]
+\centering
+\includegraphics{images/frustum.png}
+\caption{Classe frustum}
+\end{figure}
+\paragraph{Descripció informal:} La classe $frustum$ representa el frustum de visualització actual, també emmagatzema la matriu modelViewMatrix, que és necessària per calcular el frustum i també per calcular la prioritat dels triangles. Descripció dels membres:
+\begin{itemize}
+\item $frustum$: conté els quatre coeficients dels sis plans que formen el frustum de visualització actual.
+\item $mvm$: conté els setze valors de la matriu modelViewMatrix.
+\item $setTriangleStatus$: estableix l'estat del triangle respecte al frustum. L'estat pot ser completament dintre, completament fora o parcialment dintre del frustum.
+\end{itemize}
+
+
+\newpage
+\subsubsection{Classe observer}
+\begin{figure}[h]
+\centering
+\includegraphics{images/observer.png}
+\caption{Classe frustum}
+\end{figure}
+\paragraph{Descripció informal:} La classe $observer$ representa l'observador. Membres:
+\begin{itemize}
+\item $posX, posY, posZ$: la posició del observador.
+\item $rotX, rotY$: la rotació de l'observador respecte els eixos, defineix la direcció de visió.
+\item $step$: longitud del pas de l'observador.
+\item $fordward$: mou a l'observador un pas endavant en la direcció de visió.
+\item $backward$: mou a l'observador un pas enrera en la direcció de visió.
+\item $left$: mou a l'observador un pas a l'esquerra repecte la direcció de visió.
+\item $right$: mou a l'observador un pas a la dreta repecte la direcció de visió.
+\item $rotate$: canvia la rotació de l'observador.
+\item $angles$: retorna els angles de rotació actuals.
+\item $position$: retorna la posició actual.
+\item $setPosition$: estableix la posició de l'observador.
+\item $vrp$: retorna el vrp (View Reference Point) de l'observador.
+\end{itemize}
+
+
+\newpage
+\subsubsection{Classe node}
+\begin{figure}[h]
+\centering
+\includegraphics{images/node.png}
+\caption{Classe node}
+\end{figure}
+\paragraph{Descripció informal:} La classe $node$ representa un vèrtex d'un triangle. Descripció dels membres:
+\begin{itemize}
+\item $posX, posY posZ$: posició del vèrtex
+\item $getTriangle$: retorna el triangle que comparteixi aquest node i el node donat amb el triangle donat. En cas que n'hi hagi més d'un (n'hi pot haver dos), retorna el de nivell més petit. Aquesta operació es fa servir per obtenir el triangle que comparteix la base d'un triangle; per fer-ho es crida la operació sobre el node esquerre d'un triangle i es passen com a paràmetre el donde dret del triangle i el triangle.
+\end{itemize}
+
+\newpage
+\subsubsection{Classe triangle}
+\begin{figure}[h]
+\centering
+\includegraphics{images/triangle.png}
+\caption{Classe triangle}
+\end{figure}
+\paragraph{Descripció informal:} La classe $triangle$ representa un triangle dintre de la malla de triangles formada per la visualització del mapa. Descripció dels membres:
+\begin{itemize}
+\item $level$: el nivell del triangle. És el nombre de triangles pare que s'han de recòrrer per arribar al diamant base.
+\item $ownWedgie$: el wedgie d'aquest triangle.
+\item $status$: defineix l'estat del triangle respecte el frustum, pot ser completament fora, completament dintre o parcialment dintre del frustum de visualització.
+\item $priority$: la prioritat d'aquest triangle.
+\item $isLeaf$: retorna cert si el triangle no té fills.
+\item $isVisible$: retorna cert si el és visible, és a dir, esta completa o parcialment dintre del frustum.
+\item $apex, leftVertex, rightVertex$: retornen l'àpex, vèrtex esquerre i vèrtex dret del triangle respectivament.
+\item $parent$: retorna el triangle pare (en cas que n'hi hagi).
+\item $leftTriangle, rightTriangle$: retornen el fill esquerre i dret respectivament (en cas que existeixin).
+\item $deleteLeaves$: elimina els triangles fills en cas que n'hi hagi actualitzant la llista de triangles partibles.
+\item $calcPriority$: actualitza el camp $priority$ tenint en compte la posició actual de l'observador (matriu de modelViewMatrix proporcionada pel paràmetre $frustum$).
+\item $updateMergeable$: 
+\item $getBaseTriangle$: retorna el triangle que comparteix la base amb el triangle.
+\item $split$: parteix el triangle actualitzant les llistes de triangles partibles i diamants fusionables.
+\end{itemize}
+
+
+\newpage
+\subsubsection{Classe ROAM}
+\begin{figure}[h]
+\centering
+\includegraphics{images/ROAM.png}
+\caption{Classe ROAM}
+\end{figure}
+\paragraph{Descripció informal:} La classe $ROAM$ és on troba la implementació de l'algorisme ROAM. Descripció dels membres:
+\begin{itemize}
+\item $leaves$: nombre de fulles que volem que tingui l'execució de l'algorisme sobre el mapa actual.
+\item $open$: obre el mapa que es troba al fitxer donat, en cas que hi hagi algun error retorna un codi d'error explicant la possible causa.
+\item $close$: tanca el mapa actual.
+\item $hasMap$: retorna si hi ha alguna mapa obert actualment.
+\item $paint$: es on es centra tot l'algorisme ROAM. Actualitza les llistes de triangles partibles i diamants fusionables donada la nova posició de l'observador i parteix triangles i fusiona diamants fins obtenir la malla de triangles òptima per aquest posició.
+\item $moveObserverForward$: mou l'observador cap endavant
+\item $moveObserverBackward$: mou l'observador cap enrera
+\item $moveObserverLeft$: mou l'observador cap a l'esquerra
+\item $moveObserverRight$: mou l'observador cap a la dreta
+\item $moveObserverUp$: mou l'observador cap a dalt
+\item $moveObserverDown$: mou l'observador cap a baix
+\item $observerPosition$: retorna la posició de l'observador
+\item $observerAngles$: retorna els angles que determinen la linia de visió de l'observador
+\item $setObserverPosition$: estableix la posició de l'observador
+\item $rotateObserver$: rota la línia de visió de l'observador
+\item $paintTriangle$: pinta el triangle donat en cas que sigui un triangle fulla, si no ho fa una crida recursiva per pintar els seus dos fills.
+\end{itemize}
+
+
+\newpage
+\subsubsection{Classes parser}
 \paragraph{}
 \begin{figure}[h]
 \centering
@@ -177,9 +306,9 @@ r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar u
 \end{figure}
 Aquestes clases són les encarregades de interpretar fitxers que representen mapes i retornar la representació en forma de $r3vMap$.
 \begin{itemize}
-\item \textbf{\textit{r3vParser}} és una clase abstracte que defineix la operació $parse$ que tots els interprets de mapes han d'implementar.
+\item \textbf{\textit{r3vParser}} és una clase abstracte que defineix l'operació $parse$ que tots els interprets de mapes han d'implementar.
 \item \textbf{DEMParser} és un clase que implementa un interpret de mapes en format DEM.
-\item \textbf{PMParser} és un clase que implementa un interpret de mapes en format pla %TODO EXPLICAR QUE ES UN MAPA EN FORMAT PLA.
+\item \textbf{PMParser} és un clase que implementa un interpret de mapes en format PM (mapa simple).
 \end{itemize}
 
 
@@ -262,72 +391,7 @@ Aquestes clases són les encarregades de interpretar fitxers que representen mape
 AQUI ANIRAN LES DIFERENCIES ENTRE EL MODEL CONCEPTUAL ESPECIFICAT I EL DISSENY FINAL, PER EXEMPLE NODE TINDRA EL SEU COLOR PER NO HABERLO DE PREGUTNAR(I CALCULAR) AL MAPA CADA VEGADA.
 
 \subsection{Diagrames de seqüència}
-%TODO Tots o els més importants?
-
-%TODO AQUI, ARRIBA CON EL ROAM O EN EL ANNEX?
-\subsection{Arbres binaris de triangles}
-\paragraph{}
-Un arbre binari de triangles és un arbre per organitzar triangles de forma jeràrquica. El triangle arrel $T = (v_a, v_0, v_1)$ és un triangle isòsceles amb àpex $v_a$. Els fills de l'arrel es defineixen partint l'arrel en dos parts fent crent una nova aresta que va des del vèrtex $v_a$ al punt mig $v_c$ de l'aresta base (aresta entre $v_0$ i $v_1$). El fill esquerre de $T$ és $T_0 = (v_c, v_a, v_0)$ mentre que el fill dret és $T_1 = (v_c, v_1, v_a)$. La resta de de l'estructura de l'arbre de triangles és una repetició recursiva del procés de partició explicat anteriorment. Dins de l'arbre cada triangle té un nivell $l$ definit pel nombre de vegades que s'ha partit al triangle arrel per arribar a generar aquell triangle en concret. A la figura \ref{fig: triangles} podem veure una representació dels nivells 0 a 5 d'un arbre binari de triangles.
-
-\begin{figure}[h]
-\centering
-\includegraphics{images/triangles.png}
-\caption{Representació dels nivells 0 a 5 d'un arbre binari de triangles}
-\label{fig: triangles}
-\end{figure}
-
-\subsubsection{Representació de superfícies amb arbres binaris}
-\paragraph{}
-Per representar una superfície amb arbres binaris de triangles es fan servir dos arbres de triangles situats de forma que comparteixin la seva aresta base, d'aquesta forma es cubreix una superfície quadrada (Figura \ref{fig: diamant}). Un cop tenim una estructura que permet cubrir tot un quadrat només cal assignar a cada vèrtex una alçada $w(v)$ per tenir una forma eficient de guardar les alçades d'un terreny.
-
-\begin{figure}[h]
-\centering
-\includegraphics{images/diamant.png}
-\caption{Dos arbres de triangles serveixen per representar una superfície quadrada}
-\label{fig: diamant}
-\end{figure}
-
-\subsubsection{Conjunts d'arbres binaris de triangles}
-\paragraph{}
-Una a triangulació d'arbres binaris de triangles (triangulació d'ara en endavant) és un conjunt d'arbres binaris que tenen alguna relació de veïnatge entre ells, ja sigui compartint un vèrtex o una aresta. Un cas especial de triangulació és el diamant, triangulació format per dos triangles que comparteixen l'aresta base i tenen el mateix nivell, la figura \ref{fig: diamant} és un exemple de diamant. Un fet important d'una triangulació és que donat un triangle, el triangle amb el que comparteix la base és del mateix nivell o del nivell superior. A la figura \ref{fig: triangleBase} podem veure un exemple de les dues situacions, el triangle A comparteix la base amb un triangle del seu nivell mentre que el triangle B comparteix la base amb un triangle d'un nivell superior ($l$ més petita).
-
-\begin{figure}[h]
-\centering
-\includegraphics{images/triangleBase.png}
-\caption{Possibilitats de compartir la base}
-\label{fig: triangleBase}
-\end{figure}
-
-\subsubsection{Operacions sobre diamants}
-\paragraph{}
-Sobre un diamant es poden realitzar dues operacions, split i merge. Split (partir) consisteix en crear els fills de $T$ i del seu triangle base $T_B$ de forma que s'obté una triangulació formada pels triangles $T_1$, $T_2$, $T_B1$ i $T_B2$. Merge (fusionar) consisteix en tornar als triangles $T$ i $T_B$ a partir dels seus quatre fills. Es pot veure una representació dels processos de partició i unió a la figura \ref{fig: splitMerge}.
-
-\begin{figure}[h]
-\centering
-\includegraphics{images/splitMerge.png}
-\caption{Split i merge sobre una triangulació}
-\label{fig: splitMerge}
-\end{figure}
-
-\paragraph{}
-Només els triangles que tenen el mateix nivell que el triangle amb el que comparteixen la base són susceptibles de ser partits. Aquells que comparteixen la base amb un triangle de nivell superior ($l$ més petita) (per exemple el triangle B de la figura \ref{fig: triangleBase})  no poden ser partits directament i si realment volem partir-los hem de fer abans un split del triangle amb el que comparteix la base. La figura \ref{fig: forceSplitExtrem} és un cas extrem en el que caldria fer 4 splits forçats abans de fer la partició del triangle $T$.
-
-\begin{figure}[h]
-\centering
-\includegraphics{images/forceSplitExtrem.png}
-\caption{Cas extrem en el que cal aplicar 4 particions forçades}
-\label{fig: forceSplitExtrem}
-\end{figure}
-
-\paragraph{}
-En primera instància es pot pensar que no seria necessari que l'operació de split s'apliquès sobre un diamant i que es podria fer sobre un triangle sol, però això no es possible ja que crearia una discontinuitat en la superfície. A la figura \ref{fig: discontinuitat} veiem la representació resultant de partir només un dels triangles del diamant d'una superfície en la que els punts $(0, 0)$, $(0, 1)$, $(1, 0)$ i $(1, 1)$ tenen una alçada de 0 mentre que el punt $(0.5, 0.5)$ té una alçada de 1.
-
-\begin{figure}[h]
-\centering
-\includegraphics{images/discontinuitat.png}
-\caption{Discontinuitat: Resultat de partir un triangle i no un diamant}
-\label{fig: discontinuitat}
-\end{figure}
+%TODO SOLO PONER LOS NO TRIVIALES
 
 \subsection{Escala de colors}
 \paragraph{}
@@ -355,7 +419,7 @@ En aquest capítol explicarem les decisions d'implementació que s'han pres per ga
 \end{itemize}
 Cada cop que s'executa el programa r3v en un ordinador es consulta la variable \textit{QLocale::system().name()} que dòna el nom del l'idioma que s'està usant en el sistema operatiu, amb aquest nom es cerquen les traduccions disponibles, si n'hi ha alguna que concorda es fa servir aquesta, si no hi ha traducció a aquest idioma es fan servir els textos en anglès.
 
-\item \textbf{Portabilitat:} Per aconseguir que tant r3v com libroam es puguin compilar, i per tant, executar a la majoria de sistemes disponibles s'ha pres la decisió d'utilitzar C++ i la seva llibreria estàndard per a la programació, ja que C++ és un llenguatge pel qual hi ha compiladors disponibles per la majoria de sistemes operatius. D'igual manera la interfície està feta en Qt, un toolkit en C++ que permet crear interfícies gràfiques d'usuari i té versions per a Linux/Unix, Mac OS i Windows. Finalment hi ha el problema de portabilitat de la API 3D, això s'ha ressolt utilitzant OpenGL, una API 3D que també té implementacions per a la majoria de sistemes operatius actuals. Per conèixer més a fons que és una API 3D podeu consultar l'annex \ref{sec:api3d}
+\item \textbf{Portabilitat:} Per aconseguir que tant r3v com libroam es puguin compilar, i per tant, executar a la majoria de sistemes disponibles s'ha pres la decisió d'utilitzar C++ i la seva llibreria estàndard per a la programació, ja que C++ és un llenguatge pel qual hi ha compiladors disponibles per la majoria de sistemes operatius. D'igual manera la interfície està feta en Qt, un toolkit en C++ que permet crear interfícies gràfiques d'usuari i té versions per a Linux/Unix, Mac OS i Windows. Finalment hi ha el problema de portabilitat de l'API 3D, això s'ha ressolt utilitzant OpenGL, una API 3D que també té implementacions per a la majoria de sistemes operatius actuals. Per conèixer més a fons que és una API 3D podeu consultar l'annex \ref{sec:api3d}
 
 \item \textbf{Independència entre la interfície i l'algorisme:} Per aconseguir que la implementació de l'algorisme sigui independent de la interfície gràfica, s'ha programat l'algorisme com a una llibreria que utilitza tan sols C++ i les classes que proporciona la llibreria estàndard de C++, d'aquesta manera el canviar de Qt a un altre sistema per crear interfícies gràfiques com Gtk només suposa reescriure la classe que s'ocupa de gestionar els events de teclat i ratolí, tota la resta és completament independent.
 
@@ -389,7 +453,7 @@ L'ús de les autotools presenta un \textit{petit problema} en quant a la portabil
 
 \subsection{Lector de format DEM}
 \paragraph{}
-El format DEM dòna moltes més dades de les necessàries per implementar un visualitzador de superfícies, com ara, nom del mapa, descripció sobre el mapa, coordenades a les que es troba el mapa, estadistiques sobre la exactitud dels valors, etc. Aquestes dades poden ser molt interessants, però no en el nostre context, per tant, s'ha decidit que la implementació del lector de fitxers de format DEM per a crear un objecte de la classe r3vMap, ignori tots aquest valors i es centri en les dades d'altitud.
+El format DEM dòna moltes més dades de les necessàries per implementar un visualitzador de superfícies, com ara, nom del mapa, descripció sobre el mapa, coordenades a les que es troba el mapa, estadistiques sobre l'exactitud dels valors, etc. Aquestes dades poden ser molt interessants, però no en el nostre context, per tant, s'ha decidit que la implementació del lector de fitxers de format DEM per a crear un objecte de la classe r3vMap, ignori tots aquest valors i es centri en les dades d'altitud.
 
 
 \newpage
@@ -400,6 +464,17 @@ El format DEM dòna moltes més dades de les necessàries per implementar un visual
 \section{Conclusions}
 \newpage
 \section{Bibliografia}
+\paragraph{}
+\begin{itemize}
+\item Paper sobre l'algorisme ROAM \newline \textit{http://www.llnl.gov/graphics/ROAM/roam.pdf}
+\item Especificació del format DEM \newline \textit{http://rockyweb.cr.usgs.gov/nmpstds/acrodocs/dem/2DEM0198.PDF}
+\item Documentació de Qt \newline \textit{http://doc.trolltech.com/3.3}
+\item Documentació de libstdc++ \newline \textit{http://gcc.gnu.org/onlinedocs/libstdc++/documentation.html}
+\item Documentació de la STL de SGI \newline \textit{http://www.sgi.com/tech/stl/table\_of\_contents.html}
+\item Document en quant a view frustum culling \newline \textit{http://www.racer.nl/reference/vfc.htm}
+\item Document en quant a view frustum culling \newline \textit{http://www.sjbaker.org/steve/omniv/frustcull.html}
+\item Mapes de Hawaii en format DEM \newline \textit{http://duff.geology.washington.edu/data/raster/tenmeter/hawaii/}
+\end{itemize}
 \newpage
 \section{Índex de figures}
 \listoffigures
@@ -469,14 +544,14 @@ Les caracterísitiques bàsiques d'OpenGL són:
 \begin{itemize}
 \item \textbf{Multillenguatge:} Hi ha llibreries que permeten utilitzar OpenGL des de C, C++, Fortran, Ada, Java, Perl, Python, Visual Basic, etc. Per tant, es pot reutilitzar el codi OpenGL d'una aplicació en un llenguatge per programar la mateixa aplicació o similar en un llenguatge diferent.
 \item \textbf{Multiplataforma:} OpenGL està disponible per a Windows, Mac OS, Unix comercials, Linux i d'altres sistemes operatius menors, per tant una aplicació que utilitzi OpenGL no està limitada a executar-se en un sistema operatiu en particular.
-\item \textbf{Estable:} La API d'OpenGL s'ha mantingut bastant estable durant més de 7 anys. Això permet que els programes continuin funcionant sense problemes amb noves versions i a més a més facilita la feina dels programadors que no han d'anar modificant els seus coneixements cada poc temps.
+\item \textbf{Estable:} L'API d'OpenGL s'ha mantingut bastant estable durant més de 7 anys. Això permet que els programes continuin funcionant sense problemes amb noves versions i a més a més facilita la feina dels programadors que no han d'anar modificant els seus coneixements cada poc temps.
 \end{itemize}
 
 \subsubsection{Direct3D}
 \paragraph{}
-Direct3D és la part que s'encarrega de la visualització tridimensional de la API DirectX de Microsoft. Només hi ha versions de DirectX (i per tant de Direct3D) per als sistemes operatius de Microsft (Windows 95 en endavant) encara que la consola XBox (produïda per Microsoft) té una API molt similar a la de DirectX.
+Direct3D és la part que s'encarrega de la visualització tridimensional de l'API DirectX de Microsoft. Només hi ha versions de DirectX (i per tant de Direct3D) per als sistemes operatius de Microsft (Windows 95 en endavant) encara que la consola XBox (produïda per Microsoft) té una API molt similar a la de DirectX.
 \paragraph{}
-Hi ha moltes versions de DirectX, cadascuna afegeix noves característiques sobre la anterior. Això és útil en un món que es mou tan ràpidament com els dels gràfics per computador però també suposa que els programadors han d'anar readaptant el seu coneixement sobre la llibreria per poder programar per les últimes versions.
+Hi ha moltes versions de DirectX, cadascuna afegeix noves característiques sobre l'anterior. Això és útil en un món que es mou tan ràpidament com els dels gràfics per computador però també suposa que els programadors han d'anar readaptant el seu coneixement sobre la llibreria per poder programar per les últimes versions.
 
 % CUÑAAAAAAAAA NO HAS EXPLICAO LO Q ES UNA MALLA DE TRIANGULOS :_D
 % CUÑAAAAAAAAA LOS BASICOS 3D :_D
@@ -522,6 +597,73 @@ Al paradigma examine l'observador no es mou, sempre està a la mateixa posició i 
 
 
 
+\subsection{Arbres binaris de triangles}
+\label{sec:abt}
+\paragraph{}
+Un arbre binari de triangles és un arbre que serveix per organitzar triangles de forma jeràrquica. El triangle arrel $T = (v_a, v_0, v_1)$ és un triangle isòsceles amb àpex $v_a$. Els fills de l'arrel es defineixen partint l'arrel en dos parts fent crent una nova aresta que va des del vèrtex $v_a$ al punt mig $v_c$ de l'aresta base (aresta entre $v_0$ i $v_1$). El fill esquerre de $T$ és $T_0 = (v_c, v_a, v_0)$ mentre que el fill dret és $T_1 = (v_c, v_1, v_a)$. La resta de de l'estructura de l'arbre de triangles és una repetició recursiva del procés de partició explicat anteriorment. Dins de l'arbre cada triangle té un nivell $l$ definit pel nombre de vegades que s'ha partit al triangle arrel per arribar a generar aquell triangle en concret. A la figura \ref{fig: triangles} podem veure una representació dels nivells 0 a 5 d'un arbre binari de triangles.
+
+\begin{figure}[h]
+\centering
+\includegraphics{images/triangles.png}
+\caption{Representació dels nivells 0 a 5 d'un arbre binari de triangles}
+\label{fig: triangles}
+\end{figure}
+
+\subsubsection{Representació de superfícies amb arbres binaris}
+\paragraph{}
+Per representar una superfície amb arbres binaris de triangles es fan servir dos arbres de triangles situats de forma que comparteixin la seva aresta base, d'aquesta forma es cubreix una superfície quadrada (Figura \ref{fig: diamant}). Un cop tenim una estructura que permet cubrir tot un quadrat només cal assignar a cada vèrtex una alçada $w(v)$ per tenir una forma eficient de guardar les alçades d'un terreny.
+
+\begin{figure}[h]
+\centering
+\includegraphics{images/diamant.png}
+\caption{Dos arbres de triangles serveixen per representar una superfície quadrada}
+\label{fig: diamant}
+\end{figure}
+
+\subsubsection{Conjunts d'arbres binaris de triangles}
+\paragraph{}
+Una a triangulació d'arbres binaris de triangles (triangulació d'ara en endavant) és un conjunt d'arbres binaris que tenen alguna relació de veïnatge entre ells, ja sigui compartint un vèrtex o una aresta. Un cas especial de triangulació és el diamant, triangulació format per dos triangles que comparteixen l'aresta base i tenen el mateix nivell, la figura \ref{fig: diamant} és un exemple de diamant. Un fet important d'una triangulació és que donat un triangle, el triangle amb el que comparteix la base és del mateix nivell o del nivell superior. A la figura \ref{fig: triangleBase} podem veure un exemple de les dues situacions, el triangle A comparteix la base amb un triangle del seu nivell mentre que el triangle B comparteix la base amb un triangle d'un nivell superior ($l$ més petita).
+
+\begin{figure}[h]
+\centering
+\includegraphics{images/triangleBase.png}
+\caption{Possibilitats de compartir la base}
+\label{fig: triangleBase}
+\end{figure}
+
+\subsubsection{Operacions sobre diamants}
+\paragraph{}
+Sobre un diamant es poden realitzar dues operacions, split i merge. Split (partir) consisteix en crear els fills de $T$ i del seu triangle base $T_B$ de forma que s'obté una triangulació formada pels triangles $T_1$, $T_2$, $T_B1$ i $T_B2$. Merge (fusionar) consisteix en tornar als triangles $T$ i $T_B$ a partir dels seus quatre fills. Es pot veure una representació dels processos de partició i unió a la figura \ref{fig: splitMerge}.
+
+\begin{figure}[h]
+\centering
+\includegraphics{images/splitMerge.png}
+\caption{Split i merge sobre una triangulació}
+\label{fig: splitMerge}
+\end{figure}
+
+\paragraph{}
+Només els triangles que tenen el mateix nivell que el triangle amb el que comparteixen la base són susceptibles de ser partits. Aquells que comparteixen la base amb un triangle de nivell superior ($l$ més petita) (per exemple el triangle B de la figura \ref{fig: triangleBase})  no poden ser partits directament i si realment volem partir-los hem de fer abans un split del triangle amb el que comparteix la base. La figura \ref{fig: forceSplitExtrem} és un cas extrem en el que caldria fer 4 splits forçats abans de fer la partició del triangle $T$.
+
+\begin{figure}[h]
+\centering
+\includegraphics{images/forceSplitExtrem.png}
+\caption{Cas extrem en el que cal aplicar 4 particions forçades}
+\label{fig: forceSplitExtrem}
+\end{figure}
+
+\paragraph{}
+En primera instància es pot pensar que no seria necessari que l'operació de split s'apliquès sobre un diamant i que es podria fer sobre un triangle sol, però això no es possible ja que crearia una discontinuitat en la superfície. A la figura \ref{fig: discontinuitat} veiem la representació resultant de partir només un dels triangles del diamant d'una superfície en la que els punts $(0, 0)$, $(0, 1)$, $(1, 0)$ i $(1, 1)$ tenen una alçada de 0 mentre que el punt $(0.5, 0.5)$ té una alçada de 1.
+
+\begin{figure}[h]
+\centering
+\includegraphics{images/discontinuitat.png}
+\caption{Discontinuitat: Resultat de partir un triangle i no un diamant}
+\label{fig: discontinuitat}
+\end{figure}
+
+
+
 \subsection{GPL}
 \label{sec:gpl}
 \paragraph{}
@@ -534,7 +676,7 @@ GPL (\textbf{G}eneral \textbf{P}ublic \textbf{L}icense) és una llicència de soft
 \paragraph{}
 La llicència GPL és una de les llicències de software lliure més exteses, si visitem la pàgina de SourceForge (una pàgina web on es registren projectes de software lliure per tal de desenvolupar-los usant les serveis que aquesta proporciona) que llista el número de projectes registrats per cada tipus de llicència, veiem que un 69\% (43089 dels 62291) utilitzen la llicència GPL.
 \paragraph{}
-Es pot trobar el text complet de la llicència a \textit{http://www.gnu.org/licenses/gpl.html}
+El text complet de la llicència es troba a \textit{http://www.gnu.org/licenses/gpl.html}
 
 
 \subsection{Qt}
