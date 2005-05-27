@@ -75,8 +75,13 @@ Degut a aquesta necessitat d'optimització surgeixen els algorismes de representa
 \subsection{L'algorisme ROAM}
 \paragraph{}
 L'algorisme ROAM \textit{(Real-time Optimally Adapting Meshes)} és un algorisme de visualització dinàmica de terrenys. Com hem explicat en el punt anterior això significa que la malla de triangles utilitzada per representar el terreny es genera tenint en compte la posició de l'observador. A més a més, la malla va evolucionant segons l'observador es mou. ROAM utilitza arbres binaris de triangles (si teniu dubtes de que són els arbres binaris de triangles consulteu la secció \ref{sec:abt}) com a estructura per representar la superfície.
+\paragraph{}
+
+%TODO
+FALTA MUCHOOOOOOOOOOOOOOOOOOOOOOO
 
 \subsection{El format DEM}
+\label{sec:dem}
 \paragraph{}
 El format DEM (Digital Elevation Model) va ser creat per l'USGS \textit{(United States Geological Survey)} per guardar la informació de les seves mesures de la superfície dels Estats Units.
 \paragraph{}
@@ -105,6 +110,14 @@ Hi ha tres tipus de fitxers DEM:
 \label{fig: dem}
 \end{figure}
 
+\subsubsection{Per què el format DEM?}
+\paragraph{}
+Hi ha molts tipus de format de fitxer diferents que descriuen terrenys. Aquesta secció explica quines són les raons bàsiques que han portat a escollir aquest tipus de format i no un altre.
+\begin{itemize}
+\item \textbf{Disponibilitat de l'especificació:} Per tal de poder implementar un parser d'un tipus de format de fitxer és molt important que hi hagi disponibilitat de l'especificació, ja que sense especificació s'ha de fer enginyeria inversa sobre el fitxer i això, a part d'estar fora del que es vol fer amb el projecte, hauria allargat de forma considerable el temps de desenvolupament. Per implementar el parser de DEM s'ha fer servir el document sobre DEM que es menciona a la bibliografia.
+\item \textbf{Disponibilitat de mapes:} La disponibilitat de mapes és, evidentment, molt important. Sense mapes no val per a res implementar el parser ja que no es pot comprovar que la implementació sigui correcte i, a més a més, no es pot verificar tampoc el funcionament de l'algorisme ROAM funcioni. A la bibliografia es pot trobar una pàgina on hi ha mapes de Hawaii en format DEM.
+\end{itemize}
+
 \subsection{El format de mapes simples}
 \paragraph{}
 El format de mapes simples \textit{(extensió PM)} és un format inventat per mi. El vaig fer servir per poder provar les primeres implementacions de l'algorisme abans d'haver desenvolupat el lector de fitxers DEM. Els mapes simples tenen una sintaxi molt simple, la primera linea conté un nombre $k$ que representa el nombre de files i columnes del mapa (els mapes han de ser quadrats), a partir d'aquí hi ha $k*k$ nombres, que representen les $k$ files del mapa, on cada fila té $k$ elements.
@@ -114,10 +127,10 @@ El format de mapes simples \textit{(extensió PM)} és un format inventat per mi. 
 \label{sec:especificacio}
 
 \subsection{Què és libroam?}
-libroam és la part del projecte que implementa l'algorisme ROAM. Està programada com a llibreria de forma que qualsevol programa pugui usar aquesta funcionalitat. La llibreria està sota llicència GPL (Annex \ref{sec:gpl})  La llibreria funciona fent servir el paradigma de navegació fly. Per veure una descripció dels diferents paradigmes de navegació aplicables als gràfics 3D consulteu l'annex \ref{sec:parnav}
+libroam és la part del projecte que implementa l'algorisme ROAM. Està programada com a llibreria de forma que qualsevol programa pugui usar aquesta funcionalitat. La llibreria està sota llicència GPL (l'annex \ref{sec:gpl} explica que és aquesta llicència). La llibreria funciona fent servir el paradigma de navegació fly. Per veure una descripció dels diferents paradigmes de navegació aplicables als gràfics 3D consulteu l'annex \ref{sec:parnav}
 
 \subsection{Què és r3v?}
-r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar un visor de superfícies que utilitzi l'algorisme ROAM. L'aplicació afegeix sobre la llibreria una interfície gràfica d'usuari basada en la llibreria Qt (Annex \ref{sec:qt}) que permet a l'usuari obrir i tancar mapes, així com visualitzar-los i navegar per ells.
+r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar un visor de superfícies que utilitzi l'algorisme ROAM. L'aplicació afegeix sobre la llibreria una interfície gràfica d'usuari basada en la llibreria Qt (A l'annex \ref{sec:qt} trobareu una descripció d'aquesta llibreria) que permet a l'usuari obrir i tancar mapes, així com visualitzar-los i navegar per ells.
 
 \subsection{Requeriments no funcionals}
 \label{sec:reqnf}
@@ -127,11 +140,19 @@ r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar u
 \item \textbf{Traduibilitat:} Que la interfície gràfica del programa es pugui traduir a tots els idiomes que es desitgi és un requeriment important, així s'amplia el públic potencial al qual anirà dirigida l'aplicació, ja que no tothom té coneixement d'anglés.
 \item \textbf{Portabilitat:} Es vol que tant r3v com libroam es puguin compilar, i per tant, executar a la majoria de sistemes disponibles.
 \item \textbf{Independència entre la interfície i l'algorisme:} Es vol que la implementació de la interfície gràfica sigui el més independent possible de l'algorisme ROAM, per tal que si en algun moment es vol fer una interfície gràfica usant un altre toolkit que no sigui Qt es pugui reutilitzar la majoria del codi.
+\item \textbf{Usabilitat:} La usabilitat és molt important en tots els projectes de software, ja que a part que un programa sigui potent en el que fa es necessari que sigui fàcil d'usar.
+\item \textbf{Mantenibilitat:} Es necessari que el programa es pugui mantenir amb relativa facilitat, ja que normalment el cicle de vida dels projectes de software porta als programadors a revisar/ampliar el codi.
 
 \end{itemize}
 
 \subsection{Requeriments funcionals}
 \paragraph{Definició:} Els requeriments funcionals capturen el comportament que es vol que tingui el sistema software. Aquest comportament es pot expressar com a serveis, tasques o funcions que cal que el sistema sigui capaç de fer.
+\begin{itemize}
+\item \textbf{Implementar l'algorisme ROAM:} Volem que el projecte implementi l'algorisme ROAM per tal de visualitzar terrenys.
+\item \textbf{Navegar pels terrenys:} Es vol que el programa permeti a l'usuari navegar pel terreny. S'ha escollit el paradigma de navegació fly.
+\item \textbf{Carregar mapes des de fitxer:} No es vol que el terreny que visualitzi el programa sigui fixe, per tant, s'haurà d'implementar la possibilitat d'obrir nous mapes des de fitxers.
+\item \textbf{Interpret de fitxers DEM:} El requeriment anterior implica que caldrà saber llegir algun tipus de fitxer que proporcioni les dades de les alçades per crear el mapa, com s'explica a l'apartat \ref{sec:dem} s'ha decidit utilitzar el format DEM.
+\end{itemize}
 
 \newpage
 \subsection{Model Conceptual}
@@ -141,6 +162,7 @@ r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar u
 \centering
 \includegraphics{images/especificacioSimple.png}
 \caption{Diagrama de classes del domini}
+\label{fig:diagramaClasses}
 \end{figure}
 
 \subsubsection{Restriccions d'integritat textuals}
@@ -170,7 +192,7 @@ r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar u
 \item $getNode$: retorna el nodre que representa el punt donat
 \item $size$: retorna la mida del mapa, és a dir, la longitud de cadascun dels vectors de $heights$
 \item $color$: retorna el color que ha de representar l'alçada donada
-\end{itemize}  
+\end{itemize}
 
 
 \newpage
@@ -386,6 +408,31 @@ Aquestes clases són les encarregades de interpretar fitxers que representen mape
 \newpage
 \section{Disseny}
 
+\subsection{Arquitectura en 3 capes}
+\paragraph{}
+En un sistema software es necessari descomposar les tasques dels sistema en varies capes per tal que cada capa s'ocupi de les tasques que estiguin en un nivell determinat d'abstracció. La separació típica és en tres capes, una que s'ocupi de la visualització (Capa de presentació), una que s'ocupi d'implementar la funcionalitat del sistema (Capa del domini) i una altra que s'ocupi d'interaccionar amb els fitxers (Capa de gestió de dades).
+\paragraph{}
+La capa de gestió de dades està formada per les classes $r3vParser$, $DEMParser$ i $PMParser$. Aquestes classes son les encarregades d'obrir i interpretar els fitxers que representen mapes de forma que la capa del domini sigui capaç d'entendre les dades que contenen.
+\paragraph{}
+La capa de domini de dades està formada per tota la resta de classes que apareixen al diagrama de classes del domini (Figura \ref{fig:diagramaClasses}).
+\paragraph{}
+La capa de representació té una única classe anomenada $glWidget$.
+
+\subsection{Disseny de la capa de presentació}
+\paragraph{}
+La classe $glWidget$ és la única classe que forma la capa de presentació. Aquesta classe s'encarrega de proporcionar una vista on es pugui pintar el resultat de processar el mapa usant l'algorisme ROAM així com de capturar els events de teclat i de ratolí i passar-los a la capa de domini per tal que aquesta faci el processat oportú.
+\paragraph{}
+El mode de representació utilitzat és una finestra a pantalla completa ja que d'aquesta forma s'obté una superficie de representació del mapa el més gran possible i, a més a més, l'experiència de l'usuari és més inmersiva.
+\paragraph{}
+La interacció de l'usuari amb l'aplicació es fa mitjantçant el teclat i el ratolí.
+
+\subsection{Controlador del sistema}
+\paragraph{}
+Tot sistema software rep esdeveniments externs per part de l'usuari o per part d'altres sistemes software. Un cop s'intercepten els esdeveniments a la capa de presentació algun objecte del domini ha de ser l'encarregat de processar aquests esdeveniments. Aquests objectes s'anomenen controladors.
+\subsubsection{Controlador façana}
+\paragraph{}
+En aquest projecte s'ha optat per fer servir un controlador del tipus façana, centralitzat a la classe ROAM. L'avantatge d'utilitzar aquest tipus de controlador és que el domini és una caixa negra per la capa de presentació, d'aquesta manera, qualsevol canvi que es faci a la capa del domini, exceptuant la classe ROAM, no representará cap canvi per la capa de presentació, ja que tota interacció entre la capa de presentació i la capa del domini passa a través del controlador. El problema típic d'aquest tipus de controlador és que acostuma a crear classes molt grans, però degut al petit nombre d'esdeveniments que tracta el sistema aquest problema no és important.
+
 \subsection{Model Conceptual}
 %TODO
 AQUI ANIRAN LES DIFERENCIES ENTRE EL MODEL CONCEPTUAL ESPECIFICAT I EL DISSENY FINAL, PER EXEMPLE NODE TINDRA EL SEU COLOR PER NO HABERLO DE PREGUTNAR(I CALCULAR) AL MAPA CADA VEGADA.
@@ -507,10 +554,6 @@ Els gràfics 3D tenen dos branques bastant diferenciades, els gràfics 3D per ser 
 \paragraph{}
 Els gràfics 3D es diferencien dels gràfics 2D principalment pel fet que en els gràfics 3D hi ha una representació virtual tridimensional dels objectes de l'escena que s'utilitza per fer els cálculs i per obtenir la imatge 2D que finalment s'acabarà representant en pantalla mentre que en els gràfics 2D o bé no hi ha objectes (mapa de bits) o els objectes són bidimensionals (imatges vectorials). En general, els gràfics 3D es poden comparar amb una fotografia d'una escultura, mentre que els gràfics 2D es correspondrien amb un dibuix.
 
-\paragraph{}
-CONTINUARRRRRRRRR \newline
-CONTINUARRRRRRRRR
-
 \subsubsection{Gràfics interactius vs Gràfics realistes}
 \label{sec:intvsreal}
 \paragraph{}
@@ -553,9 +596,6 @@ Direct3D és la part que s'encarrega de la visualització tridimensional de l'API 
 \paragraph{}
 Hi ha moltes versions de DirectX, cadascuna afegeix noves característiques sobre l'anterior. Això és útil en un món que es mou tan ràpidament com els dels gràfics per computador però també suposa que els programadors han d'anar readaptant el seu coneixement sobre la llibreria per poder programar per les últimes versions.
 
-% CUÑAAAAAAAAA NO HAS EXPLICAO LO Q ES UNA MALLA DE TRIANGULOS :_D
-% CUÑAAAAAAAAA LOS BASICOS 3D :_D
-
 \subsubsection{Primitives gràfiques 3D}
 La majoria d'API per la generació de gràfics 3D interactius tenen un conjunt similar de primitives, és a dir, \textit{d'objectes} que podem fer servir per contruir una escena. En aquesta secció ens centrarem en les primitives que té OpenGL.
 
@@ -568,7 +608,7 @@ La majoria d'API per la generació de gràfics 3D interactius tenen un conjunt sim
 \item \textbf{GL\_TRIANGLE\_STRIP} - Donats $i$ punts, ($i>3$) es creen $i-2$ triangles. El triangle amb índex $k$ està format pels punts amb índex $k$, $k+1$ i $k+2$.
 \item \textbf{GL\_TRIANGLE\_FAN} - Donats $i$ punts, ($i>=3$) es creen $i-2$ triangles. El triangle amb índex $k$ està format pels punts amb índex $0$, $k+1$ i $k+2$.
 \item \textbf{GL\_QUADS} - Cada 4 punts que es donen es converteixen en un quadrilàter.
-\item \textbf{GL\_QUAD\_STRIP} - Donats $i$ punts, ($i>=4$) es creen $i-3$ quadrilàters. El quadrilàter amb índex $k$ està format pels punts amb índex $k$, $k+1$, $k+2$ i $k+3$ TODO ESTA MAL CORREGIRRRRRRRRRRRR.
+\item \textbf{GL\_QUAD\_STRIP} - Donats $i$ punts, ($i>=4$) es creen $i-3$ quadrilàters. El quadrilàter amb índex $k$ està format pels punts amb índex $k$, $k+1$, $k+2$ i $k+3$ %TODO ESTA MAL CORREGIRRRRRRRRRRRR.
 \item \textbf{GL\_POLYGON} - Té el mateix comportament que \textbf{GL\_LINE\_LOOP}, però en comptes de crear línies crear un polígon.
 \end{itemize}
 Podem veure exemples de les 10 primitives a la figura \ref{fig: primitives}
