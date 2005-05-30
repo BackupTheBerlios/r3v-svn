@@ -19,12 +19,12 @@
 \section{Com usar aquesta memòria}
 \paragraph{}
 %TODO ATECION QUE NO CAMBIE EL NUMERO de secciones
-Aquest document està estructurat en onze seccions bàsiques. El document segueix una forma lògica i seqüencial d'explicar els conceptes de forma que no calgui anar endavant i enrera per entendre les idees, per aquesta raó pot semblar que en algun moment s'estigui repetint alguna explicació, però serà perquè s'està ampliant l'explicació d'algun concepte. Les seccions de la memòria són:
+Aquest document està estructurat en onze seccions bàsiques. El document segueix una forma lògica i seqüencial d'explicar els conceptes de forma que no calgui anar endavant i enrera per entendre les idees, per aquesta raó pot semblar que en algun moment s'estigui repetint alguna idea, però serà perquè s'està ampliant l'explicació d'algun concepte. Les seccions de la memòria són:
 \begin{enumerate}
 \item \textit{Com usar aquesta memòria} - Aquesta secció explica quins continguts es poden trobar a cadascuna de les seccions per tal que el lector pugui decidir si pot saltar-se alguna ja que els conceptes dels quals es parlen ja li són coneguts així com veure quines seccions expliquen coses que ell desconeix i per tant ha d'estar més concentrat en la seva lectura.
-\item \textit{Objectius i motivacions} - En aquesta secció es parla dels objectius que es volen asolir amb la realització d'aquest projecte final de carrera així com de les motivacions que han dut a l'alumne a realitzar-lo.
-\item \textit{Introducció} - Aquesta part de la memòria introdueix el concepte bàsic en el que es basa el projecte, l'algorisme ROAM, així com un petita explicació de perquè és necessari tenir algorismes per la representació de terrenys i explicació dels dos formats de fitxer acceptats, DEM i mapes simples.
-\item \textit{Especificació} - Aquesta secció explica tot allò relacionat amb l'especificació: el model conceptual, el model de casos d'ús, els requeriments funcionals i no funcionals, etc.
+\item \textit{Objectius i motivacions} - En aquesta secció es parla dels objectius que es volen assolir amb la realització d'aquest projecte final de carrera així com de les motivacions que han dut a l'alumne a realitzar-lo.
+\item \textit{Introducció} - Aquesta part de la memòria introdueix el concepte bàsic en el que es basa el projecte, l'algorisme ROAM, així com un petita explicació de perquè és necessari tenir algorismes per la representació de terrenys de forma dinàmica i explicació dels dos formats de fitxers de dades acceptats, DEM i mapes simples.
+\item \textit{Especificació} - Aquesta secció explica tot allò relacionat amb l'especificació: el model conceptual, el model de casos d'ús, els requeriments funcionals i no funcionals, i, una petita descripció informal de cada classe.
 \item \textit{Disseny} - Aquesta secció explica el pas de l'especificació al disseny, hi podem trobar un model conceptual modificat per acomodar-se als requeriments juntament amb els diagrames de sequència.
 \item \textit{Implementació} - Aquesta part de la memòria parla de tot allò relacionat amb la programació del projecte però que no forma part ni de l'especificació ni del disseny, com per exemple l'explicació sobre l'eina escollida per la generació automàtica de Makefiles.
 \item \textit{Recursos i Anàlisi de costos} - En aquesta secció es parla de tot allò que ha fet falta per realitzar el projecte, la seva planificació i l'anàlisi de quan hauria costat desenvolupar aquest projecte en cas qe s'haguès tractar d'un projecte comercial.
@@ -37,7 +37,7 @@ Aquest document està estructurat en onze seccions bàsiques. El document segueix 
 \newpage
 \section{Objectius i motivacions}
 \paragraph{}
-Els continguts relacionats amb els objectius que es volen asolir amb aquest projecte són una sintetització dels requisits expressats a la secció \ref{sec:especificacio}.
+Els continguts relacionats amb els objectius que es volen assolir amb aquest projecte són una sintetització dels requisits expressats a la secció \ref{sec:especificacio}.
 
 \paragraph{}
 L'objectiu principal d'aquest projecte és la implementació de l'algorisme ROAM. Per aconseguir-ho tant el projectista com el director del projecte han decidit que la realització del projecte acabarà materialitzant-se en una aplicació amb una llicència de programari lliure. Aquesta aplicació implementarà l'algorisme ROAM així com lectors de diferents formats de fitxers per obtenir dades que puguin fer funcionar l'algorisme i una interfície simple per tal que l'usuari pugui controlar l'aplicació amb facilitat.
@@ -74,11 +74,74 @@ Degut a aquesta necessitat d'optimització surgeixen els algorismes de representa
 
 \subsection{L'algorisme ROAM}
 \paragraph{}
-L'algorisme ROAM \textit{(Real-time Optimally Adapting Meshes)} és un algorisme de visualització dinàmica de terrenys. Com hem explicat en el punt anterior això significa que la malla de triangles utilitzada per representar el terreny es genera tenint en compte la posició de l'observador. A més a més, la malla va evolucionant segons l'observador es mou. ROAM utilitza arbres binaris de triangles (si teniu dubtes de que són els arbres binaris de triangles consulteu la secció \ref{sec:abt}) com a estructura per representar la superfície.
-\paragraph{}
+L'algorisme ROAM \textit{(Real-time Optimally Adapting Meshes)} és un algorisme de visualització dinàmica de terrenys. Com hem explicat en el punt anterior això significa que la malla de triangles utilitzada per representar el terreny es genera tenint en compte la posició de l'observador. A més a més, la malla va evolucionant segons l'observador es mou. ROAM utilitza arbres binaris de triangles (si teniu dubtes de que són podeu consultar la secció \ref{sec:abt}) per representar la superfície.
 
-%TODO
-FALTA MUCHOOOOOOOOOOOOOOOOOOOOOOO
+\subsubsection{Prioritat dels triangles}
+\paragraph{}
+Per tal d'implementar l'algorisme cal que cada triangle tingui una prioritat associada, així podrem decidir si es prioritari partir un triangle o un altre. El càlcul de la prioritat té dues parts. La primera part és estable respecte a la posició de l'observador mentre que la segona varia segons la posició d'aquest.
+
+\paragraph{}
+%TODO intentar ponerlo mejor
+La primera part és el que s'anomena $wedgie$, i es defineix de forma recursiva. Pels triangles que són fulles de l'arbre, el wedgie és el valor absolut de la diferència entre el punt que hauria d'ocupar en la realitat el punt mig de la base del triangle i el punt que està ocupant en la representació. És a dir, el valor absolut de la resta del valor que obtenim de demanar-li al mapa l'alçada del punt mig de la base del triangle i de la mitja de les alçades dels dos vèrtex extrems de la base. \newline
+Per aquells triangles que no són fulla de l'arbre el wedgie del triangle és la suma del càlcul anterior i el màxim dels wedgies dels dos fills del triangle.
+
+\paragraph{}
+La segona part de la prioritat del càlcul de la prioritat consisteix en ponderar el wedgie segons la posició de l'observador per tal de poder tenir un algorisme dinàmic. Aquesta ponderació és lògica ja que si pensem en el wedgie com a error que està cometent un triangle, no ens ha d'importar que hi hagi errors grans si aquests estan molt lluny de l'observador, mentre que potser si hauriem d'intentar corregir un error petit si aquest està just al davant de l'observador. La ponderació que es fa servir per calcular el valor final de la prioritat d'un triangle és la projecció del wedgie a espai de pantalla, amb això fem un càlcul proporcional al nombre de píxels d'error que el wedgie realment està causant a la pantalla, i per tant, tenim un càlcul que ens pot servir per ordenar els triangles tenint en compte quin és el que està causant més error a la visualització.
+
+\subsubsection{Construcció de l'arbre de triangles}
+\paragraph{}
+Hi ha dues formes de construir l'arbre de triangles donat un mapa i una posició de l'observador. La primera reconstrueix l'arbre per a cada nova posició de l'observador, això la fa menys eficient però més fàcil d'entendre, la segona manera reutilitza l'arbre anterior i el transforma en un arbre òptim per la nova posició de l'observador. \newline
+La primera forma de construir l'arbre de triangles utilitza aquest algorisme.\newline
+\texttt{
+Sigui Q una cua de triangles ordenada per prioritat \newline
+Afegir els dos triangles base del mapa a Q \newline
+Mentre el mapa sigui massa petit fer \{ \newline
+\smallskip ~ Obtenir T, el triangle de Q amb més prioritat \newline
+\smallskip ~ Partir T \newline
+\smallskip ~ Actualitzar Q d'aquesta forma \{\newline
+\smallskip ~ ~ Eliminar T i els altres triangles partits de Q \newline
+\smallskip ~ ~ Afegir tots els triangles creats per la partició a Q \newline
+\smallskip ~ \}\newline
+\} \newline
+}
+
+D'aquesta manera es garanteix que quan arribem al nombre de triangles al que volem que arribi l'algorisme tindrem l'arbre òptim, ja que hem anat partint sempre els triangles que tenien més prioritat, és a dir, aquells que cometien més error.
+\paragraph{}
+La segona manera de construir l'arbre de triangles és aquesta:\newline
+\texttt{
+Sigui Q una cua de triangles ordenada per prioritat \newline
+Sigui K una cua de diamants ordenada per prioritat \newline
+Si estem al instant inicial\newline
+\smallskip ~ Afegir els dos triangles base del mapa a Q \newline
+Altrament \newline
+\smallskip ~ Actualitzar la prioritat de tots els elements de Q i K donada la nova
+\smallskip ~ posició de l'observador \newline
+Mentre el mapa sigui massa petit o la prioritat màxima de Q sigui més gran que la mínima de K fer \{ \newline
+\smallskip ~ Si el mapa es massa petit \{ \newline
+\smallskip ~ ~ Obtenir T, el triangle de Q amb més prioritat \newline
+\smallskip ~ ~ Partir T \newline
+\smallskip ~ ~ Actualitzar les cues d'aquesta forma \{\newline
+\smallskip ~ ~ ~ Eliminar T i els altres triangles partits de Q \newline
+\smallskip ~ ~ ~ Afegir tots els triangles creats per la partició a Q \newline
+\smallskip ~ ~ ~ Eliminar de K qualsevol diamant del que s'hagin partit els seus fills \newline
+\smallskip ~ ~ ~ Afegir a K tots els nous diamants fusionables que s'hagin creat \newline
+\smallskip ~ \} Altrament \{ \newline
+\smallskip ~ ~ Obtenir D, format per T i T2, el diamant de K amb menys prioritat \newline
+\smallskip ~ ~ Fusionar D \newline
+\smallskip ~ ~ Actualitzar les cues d'aquesta forma \{\newline
+\smallskip ~ ~ ~ Eliminar de Q els fills de T i T2, fusionats al fusionar D \newline
+\smallskip ~ ~ ~ Afegir T i T2 a a Q \newline
+\smallskip ~ ~ ~ Eliminar D de K \newline
+\smallskip ~ ~ ~ Afegir a K tots els nous diamants fusionables que s'hagin creat \newline
+\smallskip ~ \}\newline
+\} \newline
+}
+
+Si ens fixem en el cas de l'instant inicial el codi es comporta de forma idèntica al primer algorisme, ja que el mapa sempre té masses pocs elements i per tant entra al primer cas del $Si$. A la resta de casos es reaprofiten els triangles bons de l'arbre de triangles que s'havia creat per la posició anterior de l'observador, mentre que els aquells triangles que havien estat partits anteriorment, formant diamants fusionables, i que han passat a tenir menys prioritat que triangles que es poden partir es fusionen, així a la propera volta del $Mentre$, hi haurà triangles menys triangles dels necessaris, s'entrarà al primer cas del $Si$ i es partirà el triangle que estigui cometent més error.
+
+\subsubsection{View frustum culling}
+\paragraph{}
+El view frustum culling no és un requeriment obligatori de l'algorisme ROAM, però si s'implementa milloren els resultats. La implementació del view frustum culling consisteix en calcular per cada triangle si està o no dintre del volum de visualització, és a dir, dintre de tot allò que s'està mostrant per pantalla. Si un triangle no està dintre del volum de visualització se li assigna una prioritat molt petita, ja que encara que s'estigui cometent un gran error en aquell triangle, realment a l'observador no li importa, ja que no està veient aquella zona.
 
 \subsection{El format DEM}
 \label{sec:dem}
@@ -142,6 +205,7 @@ r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar u
 \item \textbf{Independència entre la interfície i l'algorisme:} Es vol que la implementació de la interfície gràfica sigui el més independent possible de l'algorisme ROAM, per tal que si en algun moment es vol fer una interfície gràfica usant un altre toolkit que no sigui Qt es pugui reutilitzar la majoria del codi.
 \item \textbf{Usabilitat:} La usabilitat és molt important en tots els projectes de software, ja que a part que un programa sigui potent en el que fa es necessari que sigui fàcil d'usar.
 \item \textbf{Mantenibilitat:} Es necessari que el programa es pugui mantenir amb relativa facilitat, ja que normalment el cicle de vida dels projectes de software porta als programadors a revisar/ampliar el codi.
+\item \textbf{Programari lliure:} Es vol que l'aplicació sigui programari lliure, en especial, programari lliure sota la llicència GPL.
 
 \end{itemize}
 
@@ -469,6 +533,8 @@ Cada cop que s'executa el programa r3v en un ordinador es consulta la variable \
 \item \textbf{Portabilitat:} Per aconseguir que tant r3v com libroam es puguin compilar, i per tant, executar a la majoria de sistemes disponibles s'ha pres la decisió d'utilitzar C++ i la seva llibreria estàndard per a la programació, ja que C++ és un llenguatge pel qual hi ha compiladors disponibles per la majoria de sistemes operatius. D'igual manera la interfície està feta en Qt, un toolkit en C++ que permet crear interfícies gràfiques d'usuari i té versions per a Linux/Unix, Mac OS i Windows. Finalment hi ha el problema de portabilitat de l'API 3D, això s'ha ressolt utilitzant OpenGL, una API 3D que també té implementacions per a la majoria de sistemes operatius actuals. Per conèixer més a fons que és una API 3D podeu consultar l'annex \ref{sec:api3d}
 
 \item \textbf{Independència entre la interfície i l'algorisme:} Per aconseguir que la implementació de l'algorisme sigui independent de la interfície gràfica, s'ha programat l'algorisme com a una llibreria que utilitza tan sols C++ i les classes que proporciona la llibreria estàndard de C++, d'aquesta manera el canviar de Qt a un altre sistema per crear interfícies gràfiques com Gtk només suposa reescriure la classe que s'ocupa de gestionar els events de teclat i ratolí, tota la resta és completament independent.
+
+\item \textbf{Programari lliure:} Per tal de poder garantir que el programa resultant pugui tenir llicència GPL, a part de declarar que el nostre codi és GPL també cal que que totes les llibreries que s'usin siguin GPL. Qt que és l'única llibreria usada també ho es.
 
 \end{itemize}
 
