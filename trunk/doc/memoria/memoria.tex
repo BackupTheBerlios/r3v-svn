@@ -488,7 +488,7 @@ La classe $glWidget$ és la única classe que forma la capa de presentació. Aquest
 \paragraph{}
 El mode de representació utilitzat és una finestra a pantalla completa ja que d'aquesta forma s'obté una superficie de representació del mapa el més gran possible i, a més a més, l'experiència de l'usuari és més inmersiva.
 \paragraph{}
-La interacció de l'usuari amb l'aplicació es fa mitjantçant el teclat i el ratolí.
+La interacció de l'usuari amb l'aplicació es fa mitjantçant el teclat i el ratolí. El ratolí serveix per canviar la direcció de visió de l'observador i el teclar serveix per moure l'observador.
 
 \subsection{Controlador del sistema}
 \paragraph{}
@@ -497,9 +497,23 @@ Tot sistema software rep esdeveniments externs per part de l'usuari o per part d
 \paragraph{}
 En aquest projecte s'ha optat per fer servir un controlador del tipus façana, centralitzat a la classe ROAM. L'avantatge d'utilitzar aquest tipus de controlador és que el domini és una caixa negra per la capa de presentació, d'aquesta manera, qualsevol canvi que es faci a la capa del domini, exceptuant la classe ROAM, no representará cap canvi per la capa de presentació, ja que tota interacció entre la capa de presentació i la capa del domini passa a través del controlador. El problema típic d'aquest tipus de controlador és que acostuma a crear classes molt grans, però degut al petit nombre d'esdeveniments que tracta el sistema aquest problema no és important.
 
+\newpage
 \subsection{Model Conceptual}
-%TODO
-AQUI ANIRAN LES DIFERENCIES ENTRE EL MODEL CONCEPTUAL ESPECIFICAT I EL DISSENY FINAL, PER EXEMPLE NODE TINDRA EL SEU COLOR PER NO HABERLO DE PREGUTNAR(I CALCULAR) AL MAPA CADA VEGADA.
+\begin{figure}[h]
+\centering
+\includegraphics{images/dissenySimple.png}
+\caption{Diagrama de classes del domini - Disseny}
+\label{fig:diagramaClassesDisseny}
+\end{figure}
+
+\paragraph{}
+Les úniques diferències que es poden observar entre aquest diagrama i el que podem veure a la Figura \ref{fig:diagramaClasses} són el canvi d'algunes associacions en associacions direccionals i la pèrdua de l'associació entre $r3vMap$ i $node$ que s'ha convertit en un diccionari. Això és degut a que s'ha obtat per que ningú excepte $r3vMap$ pugui crear nodes, d'aquesta manera quan un triangle necessita un node per formar-se, crida l'operació $getNode(..)$ sobre $r3vMap$, aquesta operació comprova si ja hi ha aquell node al diccionari de nodes, si el troba el retorna, si no existeix el crea, l'afegeix al diccionari i el retorna. D'aquesta manera és molt més fàcil mantindre quins són els triangles que utilitzen un node donat.
+\paragraph{}
+Hi ha d'altres canvis que no es veuen en aquest diagrama ja que afecten els membres de les classes. Node ha guanyat l'atribut $color$ que guarda el color del node, ja que si no caldria preguntar-li al mapa quin color havia de tenir cada cop que es volgués pintar un node, això seria molt ineficient, per tant al crear-se el node també s'emmagatzema el seu color. Per aquesta mateixa raó l'operació $color(...)$ del mapa ha passat a ser privada, ja que només es crida quan es vol crear un node.
+
+%TODO MIRAR SI HAY ALGUNA DIFERENCIA MAS
+
+%TODO AQUI NO, DONDE SEA explicar el getHeight con doubles
 
 \subsection{Diagrames de seqüència}
 %TODO SOLO PONER LOS NO TRIVIALES
