@@ -552,9 +552,23 @@ Cada cop que s'executa el programa r3v en un ordinador es consulta la variable \
 
 %TODO altures???
 %TODO enteres???
-\subsection{Obtenció d'altures no enteres}
+\subsection{Obtenció d'altures de coordenades no existents}
 \paragraph{}
-%TODO explicar lo de las alturas :-D
+Un dels problemes que s'han hagut de sol·lucionar a l'hora de fer la implementació de l'algorisme és la obtenció de les altures de coordenades no existents al mapa, és a dir coordenades que no tenen una alçada associada al mapa. Això és un problema ja que l'algoritme pot demanar l'altura de qualsevol punt del mapa, mentre que els fitxers només proporcionen altures per un nombre finit de punts. És evident, per tant, que la resta de coordenades ens les hem $d'inventar$. El problema rau en com crear aquestes noves altures, ja que si donem una altura que no es correspon a aquell punt estarem enganyant a l'algorisme i fent que comenci a partir aquella zona quant potser en la realitat no cal.
+\paragraph{}
+Hi ha moltes maneres d'aproximar alçades per a una coordenada donada sabent l'alçada dels punts del voltant, però moltes d'elles utilitzen costoses funcions matemàtiques que no ens podem permetre implementar en aquest programa, ja que és molt important ser eficient a l'hora de demanar l'alçada d'un punt del mapa. Podem veure una explicació de la solució utilitzada a la figura \ref{fig: puntsNE}, per implementar aquesta solució només calen sumes, restes i alguna multiplicació.
+
+\begin{figure}[h]
+\centering
+\includegraphics{images/puntsNE.png}
+\caption{Obtenció d'altures de coordenades no existents}
+\label{fig: puntsNE}
+\end{figure}
+
+\paragraph{}
+Com es pot veure a la figura s'ha utilitzat una solució que consisteix en utilitzar quatre punts dels que coneixem d'alçada per interpolar l'alçada de cinc punts adicionals, quatre d'ells sobre les línies que uneixen els punts, essent el valor assignat la mitjana de les alçades dels dos punts, i el cinquè, el punt situat en el centre dels quatre punts, essent l'alçada interpolada la mitjana de tots quatre. A partir d'aquí podem veure que ja coneixem uns quatre punts per quatre quadrants més, per tant podem continuar subdividint el mapa fins a obtenir la coordenada que més ens interessi.
+\paragraph{}
+La solució implementada no és exactament aquesta, ja que aquesta també seria costosa ja que necessitaria molta recursió per segons quins punts, sinó la transformació a fòrmula matemàtica de l'esperit d'aquest mètode, per tant amb un sol pas podem obtenir l'alçada interpolada de qualsevol punt.
 
 \subsection{Generació de Makefiles}
 \paragraph{}
