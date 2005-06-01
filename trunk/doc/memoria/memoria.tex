@@ -509,13 +509,47 @@ En aquest projecte s'ha optat per fer servir un controlador del tipus façana, ce
 \paragraph{}
 Les úniques diferències que es poden observar entre aquest diagrama i el que podem veure a la Figura \ref{fig:diagramaClasses} són el canvi d'algunes associacions en associacions direccionals i la pèrdua de l'associació entre $r3vMap$ i $node$ que s'ha convertit en un diccionari. Això és degut a que s'ha obtat per que ningú excepte $r3vMap$ pugui crear nodes, d'aquesta manera quan un triangle necessita un node per formar-se, crida l'operació $getNode(..)$ sobre $r3vMap$, aquesta operació comprova si ja hi ha aquell node al diccionari de nodes, si el troba el retorna, si no existeix el crea, l'afegeix al diccionari i el retorna. D'aquesta manera és molt més fàcil mantindre quins són els triangles que utilitzen un node donat.
 \paragraph{}
+S'han creat dues classes auxiliars, $triangleList$ i $diamondList$, que emmagatzemen les relacions entre ROAM i els triangles i els diamants. Aquestes classes no estan al diagrama de classes que es troba a la part superior ja que no són més que la representació en codi de les associacions entre ROAM i triangles i diamants.
+\paragraph{}
 Hi ha d'altres canvis que no es veuen en aquest diagrama ja que afecten els membres de les classes. Node ha guanyat l'atribut $color$ que guarda el color del node, ja que si no caldria preguntar-li al mapa quin color havia de tenir cada cop que es volgués pintar un node, això seria molt ineficient, per tant al crear-se el node també s'emmagatzema el seu color. Per aquesta mateixa raó l'operació $color(...)$ del mapa ha passat a ser privada, ja que només es crida quan es vol crear un node.
+\paragraph{}
+També s'han afegit a algunes classes com $triangle$ i $diamant$ un membre del tipus iterador, amb els seus respectius set/get, aquests camps contenen l'iterador de l'objecte dins de les llistes que manté la classe $ROAM$, això és útil ja que d'aquesta manera l'eliminació és molt més ràpida, ja que no cal tornar a buscar a la llista l'element abans d'eliminar-lo.
+\paragraph{}
+La classe $triangle$ ha guanyat el membre $wedgie$ que és el wedgie real del triangle, això és per eficiència, ja que cada vegada que necessitem el wedgie podriem usar $ownWedgie$ i fer el recorrecut pels fills. També hi la nova operació $updateWedgie$ que serveix per notificar a un triangle que ha d'actualitzar la seva variable $wedgie$. $triangle$ també ha guanyat l'operació privada $setMergeable()$ que reb els paràmetres $bool\ mergeable,\ diamondList\ *mergeQueue,\ triangle\ *baseTriangle$.
 
 %TODO MIRAR SI HAY ALGUNA DIFERENCIA MAS
 
+\newpage
 \subsection{Diagrames de seqüència}
-%TODO SOLO PONER LOS NO TRIVIALES
+\begin{figure}[h]
+\centering
+\includegraphics{images/diag/triangleCreate.png}
+\caption{Diagrama de seqüència - Triangle - Creadora}
+\end{figure}
 
+\newpage
+\begin{figure}[h]
+\centering
+\includegraphics{images/diag/updateWedgie.png}
+\caption{Diagrama de seqüència - Triangle - updateWedgie}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics{images/diag/calcPriority.png}
+\caption{Diagrama de seqüència - Triangle - calcPriority}
+\end{figure}
+
+%TODO Los que quiero poner
+%TODO triangle::split
+%TODO diamond::merge
+%TODO node::getTriangle
+%TODO r3vMap::getNode
+%TODO ROAM::paint
+%TODO ROAM::paintTriangle
+%TODO alguna mas???
+
+\newpage
 \subsection{Escala de colors}
 \paragraph{}
 A l'hora de visualitzar el terreny s'ha decidit assignar-li a cada vèrtex un color que tingui a veure amb la seva alçada, d'aquesta manera és més fàcil per l'observador diferenciar les alçades de cada terreny. L'esquema que s'ha utilitzat es bastant simple, el punt més baix és de color blau, segons es va pujant d'alçada es va degradant el color cap al verd, de forma que els punts amb l'açada mitja tenen color verd, la resta de punts a més alçada tenen un color que es va degradant del verd al vermell, que és el color dels punts més alts del terreny.
