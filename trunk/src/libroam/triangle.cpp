@@ -148,7 +148,6 @@ void triangle::split(triangleList *splitQueue, diamondList *mergeQueue, const fr
 	m_leftTriangle = new triangle(m_map, newApex, m_apex, m_leftVertex, this);
 	m_rightTriangle = new triangle(m_map, newApex, m_rightVertex, m_apex, this);
 	
-	// TODO place in other function?
 	m_map.addTriangles(2);
 	m_map.addLeaves(1);
 	f.setTriangleStatus(m_leftTriangle);
@@ -159,7 +158,6 @@ void triangle::split(triangleList *splitQueue, diamondList *mergeQueue, const fr
 	splitQueue->insert(m_rightTriangle);
 	
 	// baseTriangle -> m_leftTriangle to stop recurring splitting between base neighbours
-	// TODO quiza podemos usar el nivel q sera mas elegante?
 	if (baseTriangle && !baseTriangle -> m_leftTriangle) baseTriangle -> split(splitQueue, mergeQueue, f);
 	
 	updateWedgie();

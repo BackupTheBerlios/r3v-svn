@@ -4,6 +4,7 @@
 \usepackage[catalan]{babel}
 \usepackage{graphicx}
 \usepackage{fancyhdr}
+\usepackage{eurosym}
 
 \pagestyle{fancy}
 
@@ -19,7 +20,7 @@
 \section{Com usar aquesta memòria}
 \paragraph{}
 %TODO ATECION QUE NO CAMBIE EL NUMERO de secciones
-Aquest document està estructurat en onze seccions bàsiques. El document segueix una forma lògica i seqüencial d'explicar els conceptes de forma que no calgui anar endavant i enrera per entendre les idees, per aquesta raó pot semblar que en algun moment s'estigui repetint alguna idea, però serà perquè s'està ampliant l'explicació d'algun concepte. Les seccions de la memòria són:
+Aquest document està estructurat en dotze seccions bàsiques. El document segueix una forma lògica i seqüencial d'explicar els conceptes de forma que no calgui anar endavant i enrera per entendre les idees, per aquesta raó pot semblar que en algun moment s'estigui repetint alguna idea, però serà perquè s'està ampliant l'explicació d'algun concepte. Les seccions de la memòria són:
 \begin{enumerate}
 \item \textit{Com usar aquesta memòria} - Aquesta secció explica quins continguts es poden trobar a cadascuna de les seccions per tal que el lector pugui decidir si pot saltar-se alguna ja que els conceptes dels quals es parlen ja li són coneguts així com veure quines seccions expliquen coses que ell desconeix i per tant ha d'estar més concentrat en la seva lectura.
 \item \textit{Objectius i motivacions} - En aquesta secció es parla dels objectius que es volen assolir amb la realització d'aquest projecte final de carrera així com de les motivacions que han dut a l'alumne a realitzar-lo.
@@ -27,6 +28,7 @@ Aquest document està estructurat en onze seccions bàsiques. El document segueix 
 \item \textit{Especificació} - Aquesta secció explica tot allò relacionat amb l'especificació: el model conceptual, el model de casos d'ús, els requeriments funcionals i no funcionals, i, una petita descripció informal de cada classe.
 \item \textit{Disseny} - Aquesta secció explica el pas de l'especificació al disseny, hi podem trobar un model conceptual modificat per acomodar-se als requeriments juntament amb els diagrames de sequència.
 \item \textit{Implementació} - Aquesta part de la memòria parla de tot allò relacionat amb la programació del projecte però que no forma part ni de l'especificació ni del disseny, com per exemple l'explicació sobre l'eina escollida per la generació automàtica de Makefiles.
+\item \textit{Captures de pantalla} - En aquesta secció es poden trobar captures de pantalla de l'aplicació en funcionament per poder fer-se una idea de com funciona.
 \item \textit{Recursos i Anàlisi de costos} - En aquesta secció es parla de tot allò que ha fet falta per realitzar el projecte, la seva planificació i l'anàlisi de quan hauria costat desenvolupar aquest projecte en cas qe s'haguès tractar d'un projecte comercial.
 \item \textit{Conclusions} - Aquesta part de la memòria explica que s'ha après en la realització d'aquest projecte així com possibles modificacions futures que es podrien dur a terme.
 \item \textit{Bibliografia} - Aquesta secció és una relació de totes les fonts consultades en la realització del projecte.
@@ -348,7 +350,7 @@ r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar u
 \item $leftTriangle, rightTriangle$: retornen el fill esquerre i dret respectivament (en cas que existeixin).
 \item $deleteLeaves$: elimina els triangles fills en cas que n'hi hagi actualitzant la llista de triangles partibles.
 \item $calcPriority$: actualitza el camp $priority$ tenint en compte la posició actual de l'observador (matriu de modelViewMatrix proporcionada pel paràmetre $frustum$).
-\item $updateMergeable$: 
+\item $updateMergeable$: actualitza la llista de diamants fusionables. De forma que elimina els diamants que ja no són fusionables perquè s'han partit els seus fills i afegeix els nous diamants fusionables quan els fills dels triangles no tenen més fills.
 \item $getBaseTriangle$: retorna el triangle que comparteix la base amb el triangle.
 \item $split$: parteix el triangle actualitzant les llistes de triangles partibles i diamants fusionables.
 \end{itemize}
@@ -515,7 +517,7 @@ Hi ha d'altres canvis que no es veuen en aquest diagrama ja que afecten els memb
 \paragraph{}
 També s'han afegit a algunes classes com $triangle$ i $diamant$ un membre del tipus iterador, amb els seus respectius set/get, aquests camps contenen l'iterador de l'objecte dins de les llistes que manté la classe $ROAM$, això és útil ja que d'aquesta manera l'eliminació és molt més ràpida, ja que no cal tornar a buscar a la llista l'element abans d'eliminar-lo.
 \paragraph{}
-La classe $triangle$ ha guanyat el membre $wedgie$ que és el wedgie real del triangle, això és per eficiència, ja que cada vegada que necessitem el wedgie podriem usar $ownWedgie$ i fer el recorrecut pels fills. També hi la nova operació $updateWedgie$ que serveix per notificar a un triangle que ha d'actualitzar la seva variable $wedgie$. $triangle$ també ha guanyat l'operació privada $setMergeable()$ que reb els paràmetres $bool\ mergeable,\ diamondList\ *mergeQueue,\ triangle\ *baseTriangle$.
+La classe $triangle$ ha guanyat el membre $wedgie$ que és el wedgie real del triangle, això és per eficiència, ja que cada vegada que necessitem el wedgie podriem usar $ownWedgie$ i fer el recorrecut pels fills. També hi la nova operació $updateWedgie$ que serveix per notificar a un triangle que ha d'actualitzar la seva variable $wedgie$. $triangle$ també ha guanyat l'operació privada $setMergeable()$ que reb els paràmetres $bool\ mergeable,\ diamondList\ *mergeQueue,\ triangle\ *baseTriangle$ i s'utilitza a $updateMergeableStatus$ per tal de no haver de repetir les tres o quatre mateixes línies de codi a tres llocs diferents de la funció.
 
 %TODO MIRAR SI HAY ALGUNA DIFERENCIA MAS
 
@@ -540,11 +542,37 @@ La classe $triangle$ ha guanyat el membre $wedgie$ que és el wedgie real del tri
 \caption{Diagrama de seqüència - Triangle - calcPriority}
 \end{figure}
 
+\newpage
+\begin{figure}[h]
+\centering
+\includegraphics{images/diag/merge.png}
+\caption{Diagrama de seqüència - Diamond - merge}
+\end{figure}
+
+\newpage
+\begin{figure}[h]
+\centering
+\includegraphics{images/diag/deleteLeaves.png}
+\caption{Diagrama de seqüència - Triangle - deleteLeaves}
+\end{figure}
+
+\newpage
+\begin{figure}[h]
+\centering
+\includegraphics{images/diag/getNode.png}
+\caption{Diagrama de seqüència - r3vMap - getNode}
+\end{figure}
+
+\newpage
+\begin{figure}[h]
+\centering
+\includegraphics{images/diag/getTriangle.png}
+\caption{Diagrama de seqüència - node - getTriangle}
+\end{figure}
+
+
 %TODO Los que quiero poner
 %TODO triangle::split
-%TODO diamond::merge
-%TODO node::getTriangle
-%TODO r3vMap::getNode
 %TODO ROAM::paint
 %TODO ROAM::paintTriangle
 %TODO alguna mas???
@@ -584,8 +612,6 @@ Cada cop que s'executa el programa r3v en un ordinador es consulta la variable \
 
 \end{itemize}
 
-%TODO altures???
-%TODO enteres???
 \subsection{Obtenció d'altures de coordenades no existents}
 \paragraph{}
 Un dels problemes que s'han hagut de sol·lucionar a l'hora de fer la implementació de l'algorisme és la obtenció de les altures de coordenades no existents al mapa, és a dir coordenades que no tenen una alçada associada al mapa. Això és un problema ja que l'algoritme pot demanar l'altura de qualsevol punt del mapa, mentre que els fitxers només proporcionen altures per un nombre finit de punts. És evident, per tant, que la resta de coordenades ens les hem $d'inventar$. El problema rau en com crear aquestes noves altures, ja que si donem una altura que no es correspon a aquell punt estarem enganyant a l'algorisme i fent que comenci a partir aquella zona quant potser en la realitat no cal.
@@ -632,13 +658,45 @@ L'ús de les autotools presenta un \textit{petit problema} en quant a la portabil
 \paragraph{}
 El format DEM dòna moltes més dades de les necessàries per implementar un visualitzador de superfícies, com ara, nom del mapa, descripció sobre el mapa, coordenades a les que es troba el mapa, estadistiques sobre l'exactitud dels valors, etc. Aquestes dades poden ser molt interessants, però no en el nostre context, per tant, s'ha decidit que la implementació del lector de fitxers de format DEM per a crear un objecte de la classe r3vMap, ignori tots aquest valors i es centri en les dades d'altitud.
 
+\newpage
+\section{Captures de pantalla}
+\begin{figure}[h]
+\centering
+\includegraphics{images/open.png}
+\caption{Pantalla d'obertura d'un mapa}
+\end{figure}
+
+\newpage
+\begin{figure}[h]
+\centering
+\includegraphics{images/map.png}
+\caption{Vista general d'un mapa}
+\end{figure}
+
+\newpage
+\begin{figure}[h]
+\centering
+\includegraphics{images/map1.png}
+\caption{Vista detallada del mapa anterior}
+\end{figure}
+
+\newpage
+\begin{figure}[h]
+\centering
+\includegraphics{images/map2.png}
+\caption{Vista detallada d'un altre mapa}
+\end{figure}
+
 
 \newpage
 \section{Recursos i Anàlisi de costos}
 \subsection{Recursos utilitzats}
 \subsubsection{Recursos humans}
 \paragraph{}
-Els recursos humans per la realització d'aquest projecte s'han reduït a mi mateix, ja que aquestes són les normes de la realització de projectes a la FIB. En alguns casos això no és totalment òptim, per exemple per la redacció de textos, a una empresa no seria un Enginyer Informàtic qui s'ocuparia, però com s'ha dit el projecte és un treball per una sola persona.\newline
+Els recursos humans per la realització d'aquest projecte s'han reduït a mi mateix, ja que aquestes són les normes de la realització de projectes a la FIB. En alguns casos això no és totalment òptim, per exemple per la redacció de textos, a una empresa no seria un Enginyer Informàtic qui s'ocuparia, però com s'ha dit el projecte és un treball per una sola persona.
+\paragraph{}
+En cas de haber de buscar a vàries persones per desenvolupar el projecte hauria estat necessari buscar a un dissenyador amb experiència en el món dels gràfics 3D, un programador amb experiència amb OpenGL, C++ i Qt i un escriptor de documentació.
+\paragraph{}
 La dedicació en temps ha estat variable al llarg del temps de la realització del projecte (que s'ha fet entre Febrer i Juny de 2005) però es pot situar en torn a una mitja de 20 hores setmanals.
 NECESITO SUGERENCIAS DE QUE PONER!!!!!!!
 \subsubsection{Recursos tecnològics}
@@ -647,20 +705,20 @@ En quant als recursos tecnològics utilitzats tenim dues branques que es poden di
 \paragraph{}
 Els recursos hardware utilitzats es poden resumir en:
 \begin{itemize}
-\item PCs de desenvolupament: Evidentment tenir ordinadors on poder desenvolupar i provar el codi és molt important, en aquest cas se n'han fet servir dos de diferents. Un a la FIB i un altre a casa. En tots els casos és important poder disposar de diferents màquines on fer les proves per veure que el funcionament és correcte a totes elles, però en el cas d'una aplicació 3D es una mica més important, ja que el comportament de les tarjetes 3D varia de xip a xip. El PC de la FIB té les següents característiques\newline
-\begin{tabular}{|c|c|} \hline 
-Processador &  \\ \hline 
-Memòria &  \\ \hline 
-Disc Dur &  \\ \hline 
-Targeta gràfica &  \\ \hline 
-\end{tabular}\newline
+\item PCs de desenvolupament: Evidentment tenir ordinadors on poder desenvolupar i provar el codi és molt important, en aquest cas se n'han fet servir dos de diferents. Un a la FIB i un altre a casa. En tots els casos és important poder disposar de diferents màquines on fer les proves per veure que el funcionament és correcte a totes elles, però en el cas d'una aplicació 3D es una mica més important, ja a vegades que el comportament de les tarjetes 3D amb les mateixes comandes OpengGL varia de xip a xip, i per tant quantes més targetes es provin milor. El PC de la FIB té les següents característiques
+\begin{itemize}
+\item Processador: Intel Pentium 4 3.00GHz
+\item Memòria: 512 MB
+\item Disc Dur: 20 GB
+\item Targeta gràfica: Ati Radeon 9200
+\end{itemize}
 mentre que el PC de casa té aquestes\newline
-\begin{tabular}{|c|c|} \hline 
-Processador & AMD Athlon XP 1600+ \\ \hline 
-Memòria & 376 MB \\ \hline 
-Disc Dur & 160 GB \\  \hline 
-Targeta gràfica & Xip Kyro 2 de PowerVR \\ \hline 
-\end{tabular}\newline
+\begin{itemize}
+\item Processador: AMD Athlon XP 1600+
+\item Memòria: 384 MB
+\item Disc Dur: 160 GB
+\item Targeta gràfica: PowerVR Kyro 2
+\end{itemize}
 Cal notar que a la FIB el disc dur utilitzat és un disc dur extraïble de forma que es pot utilitzar a qualsevol dels PCs disponibles de la sala de projectistes.
 
 \item Connexió a la xarxa: En el món de la programació actual tenir connexió a internet és molt important ja que és una font de consulta de manuals molt important. A la FIB s'ha utilitzat la connexió LAN de la facultat mentre que ha casa s'ha fet servir una connexió via modem 56K.
@@ -668,9 +726,70 @@ Cal notar que a la FIB el disc dur utilitzat és un disc dur extraïble de forma q
 \subsubsection{Recursos físics}
 \paragraph{}
 Una part que normalment s'olvida al fer aquest tipus de resum dels recursos utilitzats per fer la realització d'un projecte són els recursos físics, es a dir cadires, taules, edificis, etc. Tot això és completament necessari per poder dur a terme qualsevol projecte, i, de vegades pot ser un cost bastant important, com per exemple en el cas del lloguer o compra d'una oficina. En el cas del projecte que ens ocupa no s'ha hagut d'adquirir cap dels recursos físics utilitzats ja que la Facultat ja proporciona lloc on desenvolupar el PFC.
-\subsection{Anàlisi de costos}
+
 \newpage
-\section{Conclusions}
+\subsection{Anàlisi de costos}
+\paragraph{}
+En aquesta taula podem trobar el tipus de personal que cal per realitzar cadascuna de les tasques de les que s'ha composat la realització del projecte aixó com el temps que s'ha trigat en fer cadascuna d'elles.
+\begin{center}
+\begin{tabular}{|l|l|l|} \hline
+\textbf{Tasca} & \textbf{Tipus}  & \textbf{Hores de realització} \\ \hline
+Planificació inicial del projecte & Analista & 15 hores \\ \hline
+Especificació & Analista & 75 hores \\ \hline
+Disseny & Analista & 75 hores \\ \hline
+Implementació & Programador & 125 hores\\ \hline
+Realització de proves & Provador de software & 25 hores\\ \hline
+Redacció de la memòria & Documentador & 100 hores \\ \hline
+\end{tabular}
+\end{center}
+
+\paragraph{}
+Cada un dels tipus de personal té un sou diferent degut a que els coneixements no són els mateixos. A la taula següent hi figura el cost hora que tindria cada tipus de perfil realitzat.
+\begin{center}
+\begin{tabular}{|l|l|} \hline
+\textbf{Tipus de personal} & \textbf{Cost} \\ \hline
+Analista & \EUR{40}/hora \\ \hline
+Programador & \EUR{30}/hora \\ \hline
+Provador & \EUR{25}/hora \\ \hline
+Escriptor de documentació & \EUR{35}/hora \\ \hline
+\end{tabular}
+\end{center}
+
+\paragraph{}
+Això ens dona un cost total per pagar al personal de:
+\begin{center}
+\begin{tabular}{|l|l|} \hline
+\textbf{Tasca} & \textbf{Cost} \\ \hline
+Planificació inicial del projecte & 15 * 40 = \EUR{600} \\ \hline
+Especificació & 75 * 40 = \EUR{3000}\\ \hline
+Disseny & 75 * 40 = \EUR{3000}\\ \hline
+Implementació & 125 * 30 = \EUR{3750}\\ \hline
+Realització de proves & 25 * 25 = \EUR{625}\\ \hline
+Redacció de la memòria & 100 * 35 = \EUR{3500}\\ \hline
+\textbf{Total} & \textbf{\EUR{14475}} \\ \hline
+\end{tabular}
+\end{center}
+
+\paragraph{}
+A aquests \EUR{14475} caldria sumar el cost dels recursos hardware, software i físics, però això es complicat de comptar, ja que en el cas de hardware i software el material necessari per la realització del projecte no seria exclusiu per aquest projecte en cas que es tractés d'una empresa, per tant no seria lògic assignar el cost total del material al cost d'aquest projecte. També es pot dir el mateix del cost dels recursos físics, ja que no es pot asignar completament el cost del lloguer d'oficines, mobiliari, etc. que seria necessari per dur a terme la realització del projecte. Per tant, fent una aproximació dels costos d'amortització que es podrien assignar a cadascun dels recursos anteriors es podria xifrar en torn dels  \EUR{20000} el cost total de la realització del projecte.
+
+\newpage
+\section{Conclusions i Treball futur}
+\paragraph{}
+El resultat de la realització d'aquest projecte final de carrera ha estat bastant satisfactori en termes d'objectius assolits, tant en la part requeriments que es volia que complís l'aplicació com en la part de formació final de l'alumne.
+\paragraph{}
+En quant al compliment de requeriments funcionals i no funcionals que es van establir en la reunió inicial que vam tenir el projectista i el director, es pot dir que s'han assolit totalment, ja que no hi ha cap requeriment dels que vam parlar inicialment que no hagi acabat estant present a l'aplicació final.
+\paragraph{}
+La part de formació final de l'alumne que se li suposa a la realització d'un projecte d'aquesta envergadura també ha estat profitosa ja que he adquirit més coneixements sobre OpenGL i C++ en general dels que ja tenia, així com també m'he enfrontat a tasca de gestionar un projecte tan llarg per primera vegada, aprenent així totes les coses que això implica, com gestionar el temps d'una manera eficient.
+\paragraph{}
+Encara que s'hagin complit tots els requeriments que es van parlar en la reunió inicial per definir aquest projecte això no vol dir que no hi hagi coses a millorar o ampliar per tal que libroam o r3v siguin millors. Aquesta és una llista de les varies tasques que es poden afrontar com a treball futur:
+\begin{itemize}
+\item Organitzar els triangles en strips: Organitzar els triangles en strips no es una tasca sencilla, però fer-ho pot reportar guanys de rendiment, ja que al utilitzar strips de triangles el nombre de vertexs que s'envien a pintar es redueix considerablement, i a més a més, algunes targetes gràfiques tenen optimitzacions especials per gestionar els strips de triangles.
+\item Càlcul de prioritat diferida: L'observador, normalment, no es mou bruscament de lloc ni gira exageradament, per tant, realment no caldria recalcular la prioritat de tota la llista de diamants i triangles per cada nova posició de l'observador, ja que aquesta prioritat tampoc variarà de forma exagerada, per tant, recalcular només un tant per cent donat dels elements d'aquestes llistes pot ajudar a optimitzar l'algorisme, evidentment s'haurien de programar comprovacions que asseguressin que l'observador no s'ha mogut exageradament, ja que en aquest cas si seria necessari recalcular tota la llista de prioritats.
+\item Aturada del càlcul de prioritat per temps: Una altre optimització que es pot afegir a l'algorisme ROAM és donar un límit de temps que volem que es trigui en obtenir la malla de triangles per la nova posició. Això es pot implementar fàcilment, ja que només cal posar la comprovació de temps al $while$ que va regenerant l'arbre de triangle fent les fusions i particions. El fet d'aturar la regeneració de l'arbre de triangles suposarà que no tindrem la malla òptima per la posició, però el que si serà és la millor malla possible en el temps donat, ja que la regeneració es va fent fusionant els pitjors diamants i partint els millors triangles. Aquesta optimització encara que simple de fer no s'ha implementat ja als ordinadors disponibles a l'actualitat la part de regeneració de la malla de triangles no és costosa, sent el pintat per pantalla dels triangles la part que triga més temps.
+\end{itemize}
+
+
 \newpage
 \section{Bibliografia}
 \paragraph{}
@@ -770,7 +889,7 @@ La majoria d'API per la generació de gràfics 3D interactius tenen un conjunt sim
 \item \textbf{GL\_TRIANGLE\_STRIP} - Donats $i$ punts, ($i>3$) es creen $i-2$ triangles. El triangle amb índex $k$ està format pels punts amb índex $k$, $k+1$ i $k+2$.
 \item \textbf{GL\_TRIANGLE\_FAN} - Donats $i$ punts, ($i>=3$) es creen $i-2$ triangles. El triangle amb índex $k$ està format pels punts amb índex $0$, $k+1$ i $k+2$.
 \item \textbf{GL\_QUADS} - Cada 4 punts que es donen es converteixen en un quadrilàter.
-\item \textbf{GL\_QUAD\_STRIP} - Donats $i$ punts, ($i>=4$) es creen $i-3$ quadrilàters. El quadrilàter amb índex $k$ està format pels punts amb índex $k$, $k+1$, $k+2$ i $k+3$ %TODO ESTA MAL CORREGIRRRRRRRRRRRR.
+\item \textbf{GL\_QUAD\_STRIP} - Els quatre primers vèrtexs formen un quatrilàter. Cada parell succesiu de vèrtexs es combina amb el parell anterior per formar un altre quadrilateral.
 \item \textbf{GL\_POLYGON} - Té el mateix comportament que \textbf{GL\_LINE\_LOOP}, però en comptes de crear línies crear un polígon.
 \end{itemize}
 Podem veure exemples de les 10 primitives a la figura \ref{fig: primitives}
