@@ -3,3 +3,4 @@
 
 translationsdir = $(prefix)/share/apps/r3v/translations
 translations_DATA = ca.qm es.qm
+EXTRA_DIST = $(translations_DATA)
