@@ -137,11 +137,8 @@ void glWidget::resizeGL(int width, int height)
 
 void glWidget::initializeGL()
 {
-// 	glClearColor(0, 0, 0, 0);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-// 	glShadeModel(GL_SMOOTH);
-// 	glShadeModel(GL_FLAT);
 }
 
 void glWidget::paintGL()

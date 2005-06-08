@@ -49,7 +49,7 @@ Com a objectius secundaris, es vol que l'aplicació sigui el més portable possibl
 \paragraph{}
 Les motivacions per realitzar el projecte són variades, però es poden resumir en els següents punts:
 \begin{itemize}
-\item El món dels gràfics tridimensionals generats per computador és un món en expansió. En aquests moments genera una quantitat de beneficis superior a la del cinema, a més a més, hi ha gran demanda d'aplicacions de visualització tridimensional, especialment per a temes mèdics, però també en d'altres camps. Per tant, la realització d'un projecte de final de carrera en aquest camp ajuda a obtenir coneixements sobre aquest camp amb tanta projecció que molt possiblement siguin útils en el futur.
+\item El món dels gràfics tridimensionals generats per computador és un món en expansió. En aquests moments genera una quantitat de beneficis superior a la del cinema, a més a més, hi ha gran demanda d'aplicacions de visualització tridimensional, especialment per a temes mèdics, però també en altres camps. Per tant, la realització d'un projecte de final de carrera en aquest camp ajuda a obtenir coneixements sobre aquest camp amb tanta projecció que molt possiblement siguin útils en el futur.
 \item El món dels gràfics per computador sempre m'ha interessat de manera especial. Per aquesta raó he cursat quasi totes les asignatures que s'imparteixen a la FIB relacionades amb aquest tema, per tant, aquest camp va ser el primer en el que vaig començar a buscar projectes de final de carrera. Un altre camp que també m'interessa, i del qual també vaig mirar els projectes disponibles, és el del món del programari lliure.
 \item Un cop analitzats tots els projectes que els professors vinculats a la FIB oferien relacionats amb el món dels gràfics per computador i del programari lliure, vaig anar a parlar amb en Lluís que em va explicar en profunditat de que tractava aquest projecte així com també hem va comunicar que la seva idea era que es desenvolupés com a programari lliure. Això significava que aquest projecte conjugava els dos camps que m'interessaven, per tant, vaig decidir que si en Lluís estava d'acord en que jo el portés a terme, el projecte de la implementació de l'algorisme ROAM era el projecte que jo desitjava fer.
 \end{itemize}
@@ -59,7 +59,7 @@ Les motivacions per realitzar el projecte són variades, però es poden resumir en
 
 \subsection{Representació interactiva de terrenys en 3D}
 \paragraph{}
-La representació 3D de terrenys pot ser trivial o extremament complicada. Hi ha aplicacions en que el terra és molt poc important i amb un polígon texturat i pla quasi bé ja n'hi ha prou, la majoria de jocs 3D entren dintre d'aquestes aplicacions, jocs de cotxes, arcades 3D, etc. En canvi hi ha un conjunt d'aplicacions on el terreny és part molt important de la visualització, dins d'aquest grup podem trobar els jocs de simulació, sobretot els d'avions, però també jocs de simulació tàctica on el terreny pot permetre amagar-nos dels enemics, etc., evidentment totes les aplicacions que tinguin alguna cosa veure amb els mapes també tenen els terrenys com a part important.
+La representació 3D de terrenys pot ser trivial o extremament complicada. Hi ha un primer grup d'aplicacions en que el terra és molt poc important i amb un polígon texturat i pla quasi bé ja n'hi ha prou, la majoria de jocs 3D entren dintre d'aquestes aplicacions, jocs de cotxes, arcades 3D, etc. En canvi hi ha un conjunt d'aplicacions on el terreny és part molt important de la visualització, dins d'aquest grup podem trobar els jocs de simulació, sobretot els d'avions, però també jocs de simulació tàctica on el terreny pot permetre amagar-nos dels enemics, etc., evidentment totes les aplicacions que tinguin alguna cosa veure amb els mapes també tenen els terrenys com a part important.
 \paragraph{}
 A les aplicacions del primer grup, usar un algorisme especial per representar el terreny no té cap sentit, ja que aquest està format per pocs polígons i no cal fer cap optimització per representar-lo. En canvi les aplicacions on l'orografia té un paper important, la visualització del terreny passa a ocupar gran part dels cicles de rellotge que gastarà la nostra aplicació i, per tant, un algorisme optimitzat és necessari. A més a més, en la majoria dels casos no serà únicament necessari per optimizar l'aplicació, sinó que serà completament necessari per tal que l'aplicació pugui funcionar, ja que si volguéssim representar tot el terreny faria falta un nombre ingent de triangles. Per exemple, si fem servir un esquema de representació com el de la figura \ref{fig: ingent}, què és bastant dolent ja que semblaria que el terreny tingués forma de serreta, però que crea un triangle entre cada punt i els seus dos més propers, és a dir, el més exacte possible, per un terreny quadrat de $NxN$ punts, caldrien $2 * (N-1)^2$, cosa que significa que per un terreny de $1000x1000$ punts (res exagerat), caldrien uns dos milions de triangles, una quantitat massa elevada.
 
@@ -82,16 +82,23 @@ L'algorisme ROAM \textit{(Real-time Optimally Adapting Meshes)} és un algorisme 
 Per tal d'implementar l'algorisme cal que cada triangle tingui una prioritat associada, així podrem decidir si és prioritari partir un triangle o un altre. El càlcul de la prioritat té dues parts. La primera part és estable respecte a la posició de l'observador mentre que la segona varia segons la posició d'aquest.
 
 \paragraph{}
-%TODO intentar ponerlo mejor
-La primera part és el que s'anomena $wedgie$, i es defineix de forma recursiva. Pels triangles que són fulles de l'arbre, el wedgie és el valor absolut de la diferència entre el punt que hauria d'ocupar en la realitat el punt mig de la base del triangle i el punt que està ocupant en la representació. És a dir, el valor absolut de la resta del valor que obtenim de demanar-li al mapa l'alçada del punt mig de la base del triangle i de la mitja de les alçades dels dos vèrtex extrems de la base. \newline
-Per aquells triangles que no són fulla de l'arbre el wedgie del triangle és la suma del càlcul anterior i el màxim dels wedgies dels dos fills del triangle.
+La primera part és el que s'anomena $wedgie$, i es defineix de forma recursiva. Pels triangles que són fulles de l'arbre, el wedgie és el valor absolut de la diferència entre el punt que hauria d'ocupar en la realitat el punt mig de la base del triangle i el punt que està ocupant en la representació. És a dir, el valor absolut de la resta del valor que obtenim de demanar-li al mapa l'alçada del punt mig de la base del triangle i de la mitja de les alçades dels dos vèrtex extrems de la base. A la figura \ref{fig: wedgie} podem veure una representació esquemàtica en 2D de que és el wedgie, la línia negra és el terreny real, la vermella l'aresta base del triangle que el representa i la verda el wedgie d'aquest triangle.
+\begin{figure}[h]
+\centering
+\includegraphics{images/wedgie.png}
+\caption{Esquema en 2d del wedgie}
+\label{fig: wedgie}
+\end{figure}
+\paragraph{}
+Per aquells triangles que no són fulla de l'arbre, el wedgie del triangle és la suma del càlcul anterior i el màxim dels wedgies dels dos fills del triangle.
 
 \paragraph{}
 La segona part de la prioritat del càlcul de la prioritat consisteix en ponderar el wedgie segons la posició de l'observador per tal de poder tenir un algorisme dinàmic. Aquesta ponderació és lògica ja que si pensem en el wedgie com a error que està cometent un triangle, no ens ha d'importar que hi hagi errors grans si aquests estan molt lluny de l'observador, mentre que potser si hauriem d'intentar corregir un error petit si aquest està just al davant de l'observador. La ponderació que es fa servir per calcular el valor final de la prioritat d'un triangle és la projecció del wedgie a espai de pantalla, amb això fem un càlcul proporcional al nombre de píxels d'error que el wedgie realment està causant a la pantalla, i per tant, tenim un càlcul que ens pot servir per ordenar els triangles tenint en compte quin és el que està causant més error a la visualització.
 
+\newpage
 \subsubsection{Construcció de l'arbre de triangles}
 \paragraph{}
-Hi ha dues formes de construir l'arbre de triangles donat un mapa i una posició de l'observador. La primera reconstrueix l'arbre per a cada nova posició de l'observador, això la fa menys eficient però més fàcil d'entendre, el segon mètode reutilitza l'arbre anterior i el transforma en un arbre òptim per la nova posició de l'observador. \newline
+Hi ha dues formes de construir l'arbre de triangles donat un mapa i una posició de l'observador. La primera reconstrueix l'arbre per a cada nova posició de l'observador, això la fa menys eficient però més fàcil d'entendre, el segon mètode reutilitza l'arbre de la posició anterior de l'observador i el transforma en un arbre òptim per la nova posició. \newline
 La primera forma de construir l'arbre de triangles utilitza aquest algorisme.\newline
 \texttt{
 Sigui Q una cua de triangles ordenada per prioritat \newline
@@ -107,6 +114,7 @@ Mentre el nombre de triangles del mapa sigui massa petit fer \{ \newline
 }
 
 D'aquesta manera es garanteix que quan arribem al nombre de triangles al que volem que arribi l'algorisme tindrem l'arbre òptim, ja que hem anat partint sempre els triangles que tenien més prioritat, és a dir, aquells que cometien més error.
+\newpage
 \paragraph{}
 La segona manera de construir l'arbre de triangles és aquesta:\newline
 \texttt{
@@ -138,7 +146,7 @@ Mentre el nombre de triangles del mapa sigui massa petit o la prioritat màxima d
 \} \newline
 }
 
-Si ens fixem en el cas de l'instant inicial el codi es comporta de forma idèntica al primer algorisme, ja que el mapa sempre té masses pocs elements i per tant entra al primer cas del $Si$. A la resta de casos es reaprofiten els triangles bons de l'arbre de triangles que s'havia creat per la posició anterior de l'observador, mentre que els aquells triangles que havien estat partits anteriorment, formant diamants fusionables, i que han passat a tenir menys prioritat que triangles que es poden partir es fusionen, així a la propera volta del $Mentre$, hi haurà menys triangles dels necessaris, s'entrarà al primer cas del $Si$ i es partirà el triangle que estigui cometent més error.
+Si ens fixem en el cas de l'instant inicial el codi es comporta de forma idèntica al primer algorisme, ja que el mapa sempre té massa pocs elements i per tant entra al primer cas del $Si$. A la resta de casos es reaprofiten els triangles bons de l'arbre de triangles que s'havia creat per la posició anterior de l'observador, mentre que els aquells triangles que havien estat partits anteriorment, formant diamants fusionables, i que han passat a tenir menys prioritat que triangles que es poden partir, es fusionen. Així a la propera volta del $Mentre$, hi haurà menys triangles dels necessaris, s'entrarà al primer cas del $Si$ i es partirà el triangle que estigui cometent més error.
 
 \subsubsection{View frustum culling}
 \paragraph{}
@@ -163,8 +171,8 @@ Els fitxers DEM divideixen el mapa en una graella i proporcionen l'alçada de cad
 Hi ha tres tipus de fitxers DEM:
 \begin{enumerate}
 \item \textbf{DEM d'1 grau:} Tenen 1201*1201 punts de dades, estan basats en latitud-longitud i l'espaiat entre els punts de la graella és de 3 segons d'arc, que és aproximadament 90 metres, encara que obviament depèn de la latitud del planeta en que s'hagin pres les mesures.
-\item \textbf{DEM de 30 minuts:} Són 4 unitats de fitxers DEM d'1 grau distribuïdes de forma conjunta, són el menys comú dels 3 tipus.
-\item \textbf{DEM de 7.5 minuts:} L'espaiat entre els punts de la graella pot ser de 30 o 10 metres (1 segon d'arc i 1/3 de segon d'arc respectivament), els límits del fitxer estan basats en latitud-longitud, però en canvi els punts de dades es donen en coordenada x-y d'una projecció Mercator, resultant en fitxers on no tots registres de tipus B tenen la mateixa longitud. (Figura \ref{fig: dem})
+\item \textbf{DEM de 30 minuts:} Són 4 unitats de fitxers DEM d'1 grau distribuïdes de forma conjunta, són els menys comuns dels 3 tipus.
+\item \textbf{DEM de 7.5 minuts:} L'espaiat entre els punts de la graella pot ser de 30 o 10 metres (1 segon d'arc i 1/3 de segon d'arc respectivament), els límits del fitxer estan basats en latitud-longitud, però en canvi els punts de dades es donen en coordenada x-y d'una projecció Mercator, resultant en fitxers on no tots els registres de tipus B tenen la mateixa longitud. (Figura \ref{fig: dem})
 \end{enumerate}
 
 \begin{figure}[h]
@@ -174,6 +182,7 @@ Hi ha tres tipus de fitxers DEM:
 \label{fig: dem}
 \end{figure}
 
+\newpage
 \subsubsection{Per què el format DEM?}
 \paragraph{}
 Hi ha molts tipus de format de fitxer diferents que descriuen terrenys. Aquesta secció explica quines són les raons bàsiques que han portat a escollir aquest tipus de format i no un altre.
@@ -184,14 +193,14 @@ Hi ha molts tipus de format de fitxer diferents que descriuen terrenys. Aquesta 
 
 \subsection{El format de mapes simples}
 \paragraph{}
-El format de mapes simples \textit{(extensió PM)} és un format inventat per mi. El vaig fer servir per poder provar les primeres implementacions de l'algorisme abans d'haver desenvolupat el lector de fitxers DEM. Els mapes simples tenen una sintaxi molt simple, la primera linea conté un nombre $k$ que representa el nombre de files i columnes del mapa (els mapes han de ser quadrats), a partir d'aquí hi ha $k*k$ nombres, que representen les $k$ files del mapa, on cada fila té $k$ elements.
+El format de mapes simples \textit{(extensió PM)} és un format inventat per mi. El vaig fer servir per poder provar les primeres implementacions de l'algorisme abans d'haver desenvolupat el lector de fitxers DEM. Els mapes simples tenen una sintaxi molt simple, la primera línia conté un nombre $k$ que representa el nombre de files i columnes del mapa (els mapes han de ser quadrats), a partir d'aquí hi ha $k*k$ nombres, que representen les $k$ files del mapa, on cada fila té $k$ elements.
 
 \newpage
 \section{Especificació}
 \label{sec:especificacio}
 
 \subsection{Què és libroam?}
-libroam és la part del projecte que implementa l'algorisme ROAM. Està programada com a llibreria de forma que qualsevol programa pugui usar aquesta funcionalitat. La llibreria està sota llicència GPL (l'annex \ref{sec:gpl} explica que és aquesta llicència). La llibreria funciona fent servir el paradigma de navegació fly. Per veure una descripció dels diferents paradigmes de navegació aplicables als gràfics 3D consulteu l'annex \ref{sec:parnav}
+libroam és la part del projecte que implementa l'algorisme ROAM. Està programada com a llibreria de forma que qualsevol programa pugui usar aquesta funcionalitat. La llibreria està sota llicència GPL (l'annex \ref{sec:gpl} explica que és aquesta llicència). La llibreria funciona fent servir el paradigma de navegació $fly$. Per veure una descripció dels diferents paradigmes de navegació aplicables als gràfics 3D consulteu l'annex \ref{sec:parnav}
 
 \subsection{Què és r3v?}
 r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar un visor de superfícies que utilitzi l'algorisme ROAM. L'aplicació afegeix sobre la llibreria una interfície gràfica d'usuari basada en la llibreria Qt (A l'annex \ref{sec:qt} trobareu una descripció d'aquesta llibreria) que permet a l'usuari obrir i tancar mapes, així com visualitzar-los i navegar per ells.
@@ -214,7 +223,7 @@ r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar u
 \paragraph{Definició:} Els requeriments funcionals capturen el comportament que es vol que tingui el sistema software. Aquest comportament es pot expressar com a serveis, tasques o funcions que cal que el sistema sigui capaç de fer.
 \begin{itemize}
 \item \textbf{Implementar l'algorisme ROAM:} Volem que el projecte implementi l'algorisme ROAM per tal de visualitzar terrenys.
-\item \textbf{Navegar pels terrenys:} Es vol que el programa permeti a l'usuari navegar pel terreny. S'ha escollit el paradigma de navegació fly.
+\item \textbf{Navegar pels terrenys:} Es vol que el programa permeti a l'usuari navegar pel terreny. S'ha escollit el paradigma de navegació $fly$.
 \item \textbf{Carregar mapes des de fitxer:} No es vol que el terreny que visualitzi el programa sigui fixe, per tant, s'haurà d'implementar la possibilitat d'obrir nous mapes des de fitxers.
 \item \textbf{Intèrpret de fitxers DEM:} El requeriment anterior implica que caldrà saber llegir algun tipus de fitxer que proporcioni les dades de les alçades per crear el mapa, com s'explica a l'apartat \ref{sec:dem} s'ha decidit utilitzar el format DEM.
 \end{itemize}
@@ -233,7 +242,6 @@ r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar u
 \subsubsection{Restriccions d'integritat textuals}
 \begin{itemize}
 \item Un triangle o bé té dos fills o no en té cap, no pot tenir-ne només un.
-%TODO \item ARGGGGGGGGG ERA ALGO CON LOS BUCLES
 \end{itemize}
 
 \newpage
@@ -247,10 +255,7 @@ r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar u
 \begin{itemize}
 \item $heights$: emmagatzema les alçades de tots els punts disponibles al mapa en forma de vector de vectors.
 \item $byColumns$: indica si aquest vector de vectors és un vector de files o un vector de columnes. 
-\item $minHeight$: indica l'alçada mínima del mapa.
-\item $amplitude$: indica la diferència entre alçada màxima i alçada mínima al mapa.
 \item $baseDiamond$: retorna el diamant que forma la base del mapa
-\item $calcAmplitude$: calcula els valors $minHeight$ i $amplitude$
 \item $height$: retorna l'alçada del punt donat
 \item $triangles$: retorna el nombre de triangles que hi representant el mapa actualment
 \item $leaves$: retorna el nombre de fulles que hi representant el mapa actualment
@@ -310,6 +315,8 @@ Hi ha diamants que només estan formats per un triangle, es tracta de triangles l
 \item $backward$: mou a l'observador un pas enrera en la direcció de visió.
 \item $left$: mou a l'observador un pas a l'esquerra respecte la direcció de visió.
 \item $right$: mou a l'observador un pas a la dreta respecte la direcció de visió.
+\item $up$: mou a l'observador un pas amunt respecte el mapa.
+\item $down$: mou a l'observador un pas avall respecte el mapa.
 \item $rotate$: canvia la rotació de l'observador.
 \item $angles$: retorna els angles de rotació actuals.
 \item $position$: retorna la posició actual.
@@ -492,10 +499,22 @@ La classe $glWidget$ és la única classe que forma la capa de presentació. Aquest
 El mode de representació utilitzat és una finestra a pantalla completa ja que d'aquesta forma s'obté una superfície de representació del mapa el més gran possible i, a més a més, l'experiència de l'usuari és més immersiva.
 \paragraph{}
 La interacció de l'usuari amb l'aplicació es fa mitjançant el teclat i el ratolí. El ratolí serveix per canviar la direcció de visió de l'observador i el teclat serveix per moure l'observador.
+\paragraph{}
+Els controls són:
+\begin{itemize}
+\item \textit{Fletxa amunt o W}: Mou l'observador endavant.
+\item \textit{Fletxa avall o S}: Mou l'observador endarrera.
+\item \textit{Fletxa esquerra o A}: Mou l'observador a l'esquerre.
+\item \textit{dreta o D}: Mou l'observador a la dreta.
+\item \textit{Q}: Mou l'observador amunt.
+\item \textit{E}: Mou l'observador avall.
+\item \textit{Eix X del ratolí}: Canvia horitzontalment la direcció de visió de l'observador.
+\item \textit{Eix Y del ratolí}: Canvia verticalment la direcció de visió de l'observador.
+\end{itemize}
 
 \subsection{Controlador del sistema}
 \paragraph{}
-Tot sistema software rep esdeveniments externs per part de l'usuari o per part d'altres sistemes software. Un cop s'intercepten els esdeveniments a la capa de presentació algun objecte del domini ha de ser l'encarregat de processar aquests esdeveniments. Aquests objectes s'anomenen controladors.
+Tot sistema software rep esdeveniments externs per part de l'usuari o per part d'altres sistemes software. Un cop s'intercepten els esdeveniments a la capa de presentació algun objecte del domini ha de ser l'encarregat de processar-los. Aquests objectes s'anomenen controladors.
 \subsubsection{Controlador façana}
 \paragraph{}
 En aquest projecte s'ha optat per fer servir un controlador del tipus façana, centralitzat a la classe ROAM. L'avantatge d'utilitzar aquest tipus de controlador és que el domini és una caixa negra per la capa de presentació, d'aquesta manera, qualsevol canvi que es faci a la capa del domini, exceptuant els de la classe ROAM, no representará cap canvi per la capa de presentació, ja que tota interacció entre la capa de presentació i la capa del domini passa a través del controlador. El problema típic d'aquest tipus de controlador és que acostuma a crear classes molt grans, però degut al petit nombre d'esdeveniments que tracta el sistema aquest problema no és important en aquest projecte.
@@ -516,11 +535,11 @@ S'han creat dues classes auxiliars, $triangleList$ i $diamondList$, que emmagatz
 \paragraph{}
 Hi ha d'altres canvis que no es veuen en aquest diagrama ja que afecten els membres de les classes. Node ha guanyat l'atribut $color$ que guarda el color del node, ja que si no caldria preguntar-li al mapa quin color havia de tenir cada cop que es volgués pintar un node, això seria molt ineficient, per tant al crear-se el node també s'emmagatzema el seu color. Per aquesta mateixa raó l'operació $color(...)$ del mapa ha passat a ser privada, ja que només es crida quan es vol crear un node.
 \paragraph{}
-També s'han afegit a algunes classes com $triangle$ i $diamant$ un membre del tipus iterador, amb els seus respectius set/get, aquests camps contenen l'iterador de l'objecte dins de les llistes que manté la classe $ROAM$, això és útil ja que d'aquesta manera l'eliminació és molt més ràpida, ja que no cal tornar a buscar a la llista l'element abans d'eliminar-lo.
+$r3vMap$ ha guanyat els membres $minHeight$ i $amplitude$ que emmagatzemen l'alçada mínima del mapa i la diferència entre l'alçada mínima i màxima del mapa respectivament. També ha aparegut l'operació $calcAmplitude$ que calcula els valors de $minHeight$ i $amplitude$. Això és per eficiència, ja que aquests valors es poden obtenir a partir del vector d'alçades, però com el seu càlcul és costós i s'usa sovint, s'ha decidit materialitzar aquesta informació derivada.
+\paragraph{}
+També s'han afegit a algunes classes com $triangle$ i $diamant$ un membre del tipus iterador, amb els seus respectius set/get, aquests camps contenen l'iterador de l'objecte dins de les llistes que manté la classe $ROAM$, això és útil ja que d'aquesta manera l'eliminació és molt més ràpida, doncs no cal tornar a buscar a la llista l'element abans d'eliminar-lo.
 \paragraph{}
 La classe $triangle$ ha guanyat el membre $wedgie$ que és el wedgie real del triangle, això és per eficiència, ja que cada vegada que necessitem el wedgie podríem usar $ownWedgie$ i fer el recorregut pels fills. També hi la nova operació $updateWedgie$ que serveix per notificar a un triangle que ha d'actualitzar la seva variable $wedgie$. $triangle$ també ha guanyat l'operació privada $setMergeable()$ que rep els paràmetres $bool\ mergeable,\ diamondList\ *mergeQueue,\ triangle\ *baseTriangle$ i s'utilitza a $updateMergeableStatus$ per tal de no haver de repetir les tres o quatre mateixes línies de codi a tres llocs diferents de la funció.
-
-%TODO MIRAR SI HAY ALGUNA DIFERENCIA MAS
 
 \newpage
 \subsection{Diagrames de seqüència}
@@ -613,8 +632,6 @@ La classe $triangle$ ha guanyat el membre $wedgie$ que és el wedgie real del tri
 \caption{Diagrama de seqüència - ROAM - paintTriangle (continuació)}
 \end{figure}
 
-
-%TODO alguna mas???
 
 \newpage
 \subsection{Escala de colors}
@@ -737,8 +754,6 @@ Els recursos humans per la realització d'aquest projecte s'han reduït a mi matei
 En cas de haver de buscar a vàries persones per desenvolupar el projecte hauria estat necessari buscar a un dissenyador amb experiència en el món dels gràfics 3D, un programador amb experiència amb OpenGL, C++ i Qt i un escriptor de documentació.
 \paragraph{}
 La dedicació en temps ha estat variable al llarg del temps de la realització del projecte (que s'ha fet entre Febrer i Juny de 2005) però es pot situar en torn a una mitja de 20 hores setmanals.
-%TODO QUITAME
-NECESITO SUGERENCIAS DE QUE PONER!!!!!!!
 \subsubsection{Recursos tecnològics}
 \paragraph{}
 En quant als recursos tecnològics utilitzats tenim dues branques que es poden diferenciar fàcilment, els recursos hardware i els software.
@@ -753,8 +768,6 @@ Els recursos software utilitzats per a la realització del projecte han estat tot
 \item \textbf{\textit{gimp:}} Editor d'imatges utilitzat per la creació d'alguns gràfics explicatius
 \item \textbf{\textit{umbrello:}} Programa CASE\footnote{Computer-aided software engineering} utilitzat per fer els diagrames de classes i diagrames de seqüència
 \end{itemize}
-%TODO QUITAME
-ALGUNA IDEA DE QUE MÁS PONER????
 
 \paragraph{}
 Els recursos hardware utilitzats es poden resumir en:

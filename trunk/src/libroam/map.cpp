@@ -65,9 +65,6 @@ diamond *r3vMap::baseDiamond()
 		n1 = getNode(s, s);
 		t2 = new triangle(*this, n1, n3, n2, 0);
 	
-	/*	t1 -> setBaseTriangle(t2);
-		t2 -> setBaseTriangle(t1);*/
-	
 		m_baseDiamond = new diamond(t1, t2);
 		m_triangleCount = 2;
 		m_leavesCount = 2;
