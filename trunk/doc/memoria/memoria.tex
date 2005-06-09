@@ -21,17 +21,17 @@
 \paragraph{}
 Aquest document està estructurat en dotze seccions bàsiques. El document segueix una forma lògica i seqüencial d'explicar els conceptes de forma que no calgui anar endavant i enrera per entendre les idees, per aquesta raó pot semblar que en algun moment s'estigui repetint alguna idea, però serà perquè s'està ampliant l'explicació d'algun concepte. Les seccions de la memòria són:
 \begin{enumerate}
-\item \textit{Com usar aquesta memòria} - Aquesta secció explica quins continguts es poden trobar a cadascuna de les seccions per tal que el lector pugui decidir si pot saltar-se alguna, ja que els conceptes dels quals es parlen ja li són coneguts, així com veure quines seccions expliquen coses que ell desconeix, i per tant ha d'estar més concentrat en la seva lectura.
+\item \textit{Com usar aquesta memòria} - Explica quins continguts es poden trobar a cadascuna de les seccions per tal que el lector pugui decidir si pot saltar-se'n alguna, ja que els conceptes dels quals es parlen ja li són coneguts, així com veure quines seccions expliquen coses que ell desconeix, i per tant ha d'estar més concentrat en la seva lectura.
 \item \textit{Objectius i motivacions} - En aquesta secció es parla dels objectius que es volen assolir amb la realització d'aquest projecte final de carrera així com de les motivacions que han dut a l'alumne a realitzar-lo.
-\item \textit{Introducció} - Aquesta part de la memòria introdueix el concepte bàsic en el que es basa el projecte, l'algorisme ROAM, així com un petita explicació de perquè és necessari tenir algorismes per la representació de terrenys de forma dinàmica i l'explicació dels dos formats de fitxers de dades acceptats, DEM i mapes simples.
-\item \textit{Especificació} - Aquesta secció explica tot allò relacionat amb l'especificació: el model conceptual, el model de casos d'ús, els requeriments funcionals i no funcionals, i, una petita descripció informal de cada classe.
-\item \textit{Disseny} - Aquesta secció explica el pas de l'especificació al disseny, hi podem trobar un model conceptual modificat per acomodar-se als requeriments juntament amb els diagrames de seqüència.
+\item \textit{Introducció} - Aquest capítol introdueix el concepte bàsic en el que es basa el projecte, l'algorisme ROAM, així com un petita explicació de perquè és necessari tenir algorismes per la representació de terrenys de forma dinàmica i l'explicació dels dos formats de fitxers de dades acceptats, DEM i mapes simples.
+\item \textit{Especificació} - Aquesta part de la memòria explica tot allò relacionat amb l'especificació: el model conceptual, el model de casos d'ús, els requeriments funcionals i no funcionals, i, una petita descripció informal de cada classe.
+\item \textit{Disseny} - Explica el pas de l'especificació al disseny, hi podem trobar un model conceptual modificat per acomodar-se als requeriments juntament amb els diagrames de seqüència.
 \item \textit{Implementació} - Aquesta part de la memòria parla de tot allò relacionat amb la programació del projecte però que no forma part ni de l'especificació ni del disseny, com per exemple l'explicació sobre l'eina escollida per la generació automàtica de Makefiles.
 \item \textit{Captures de pantalla} - En aquesta secció es poden trobar captures de pantalla de l'aplicació en funcionament per poder fer-se una idea de com funciona.
-\item \textit{Recursos i Anàlisi de costos} - En aquesta secció es parla de tot allò que ha fet falta per realitzar el projecte, la seva planificació i l'anàlisi de quan hauria costat desenvolupar aquest projecte en cas que s'haguès tractat d'un projecte comercial.
-\item \textit{Conclusions} - Aquesta part de la memòria explica que s'ha après en la realització d'aquest projecte així com possibles modificacions futures que es podrien dur a terme.
-\item \textit{Bibliografia} - Aquesta secció és una relació de totes les fonts consultades en la realització del projecte.
-\item \textit{Índex de figures} - En aquesta secció hi ha un llistat de totes les figures que es troben a la memòria de forma que en cas que el lector vulgui localitzar-ne una pugui fer-ho ràpidament.
+\item \textit{Recursos i Anàlisi de costos} - En aquesta part de la memòria es parla de tot allò que ha fet falta per realitzar el projecte, la seva planificació i l'anàlisi de quan hauria costat desenvolupar aquest projecte en cas que s'haguès tractat d'un projecte comercial.
+\item \textit{Conclusions} - Explica que s'ha après en la realització d'aquest projecte així com possibles modificacions futures que es podrien dur a terme.
+\item \textit{Bibliografia} - Relació de totes les fonts consultades en la realització del projecte.
+\item \textit{Índex de figures} - Llistat de totes les figures que es troben a la memòria, de forma que en cas que el lector vulgui localitzar-ne una pugui fer-ho ràpidament.
 \item \textit{Annex} - Explicacions sobre temes no estrictament relacionats amb el projecte que poden ser d'ajuda per acabar d'entendre algunes parts de la memòria.
 \end{enumerate}
 
@@ -49,7 +49,7 @@ Com a objectius secundaris, es vol que l'aplicació sigui el més portable possibl
 \paragraph{}
 Les motivacions per realitzar el projecte són variades, però es poden resumir en els següents punts:
 \begin{itemize}
-\item El món dels gràfics tridimensionals generats per computador és un món en expansió. En aquests moments genera una quantitat de beneficis superior a la del cinema, a més a més, hi ha gran demanda d'aplicacions de visualització tridimensional, especialment per a temes mèdics, però també en altres camps. Per tant, la realització d'un projecte de final de carrera en aquest camp ajuda a obtenir coneixements sobre aquest camp amb tanta projecció que molt possiblement siguin útils en el futur.
+\item El món dels gràfics tridimensionals generats per computador és un món en expansió. En aquests moments genera una quantitat de beneficis superior a la del cinema, a més a més, hi ha gran demanda d'aplicacions de visualització tridimensional, especialment per a temes mèdics, però també en altres camps. Per tant, la realització d'un projecte de final de carrera en aquest camp ajuda a obtenir coneixements sobre aquesta àrea amb tanta projecció que molt possiblement siguin útils en el futur.
 \item El món dels gràfics per computador sempre m'ha interessat de manera especial. Per aquesta raó he cursat quasi totes les asignatures que s'imparteixen a la FIB relacionades amb aquest tema, per tant, aquest camp va ser el primer en el que vaig començar a buscar projectes de final de carrera. Un altre camp que també m'interessa, i del qual també vaig mirar els projectes disponibles, és el del món del programari lliure.
 \item Un cop analitzats tots els projectes que els professors vinculats a la FIB oferien relacionats amb el món dels gràfics per computador i del programari lliure, vaig anar a parlar amb en Lluís que em va explicar en profunditat de que tractava aquest projecte així com també hem va comunicar que la seva idea era que es desenvolupés com a programari lliure. Això significava que aquest projecte conjugava els dos camps que m'interessaven, per tant, vaig decidir que si en Lluís estava d'acord en que jo el portés a terme, el projecte de la implementació de l'algorisme ROAM era el projecte que jo desitjava fer.
 \end{itemize}
@@ -59,9 +59,9 @@ Les motivacions per realitzar el projecte són variades, però es poden resumir en
 
 \subsection{Representació interactiva de terrenys en 3D}
 \paragraph{}
-La representació 3D de terrenys pot ser trivial o extremament complicada. Hi ha un primer grup d'aplicacions en que el terra és molt poc important i amb un polígon texturat i pla quasi bé ja n'hi ha prou, la majoria de jocs 3D entren dintre d'aquestes aplicacions, jocs de cotxes, arcades 3D, etc. En canvi hi ha un conjunt d'aplicacions on el terreny és part molt important de la visualització, dins d'aquest grup podem trobar els jocs de simulació, sobretot els d'avions, però també jocs de simulació tàctica on el terreny pot permetre amagar-nos dels enemics, etc., evidentment totes les aplicacions que tinguin alguna cosa veure amb els mapes també tenen els terrenys com a part important.
+La representació 3D de terrenys pot ser trivial o extremament complicada. Hi ha un primer grup d'aplicacions en que el terra és molt poc important i amb un polígon texturat i pla quasi bé ja n'hi ha prou, la majoria de jocs 3D entren dins d'aquest conjunt d'aplicacions, jocs de cotxes, arcades 3D, etc. En canvi hi ha un conjunt d'aplicacions on el terreny és part molt important de la visualització, dins d'aquest grup podem trobar els jocs de simulació, sobretot els d'avions, però també jocs de simulació tàctica on el terreny pot permetre amagar-nos dels enemics, etc., evidentment totes les aplicacions que tinguin alguna cosa a veure amb els mapes també tenen els terrenys com a part important.
 \paragraph{}
-A les aplicacions del primer grup, usar un algorisme especial per representar el terreny no té cap sentit, ja que aquest està format per pocs polígons i no cal fer cap optimització per representar-lo. En canvi les aplicacions on l'orografia té un paper important, la visualització del terreny passa a ocupar gran part dels cicles de rellotge que gastarà la nostra aplicació i, per tant, un algorisme optimitzat és necessari. A més a més, en la majoria dels casos no serà únicament necessari per optimizar l'aplicació, sinó que serà completament necessari per tal que l'aplicació pugui funcionar, ja que si volguéssim representar tot el terreny faria falta un nombre ingent de triangles. Per exemple, si fem servir un esquema de representació com el de la figura \ref{fig: ingent}, què és bastant dolent ja que semblaria que el terreny tingués forma de serreta, però que crea un triangle entre cada punt i els seus dos més propers, és a dir, el més exacte possible, per un terreny quadrat de $NxN$ punts, caldrien $2 * (N-1)^2$, cosa que significa que per un terreny de $1000x1000$ punts (res exagerat), caldrien uns dos milions de triangles, una quantitat massa elevada.
+A les aplicacions del primer grup, usar un algorisme especial per representar el terreny no té cap sentit, ja que aquest està format per pocs polígons i no cal fer cap optimització per representar-lo. En canvi les aplicacions on l'orografia té un paper important, la visualització del terreny passa a ocupar gran part dels cicles de rellotge que gastarà la nostra aplicació i, per tant, un algorisme optimitzat és necessari. A més a més, en la majoria dels casos no serà únicament necessari per optimitzar l'aplicació, sinó que serà completament necessari per tal que l'aplicació pugui funcionar, ja que si volguéssim representar tot el terreny faria falta un nombre ingent de triangles. Per exemple, si fem servir un esquema de representació com el de la figura \ref{fig: ingent}, què és bastant dolent (semblaria que el terreny tingués forma de serreta), però que crea un triangle entre cada punt i els seus dos més propers, és a dir, el més exacte possible, per un terreny quadrat de $NxN$ punts, caldrien $2 * (N-1)^2$, cosa que significa que per un terreny de $1000x1000$ punts (res exagerat), caldrien uns dos milions de triangles, una quantitat massa elevada.
 
 \begin{figure}[h]
 \centering
@@ -93,7 +93,7 @@ La primera part és el que s'anomena $wedgie$, i es defineix de forma recursiva. 
 Per aquells triangles que no són fulla de l'arbre, el wedgie del triangle és la suma del càlcul anterior i el màxim dels wedgies dels dos fills del triangle.
 
 \paragraph{}
-La segona part de la prioritat del càlcul de la prioritat consisteix en ponderar el wedgie segons la posició de l'observador per tal de poder tenir un algorisme dinàmic. Aquesta ponderació és lògica ja que si pensem en el wedgie com a error que està cometent un triangle, no ens ha d'importar que hi hagi errors grans si aquests estan molt lluny de l'observador, mentre que potser si hauriem d'intentar corregir un error petit si aquest està just al davant de l'observador. La ponderació que es fa servir per calcular el valor final de la prioritat d'un triangle és la projecció del wedgie a espai de pantalla, amb això fem un càlcul proporcional al nombre de píxels d'error que el wedgie realment està causant a la pantalla, i per tant, tenim un càlcul que ens pot servir per ordenar els triangles tenint en compte quin és el que està causant més error a la visualització.
+La segona part del càlcul de la prioritat consisteix en ponderar el wedgie segons la posició de l'observador per tal de poder tenir un algorisme dinàmic. Aquesta ponderació és lògica ja que si pensem en el wedgie com a error que està cometent un triangle, no ens ha d'importar que hi hagi errors grans si aquests estan molt lluny de l'observador, mentre que potser sí hauriem d'intentar corregir un error petit si aquest està just al davant de l'observador. La ponderació que es fa servir per calcular el valor final de la prioritat d'un triangle és la projecció del wedgie a espai de pantalla, amb això fem un càlcul proporcional al nombre de píxels d'error que el wedgie realment està causant a la pantalla, i per tant, tenim un càlcul que ens pot servir per ordenar els triangles tenint en compte quin és el que està causant més error a la visualització.
 
 \newpage
 \subsubsection{Construcció de l'arbre de triangles}
@@ -160,7 +160,7 @@ El format DEM (Digital Elevation Model) va ser creat per l'USGS \textit{(United 
 Un fitxer DEM està organitzat en tres tipus de registres lògics: A, B i C. 
 \begin{itemize}
 \item El tipus de registre A conté informació en quant a les característiques generals del mapa, nom, límits, unitats de mesura, elevació mínima i màxima, el número de registres de tipus B, etc. Només hi ha un registre de tipus A per fitxer.
-\item Els registres de tipus B contenen la informació de les alçades propiament dita.
+\item Els registres de tipus B contenen la informació de les alçades.
 \item El tipus de registre C conté estàdistiques en quant a l'exactitud de les dades del fitxer.
 \end{itemize}
 \paragraph{}
@@ -200,9 +200,11 @@ El format de mapes simples \textit{(extensió PM)} és un format inventat per mi. 
 \label{sec:especificacio}
 
 \subsection{Què és libroam?}
+\paragraph{}
 libroam és la part del projecte que implementa l'algorisme ROAM. Està programada com a llibreria de forma que qualsevol programa pugui usar aquesta funcionalitat. La llibreria està sota llicència GPL (l'annex \ref{sec:gpl} explica que és aquesta llicència). La llibreria funciona fent servir el paradigma de navegació $fly$. Per veure una descripció dels diferents paradigmes de navegació aplicables als gràfics 3D consulteu l'annex \ref{sec:parnav}
 
 \subsection{Què és r3v?}
+\paragraph{}
 r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar un visor de superfícies que utilitzi l'algorisme ROAM. L'aplicació afegeix sobre la llibreria una interfície gràfica d'usuari basada en la llibreria Qt (A l'annex \ref{sec:qt} trobareu una descripció d'aquesta llibreria) que permet a l'usuari obrir i tancar mapes, així com visualitzar-los i navegar per ells.
 
 \subsection{Requeriments no funcionals}
@@ -210,7 +212,7 @@ r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar u
 \paragraph{Definició:} Els requeriments no funcionals (o qualitats del sistema), capturen les propietats requerides pel sistema software, com el rendiment, la seguretat, la mantenibilitat, etc., en altres paraules, com de bé s'ha de complir un aspecte estructural o de comportament del sistema.
 
 \begin{itemize}
-\item \textbf{Traduibilitat:} Que la interfície gràfica del programa es pugui traduir a tots els idiomes que es desitgi és un requeriment important, així s'amplia el públic potencial al qual anirà dirigida l'aplicació, ja que no tothom té coneixement d'anglés.
+\item \textbf{Traduibilitat:} Que la interfície gràfica del programa es pugui traduir a tots els idiomes que es desitgi és un requeriment important, així s'amplia el públic potencial al qual anirà dirigida l'aplicació, ja que no tothom té coneixement d'anglès.
 \item \textbf{Portabilitat:} Es vol que tant r3v com libroam es puguin compilar, i per tant, executar a la majoria de sistemes disponibles.
 \item \textbf{Independència entre la interfície i l'algorisme:} Es vol que la implementació de la interfície gràfica sigui el més independent possible de l'algorisme ROAM, per tal que si en algun moment es vol fer una interfície gràfica usant un altre toolkit que no sigui Qt es pugui reutilitzar la majoria del codi.
 \item \textbf{Usabilitat:} La usabilitat és molt important en tots els projectes de software, ja que a part que un programa sigui potent en el que fa, és necessari que sigui fàcil d'usar.
@@ -257,8 +259,8 @@ r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar u
 \item $byColumns$: indica si aquest vector de vectors és un vector de files o un vector de columnes. 
 \item $baseDiamond$: retorna el diamant que forma la base del mapa
 \item $height$: retorna l'alçada del punt donat
-\item $triangles$: retorna el nombre de triangles que hi representant el mapa actualment
-\item $leaves$: retorna el nombre de fulles que hi representant el mapa actualment
+\item $triangles$: retorna el nombre de triangles que hi ha representant el mapa actualment
+\item $leaves$: retorna el nombre de fulles que hi ha representant el mapa actualment
 \item $getNode$: retorna el node que representa el punt donat
 \item $size$: retorna la mida dels costats del mapa, és a dir, la longitud de cadascun dels vectors de $heights$ que és la mateixa que la del vector $heights$, ja que els mapes són quadrats
 \item $color$: retorna el color que ha de representar l'alçada donada
@@ -281,7 +283,7 @@ r3v és una aplicació que utilitza la llibreria libroam per tal de proporcionar u
 \item $clean$: elimina els triangles que formen el diamant, només s'utilitza quan es tanca el mapa.
 \end{itemize}
 \paragraph{}
-Hi ha diamants que només estan formats per un triangle, es tracta de triangles la base dels quals pertany al marge del mapa, és a dir, no tenen possibilitat de tenir triangle base. Es necessari que aquests triangles també creien el seu propi diamant perquè sino l'algorisme no els tindria en compte per fusionar-los i un cop partits sempre s'hi quedarien.
+Hi ha diamants que només estan formats per un triangle, es tracta de triangles la base dels quals pertany al marge del mapa, és a dir, no tenen possibilitat de tenir triangle base. És necessari que aquests triangles també crein el seu propi diamant perquè sinó l'algorisme no els tindria en compte per fusionar-los i un cop partits sempre s'hi quedarien.
 
 
 \newpage
@@ -371,7 +373,7 @@ Hi ha diamants que només estan formats per un triangle, es tracta de triangles l
 \includegraphics{images/ROAM.png}
 \caption{Classe ROAM}
 \end{figure}
-\paragraph{Descripció informal:} La classe $ROAM$ és on troba la implementació de l'algorisme ROAM. Descripció dels membres:
+\paragraph{Descripció informal:} La classe $ROAM$ és on es troba la implementació de l'algorisme ROAM. Descripció dels membres:
 \begin{itemize}
 \item $leaves$: nombre de fulles que volem que tingui l'execució de l'algorisme sobre el mapa actual.
 \item $open$: obre el mapa que es troba al fitxer donat, en cas que hi hagi algun error retorna un codi d'error explicant la possible causa.
@@ -402,7 +404,7 @@ Hi ha diamants que només estan formats per un triangle, es tracta de triangles l
 \end{figure}
 Aquestes classes són les encarregades d'interpretar fitxers que representen mapes i retornar la representació en forma de $r3vMap$.
 \begin{itemize}
-\item \textbf{\textit{r3vParser}} és una classe abstracte que defineix l'operació $parse$ que tots els intèrprets de mapes han d'implementar.
+\item \textbf{\textit{r3vParser}} és una classe abstracta que defineix l'operació $parse$ que tots els intèrprets de mapes han d'implementar.
 \item \textbf{DEMParser} és una classe que implementa un intèrpret de mapes en format DEM.
 \item \textbf{PMParser} és una classe que implementa un intèrpret de mapes en format PM (mapa simple).
 \end{itemize}
@@ -448,7 +450,7 @@ Aquestes classes són les encarregades d'interpretar fitxers que representen mape
    1. L'usuari prem alguna de les tecles &  \\
    que permet navegar per la visualització &  \\
  & 2. El sistema calcula la nova posició \\
- & de l'observador, actualitza la malla de \\
+ & de l'observador, actualitza la malla \\
  & de triangles i actualitza la visualització \\
  & mostrada per pantalla \\
 \end{tabular}
@@ -484,7 +486,7 @@ Aquestes classes són les encarregades d'interpretar fitxers que representen mape
 
 \subsection{Arquitectura en 3 capes}
 \paragraph{}
-En un sistema software és necessari descomposar les tasques dels sistema en vàries capes per tal que cada capa s'ocupi de les tasques que estiguin en un nivell determinat d'abstracció. La separació típica és en tres capes, una que s'ocupi de la visualització (Capa de presentació), una que s'ocupi d'implementar la funcionalitat del sistema (Capa del domini) i una altra que s'ocupi d'interaccionar amb els fitxers (Capa de gestió de dades).
+En un sistema software és necessari descomposar les tasques del sistema en vàries capes per tal que cada capa s'ocupi de les tasques que estiguin en un nivell determinat d'abstracció. La separació típica és en tres capes, una que s'ocupi de la visualització (Capa de presentació), una que s'ocupi d'implementar la funcionalitat del sistema (Capa del domini) i una altra que s'ocupi d'interaccionar amb els fitxers (Capa de gestió de dades).
 \paragraph{}
 La capa de gestió de dades està formada per les classes $r3vParser$, $DEMParser$ i $PMParser$. Aquestes classes són les encarregades d'obrir i interpretar els fitxers que representen mapes de forma que la capa del domini sigui capaç d'entendre les dades que contenen.
 \paragraph{}
@@ -533,13 +535,13 @@ Les úniques diferències que es poden observar entre aquest diagrama i el que pod
 \paragraph{}
 S'han creat dues classes auxiliars, $triangleList$ i $diamondList$, que emmagatzemen les relacions entre ROAM i els triangles i els diamants. Aquestes classes no estan al diagrama de classes que es troba a la part superior ja que no són més que la representació en codi de les associacions entre ROAM i triangles i diamants.
 \paragraph{}
-Hi ha d'altres canvis que no es veuen en aquest diagrama ja que afecten els membres de les classes. Node ha guanyat l'atribut $color$ que guarda el color del node, ja que si no caldria preguntar-li al mapa quin color havia de tenir cada cop que es volgués pintar un node, això seria molt ineficient, per tant al crear-se el node també s'emmagatzema el seu color. Per aquesta mateixa raó l'operació $color(...)$ del mapa ha passat a ser privada, ja que només es crida quan es vol crear un node.
+Hi ha d'altres canvis que no es veuen en aquest diagrama ja que afecten els membres de les classes. Node ha guanyat l'atribut $color$ que guarda el color del node, ja que sinó caldria preguntar-li al mapa quin color havia de tenir cada cop que es volgués pintar un node i això seria molt ineficient, per tant al crear-se el node també s'emmagatzema el seu color. Per aquesta mateixa raó l'operació $color(...)$ del mapa ha passat a ser privada, ja que només es crida quan es vol crear un node.
 \paragraph{}
 $r3vMap$ ha guanyat els membres $minHeight$ i $amplitude$ que emmagatzemen l'alçada mínima del mapa i la diferència entre l'alçada mínima i màxima del mapa respectivament. També ha aparegut l'operació $calcAmplitude$ que calcula els valors de $minHeight$ i $amplitude$. Això és per eficiència, ja que aquests valors es poden obtenir a partir del vector d'alçades, però com el seu càlcul és costós i s'usa sovint, s'ha decidit materialitzar aquesta informació derivada.
 \paragraph{}
 També s'han afegit a algunes classes com $triangle$ i $diamant$ un membre del tipus iterador, amb els seus respectius set/get, aquests camps contenen l'iterador de l'objecte dins de les llistes que manté la classe $ROAM$, això és útil ja que d'aquesta manera l'eliminació és molt més ràpida, doncs no cal tornar a buscar a la llista l'element abans d'eliminar-lo.
 \paragraph{}
-La classe $triangle$ ha guanyat el membre $wedgie$ que és el wedgie real del triangle, això és per eficiència, ja que cada vegada que necessitem el wedgie podríem usar $ownWedgie$ i fer el recorregut pels fills. També hi la nova operació $updateWedgie$ que serveix per notificar a un triangle que ha d'actualitzar la seva variable $wedgie$. $triangle$ també ha guanyat l'operació privada $setMergeable()$ que rep els paràmetres $bool\ mergeable,\ diamondList\ *mergeQueue,\ triangle\ *baseTriangle$ i s'utilitza a $updateMergeableStatus$ per tal de no haver de repetir les tres o quatre mateixes línies de codi a tres llocs diferents de la funció.
+La classe $triangle$ ha guanyat el membre $wedgie$ que és el wedgie real del triangle, això és per eficiència, ja que cada vegada que necessitem el wedgie podríem usar $ownWedgie$ i fer el recorregut pels fills. També hi ha la nova operació $updateWedgie$ que serveix per notificar a un triangle que ha d'actualitzar la seva variable $wedgie$. $triangle$ també ha guanyat l'operació privada $setMergeable()$ que rep els paràmetres $bool\ mergeable,\ diamondList\ *mergeQueue,\ triangle\ *baseTriangle$ i s'utilitza a $updateMergeableStatus$ per tal de no haver de repetir les tres o quatre mateixes línies de codi a tres llocs diferents de la funció.
 
 \newpage
 \subsection{Diagrames de seqüència}
@@ -652,25 +654,25 @@ A l'hora de visualitzar el terreny s'ha decidit assignar-li a cada vèrtex un col
 En aquest capítol explicarem les decisions d'implementació que s'han pres per garantir els requeriments no funcionals mencionats a l'apartat \ref{sec:reqnf}
 
 \begin{itemize}
-\item \textbf{Traduïbilitat:} L'anglés és l'idioma en el qual s'han escrit els textos de la interfície original, ja que com és l'idioma més extés, és més fàcil trobar traductors per a la resta d'idiomes, en canvi si els textos estiguessin originalment en català o castellà la quantitat de traductors es reduiria de forma considerable. Tots els textos de l'aplicació estan a la part de r3v i no a la part de la llibreria libroam, això ha permés utilitzar les facilitats proporcionades per Qt per la traducció de programes. S'han utilitzat els programes lupdate, lrelease i linguist i la funció tr() que marca els textos que han de ser traduïts i els tradueix en cas que existeixi la traducció d'aquesta cadena a l'idioma que s'està utilitzant.
+\item \textbf{Traduïbilitat:} L'anglès és l'idioma en el qual s'han escrit els textos de la interfície original, ja que com és l'idioma més extés, és més fàcil trobar traductors per a la resta d'idiomes, en canvi si els textos estiguessin originalment en català o castellà la quantitat de traductors es reduiria de forma considerable. Tots els textos de l'aplicació estan a la part de r3v i no a la part de la llibreria libroam, això ha permés utilitzar les facilitats proporcionades per Qt per la traducció de programes. S'han utilitzat els programes lupdate, lrelease i linguist i la funció tr() que marca els textos que han de ser traduïts i els tradueix en cas que existeixi la traducció d'aquesta cadena a l'idioma que s'està utilitzant.
 \begin{itemize}
 \item lupdate és el programa que s'encarrega de llegir els fitxers del codi font, buscar els textos que han de ser traduïts i actualitzar fitxers .ts que és on els traductors han de fer les traduccions.
-\item linguist és el programa que han d'utilitzar els traductors per escriure les traduccions de cada una de les cadenes de text que s'han de traduir.
+\item linguist és el programa que han d'utilitzar els traductors per escriure les traduccions de cadascuna de les cadenes de text que s'han de traduir.
 \item lrelease és el programa que transforma els fitxers .ts en fitxers .qm. Els fitxers .qm són representacions binàries de la traducció que utilitza el programa un cop s'està executant.
 \end{itemize}
-Cada cop que s'executa el programa r3v en un ordinador es consulta la variable \textit{QLocale::system().name()} que dóna el nom del l'idioma que s'està usant en el sistema operatiu, amb aquest nom es cerquen les traduccions disponibles, si n'hi ha alguna que concorda es fa servir aquesta, si no hi ha traducció a aquest idioma es fan servir els textos en anglès.
+Cada cop que s'executa el programa r3v en un ordinador es consulta la variable \textit{QLocale::system().name()} que dóna el nom de l'idioma que s'està usant en el sistema operatiu, amb aquest nom es cerquen les traduccions disponibles, si n'hi ha alguna que concorda es fa servir aquesta, si no hi ha traducció a aquest idioma es fan servir els textos en anglès.
 
 \item \textbf{Portabilitat:} Per aconseguir que tant r3v com libroam es puguin compilar, i per tant, executar a la majoria de sistemes disponibles s'ha pres la decisió d'utilitzar C++ i la seva llibreria estàndard per a la programació, ja que C++ és un llenguatge pel qual hi ha compiladors disponibles per la majoria de sistemes operatius. D'igual manera la interfície està feta en Qt, un toolkit en C++ que permet crear interfícies gràfiques d'usuari i té versions per a Linux/Unix, Mac OS i Windows. Finalment hi ha el problema de portabilitat de l'API 3D, això s'ha ressolt utilitzant OpenGL, una API 3D que també té implementacions per a la majoria de sistemes operatius actuals. Per conèixer més a fons que és una API 3D podeu consultar l'annex \ref{sec:api3d}
 
 \item \textbf{Independència entre la interfície i l'algorisme:} Per aconseguir que la implementació de l'algorisme sigui independent de la interfície gràfica, s'ha programat l'algorisme com a una llibreria que utilitza tan sols C++ i les classes que proporciona la llibreria estàndard de C++, d'aquesta manera el canviar de Qt a un altre sistema per crear interfícies gràfiques com Gtk només suposa reescriure la classe que s'ocupa de gestionar els esdeveniments de teclat i ratolí, tota la resta és completament independent.
 
-\item \textbf{Programari lliure:} Per tal de poder garantir que el programa resultant pugui tenir llicència GPL, a part de declarar que el nostre codi és GPL també cal que totes les llibreries que s'usin siguin GPL. Qt que és l'única llibreria usada ho es.
+\item \textbf{Programari lliure:} Per tal de poder garantir que el programa resultant pugui tenir llicència GPL, a part de declarar que el nostre codi és GPL també cal que totes les llibreries que s'usin siguin GPL. Qt que és l'única llibreria usada ho és.
 
 \end{itemize}
 
 \subsection{Obtenció d'altures de coordenades no existents}
 \paragraph{}
-Un dels problemes que s'han hagut de solucionar a l'hora de fer la implementació de l'algorisme és l'obtenció de les altures de coordenades no existents al mapa, és a dir, coordenades que no tenen una alçada associada al mapa. Això és un problema ja que l'algorisme pot demanar l'altura de qualsevol punt del mapa, mentre que els fitxers només proporcionen altures per un nombre finit de punts. És evident, per tant, que la resta de coordenades ens les hem $d'inventar$. El problema rau en com crear aquestes noves altures, ja que si donem una altura que no es correspon a aquell punt estarem enganyant a l'algorisme i fent que comenci a partir aquella zona quant potser en la realitat no cal.
+Un dels problemes que s'han hagut de solucionar a l'hora de fer la implementació de l'algorisme és l'obtenció de les altures de coordenades no existents al mapa, és a dir, coordenades que no tenen una alçada associada al mapa. Això és un problema ja que l'algorisme pot demanar l'altura de qualsevol punt del mapa, mentre que els fitxers només proporcionen altures per un nombre finit de punts. És evident, per tant, que la resta de coordenades ens les hem $d'inventar$. El problema rau en com crear aquestes noves altures, ja que si donem una altura que no es correspon a aquell punt estarem enganyant a l'algorisme i fent que comenci a partir aquella zona quan potser en la realitat no cal.
 \paragraph{}
 Hi ha moltes maneres d'aproximar alçades per a una coordenada donada sabent l'alçada dels punts del voltant, però moltes d'elles utilitzen costoses funcions matemàtiques que no ens podem permetre implementar en aquest programa, ja que és molt important ser eficient a l'hora de demanar l'alçada d'un punt del mapa. Podem veure una explicació de la solució utilitzada a la figura \ref{fig: puntsNE}, per implementar aquesta solució només calen sumes, restes i alguna multiplicació.
 
@@ -682,37 +684,37 @@ Hi ha moltes maneres d'aproximar alçades per a una coordenada donada sabent l'al
 \end{figure}
 
 \paragraph{}
-Com es pot veure a la figura s'ha utilitzat una solució que consisteix en utilitzar quatre punts dels que coneixem d'alçada per interpolar l'alçada de cinc punts addicionals, quatre d'ells sobre les línies que uneixen els punts, essent el valor assignat la mitjana de les alçades dels dos punts, i el cinquè, el punt situat en el centre dels quatre punts, essent l'alçada interpolada la mitjana de tots quatre. A partir d'aquí podem veure que ja coneixem uns quatre punts per quatre quadrants més, per tant podem continuar subdividint el mapa fins a obtenir la coordenada que més ens interessi.
+Com es pot veure a la figura s'ha utilitzat una solució que consisteix en emprar quatre punts que coneixem per interpolar l'alçada de cinc punts addicionals, quatre d'ells sobre les línies que uneixen els punts, essent el valor assignat la mitjana de les alçades dels dos punts, i el cinquè, el punt situat en el centre dels quatre punts, essent l'alçada interpolada la mitjana de tots quatre. A partir d'aquí podem veure que ja coneixem quatre punts per formar quatre quadrants més, per tant podem continuar subdividint el mapa fins a obtenir la coordenada que més ens interessi.
 \paragraph{}
-La solució implementada no és exactament aquesta, ja que aquesta també seria costosa ja que necessitaria molta recursió per segons quins punts, sinó la transformació a fórmula matemàtica de l'esperit d'aquest mètode, per tant amb un sol pas podem obtenir l'alçada interpolada de qualsevol punt.
+La solució implementada no és exactament aquesta, ja que seria massa costosa per la quantitat de recursions que caldria fer per segons quins punts. El mètode emprar es basa en la transformació a fórmula matemàtica de l'esperit d'aquest mètode, per tant, amb un sol pas podem obtenir l'alçada interpolada de qualsevol punt.
 
 \subsection{Generació de Makefiles}
 \paragraph{}
-Qt té la seva pròpia eina per la generació automàtica de Makefiles anomenada qmake, però com ja s'ha comentat no volem dependre de Qt, per tant, hi havia dos opcions, la creació manual dels Makefiles o usar un generador automàtic de Makefiles que sigui \textit{neutre}. La creació manual de Makefiles va quedar descartada ràpidament, ja que era una opció més pesada i menys potent, per tant s'havia de decidir quin generador automàtic usar. Aquesta decisió tampoc va ser gaire complicada, ja que encara que hi ha una vàries eines que poden fer aquesta tasca, autotools és la més comú i es pot trobar a quasi totes les distribucions de Linux i a també funciona a quasi tots els Unix.
+Qt té la seva pròpia eina per la generació automàtica de Makefiles anomenada qmake, però com ja s'ha comentat no volem dependre de Qt, per tant, hi havia dos opcions, la creació manual dels Makefiles o usar un generador automàtic de Makefiles que sigui \textit{neutral}. La creació manual de Makefiles va quedar descartada ràpidament, ja que era una opció més pesada i menys potent, per tant s'havia de decidir quin generador automàtic usar. Aquesta decisió tampoc va ser gaire complicada, ja que encara que hi ha vàries eines que poden fer aquesta tasca, autotools és la més comuna i es pot trobar a quasi totes les distribucions de Linux i també funciona a quasi tots els sistemes Unix.
 
 \subsection{Autotools}
 \paragraph{}
 Encara que sovint es parla d'Autotools (tal i com es farà en aquest document), Autotools és en realitat un paraula utilitzada per referir-se a un conjunt d'eines el nom de les quals comença per auto-, com autoheader, automake i autoconf. La sintaxi dels fitxers utilitzats per les autotools pot semblar complicada inicialment però si ens limitem a fer coses simples com les que fa aquest projecte (compilar una llibreria i un executable que depèn d'ella) és força potent i fàcil de fer servir.
 
 \paragraph{}
-Autoconf és l'eina que serveix per comprovar que la plataforma en la que es compilarà el programa té les eines i llibreries que calen. A part, també serveix per detectar particularitats de la plataforma, per exemple si en aquesta plataforma una funció té uns paràmetres no estàndard, i definir uns símbols que més tard farem servir en el codi font per adaptar-nos a totes les plataformes. Per part del programador només s'ha de crear el fitxer configure.in que conté paraules clau que indiquen totes les comprovacions que volem fer, a partir d'aquest fitxer, autoconf genera un script anomenat configure que en executar-se en l'ordinador que està compilant el programa fa les comprovacions i avisa en cas de que alguna condició no se compleixi.
+Autoconf és l'eina que serveix per comprovar que la plataforma en la que es compilarà el programa té les eines i llibreries que calen. A part, també serveix per detectar particularitats de la plataforma, per exemple si en aquesta plataforma una funció té uns paràmetres no estàndard, es poden definir uns símbols que més tard farem servir en el codi font per adaptar-nos a aquestes particularitats. Per part del programador només s'ha de crear el fitxer configure.in que conté paraules clau que indiquen totes les comprovacions que volem fer, a partir d'aquest fitxer, autoconf genera un script anomenat configure que en executar-se en l'ordinador que està compilant el programa fa les comprovacions i avisa en cas de que alguna condició no es compleixi.
 
 \paragraph{}
-Per aquest projecte el fitxer configure.in es limita a comprovar l'existència d'un compilador de C++, que l'eina libtool es trobi instal·lada al sistema i finalment fa la comprovació de si Qt està instal·lat. En el cas de Qt es comprova si la versió instal·lada és 3.x o 4.0 i es defineix el símbol Qt4 de forma que el programa funcioni tant amb les versions 3.x com amb la versió 4.0 (de la qual encara que no hi ha versió final, però sí versions preliminars suficientment funcionals per compilar aquest projecte).
+Per aquest projecte el fitxer configure.in es limita a comprovar l'existència d'un compilador de C++, que l'eina libtool es trobi instal·lada al sistema i finalment fa la comprovació de si Qt està instal·lat. En el cas de Qt es comprova si la versió instal·lada és 3.x o 4.0 i es defineix el símbol Qt4 de forma que el programa funcioni tant amb les versions 3.x com amb la versió 4.0 (de la qual, encara no hi ha versió final, però sí versions preliminars suficientment funcionals per compilar aquest projecte).
 
 \paragraph{}
-Automake és l'eina que serveix per generar els Makefile. De forma ràpida un Makefile és un fitxer que indica com s'ha de compilar un programa i la depèndencia dels fitxers entre si, de forma que en canviar un fitxer es tornin a recompilar només aquells que tenen hi alguna relació. Aquesta eina genera fitxers Makefile.in a partir de fitxers Makefile.am, els fitxers Makefile.in es converteixen en fitxers Makefile al executar-se el configure creat per Autoconf. Als fitxers Makefile.am només cal indicar quines són les llibreries i els fitxers de codi font que utilitza en nostre programa/libreria i Automake s'encarrega de generar un Makefile complet amb els típics install, clean, uninstall, etc.
+Automake és l'eina que serveix per generar els Makefile. De forma ràpida un Makefile és un fitxer que indica com s'ha de compilar un programa i la depèndencia dels fitxers entre si, de forma que en canviar un fitxer es tornin a recompilar només aquells que hi tenen alguna relació. Aquesta eina genera fitxers Makefile.in a partir de fitxers Makefile.am, els fitxers Makefile.in es converteixen en fitxers Makefile al executar-se el configure creat per Autoconf. Als fitxers Makefile.am només cal indicar quines són les llibreries i els fitxers de codi font que utilitza el nostre programa/libreria i Automake s'encarrega de generar un Makefile complet amb els típics install, clean, uninstall, etc.
 
 \paragraph{}
 Per aquest projecte hem utilitzat fitxers Makefile.am per generar la llibreria libroam i per generar l'executable r3v, les opcions usades han estat bastant simples, al fitxer Makefile.am de libroam s'ha indicat que volem que sigui una llibreria estàtica generada per libtool formada per tots els fitxers .cpp del directori i a més a més usant les llibreries GL i GLU. Per a l'executable r3v, s'ha indicat que es volia generar un executable usant el codi de la interfície en Qt i usant la llibreria libroam així com la llibreria Qt.
 
 \paragraph{}
-L'ús de les autotools presenta un \textit{petit problema} en quant a la portabilitat del projecte, ja que no hi ha versió nativa de les autotools per a Windows. Això significa que el projecte no pot ser compilat directament sota Windows, cal adaptar-lo a les eines del compilador de C++ que s'usi; un petit problema de portabilitat però que no afecta de cap manera que el codi del programa continuï sent portable.
+L'ús de les autotools presenta un petit problema en quant a la portabilitat del projecte, ja que no hi ha versió nativa de les autotools per a Windows. Això significa que el projecte no pot ser compilat directament sota Windows, cal adaptar-lo a les eines del compilador de C++ que s'usi; un petit problema de portabilitat però que no afecta de cap manera que el codi del programa continuï sent portable.
 
 
 \subsection{Lector de format DEM}
 \paragraph{}
-El format DEM dóna moltes més dades de les necessàries per implementar un visualitzador de superfícies, com ara, nom del mapa, descripció sobre el mapa, coordenades a les que es troba el mapa, estadístiques sobre l'exactitud dels valors, etc. Aquestes dades poden ser molt interessants, però no en el nostre context, per tant, s'ha decidit que la implementació del lector de fitxers de format DEM per a crear un objecte de la classe r3vMap, ignori tots aquest valors i es centri en les dades d'altitud.
+El format DEM dóna moltes més dades de les necessàries per implementar un visualitzador de superfícies, com ara, nom , descripció i coordenades del mapa, estadístiques sobre l'exactitud dels valors, etc. Aquestes dades poden ser molt interessants, però no en el nostre context, per tant, s'ha decidit que la implementació del lector de fitxers de format DEM per a crear un objecte de la classe r3vMap, ignori tots aquest valors i es centri en les dades d'altitud.
 
 \newpage
 \section{Captures de pantalla}
@@ -751,9 +753,11 @@ El format DEM dóna moltes més dades de les necessàries per implementar un visual
 \paragraph{}
 Els recursos humans per la realització d'aquest projecte s'han reduït a mi mateix, ja que aquestes són les normes de la realització de projectes a la FIB. En alguns casos això no és totalment òptim, per exemple per la redacció de textos, a una empresa no seria un Enginyer Informàtic qui s'ocuparia, però com s'ha dit el projecte és un treball per una sola persona.
 \paragraph{}
-En cas de haver de buscar a vàries persones per desenvolupar el projecte hauria estat necessari buscar a un dissenyador amb experiència en el món dels gràfics 3D, un programador amb experiència amb OpenGL, C++ i Qt i un escriptor de documentació.
+En cas d'haver de buscar a vàries persones per desenvolupar el projecte hauria estat necessari buscar a un dissenyador amb experiència en el món dels gràfics 3D, un programador amb experiència amb OpenGL, C++ i Qt i un escriptor de documentació.
 \paragraph{}
 La dedicació en temps ha estat variable al llarg del temps de la realització del projecte (que s'ha fet entre Febrer i Juny de 2005) però es pot situar en torn a una mitja de 20 hores setmanals.
+%TODO poner al profe que responde preguntas
+%TODO hacer "semiplaning" tipo en un principio se desglosaban en 10 de progrmar 5 de buscar i 5 de yoquese y en el final fueron 15 de docuemtnar y 5 de buscar bugs 
 \subsubsection{Recursos tecnològics}
 \paragraph{}
 En quant als recursos tecnològics utilitzats tenim dues branques que es poden diferenciar fàcilment, els recursos hardware i els software.
@@ -772,7 +776,7 @@ Els recursos software utilitzats per a la realització del projecte han estat tot
 \paragraph{}
 Els recursos hardware utilitzats es poden resumir en:
 \begin{itemize}
-\item PCs de desenvolupament: Evidentment tenir ordinadors on poder desenvolupar i provar el codi és molt important, en aquest cas se n'han fet servir dos de diferents. Un a la FIB i un altre a casa. En tots els casos és important poder disposar de diferents màquines on fer les proves per veure que el funcionament és correcte a totes elles, però en el cas d'una aplicació 3D és una mica més important, ja a vegades que el comportament de les targetes 3D amb les mateixes comandes OpengGL varia de xip a xip, i per tant quantes més targetes es provin milor. El PC de la FIB té les següents característiques
+\item PCs de desenvolupament: Evidentment tenir ordinadors on poder desenvolupar i provar el codi és molt important, en aquest cas se n'han fet servir dos de diferents. Un a la FIB i un altre a casa. En tots els casos és important poder disposar de diferents màquines on fer les proves per veure que el funcionament és correcte a totes elles, però en el cas d'una aplicació 3D és una mica més important, ja que a vegades el comportament de les targetes 3D amb les mateixes comandes OpengGL varia de xip a xip, i per tant quantes més targetes es provin milor. El PC de la FIB té les següents característiques
 \begin{itemize}
 \item Processador: Intel Pentium 4 3.00GHz
 \item Memòria: 512 MB
@@ -844,17 +848,17 @@ A aquests \EUR{14475} caldria sumar el cost dels recursos hardware, software i f
 \newpage
 \section{Conclusions i Treball futur}
 \paragraph{}
-El resultat de la realització d'aquest projecte final de carrera ha estat bastant satisfactori en termes d'objectius assolits, tant en la part requeriments que es volia que complís l'aplicació com en la part de formació final de l'alumne.
+El resultat de la realització d'aquest projecte final de carrera ha estat bastant satisfactori en termes d'objectius assolits, tant en la part de requeriments que es volia que complís l'aplicació com en la part de formació final de l'alumne.
 \paragraph{}
 En quant al compliment de requeriments funcionals i no funcionals que es van establir en la reunió inicial que vam tenir el projectista i el director, es pot dir que s'han assolit totalment, ja que no hi ha cap requeriment dels que vam parlar inicialment que no hagi acabat estant present a l'aplicació final.
 \paragraph{}
-La part de formació final de l'alumne que se li suposa a la realització d'un projecte d'aquesta envergadura també ha estat profitosa ja que he adquirit més coneixements sobre OpenGL i C++ en general dels que ja tenia, així com també m'he enfrontat a tasca de gestionar un projecte tan llarg per primera vegada, aprenent així totes les coses que això implica, com gestionar el temps d'una manera eficient.
+La part de formació final de l'alumne que se li suposa a la realització d'un projecte d'aquesta envergadura també ha estat profitosa ja que he adquirit més coneixements sobre OpenGL i C++ en general dels que ja tenia, així com també m'he enfrontat a la tasca de gestionar un projecte tan llarg per primera vegada, aprenent així totes les coses que això implica, com gestionar el temps d'una manera eficient.
 \paragraph{}
-Encara que s'hagin complit tots els requeriments que es van parlar en la reunió inicial per definir aquest projecte això no vol dir que no hi hagi coses a millorar o ampliar per tal que libroam o r3v siguin millors. Aquesta és una llista de les vàries tasques que es poden afrontar com a treball futur:
+Encara que s'hagin complert tots els requeriments que es van parlar en la reunió inicial per definir aquest projecte això no vol dir que no hi hagi coses a millorar o ampliar per tal que libroam o r3v siguin millors. Aquesta és una llista de les vàries tasques que es poden afrontar com a treball futur:
 \begin{itemize}
 \item Organitzar els triangles en strips: Organitzar els triangles en strips no és una tasca senzilla, però fer-ho pot reportar guanys de rendiment, ja que al utilitzar strips de triangles el nombre de vèrtexs que s'envien a pintar es redueix considerablement, i a més a més, algunes targetes gràfiques tenen optimitzacions especials per gestionar els strips de triangles.
 \item Càlcul de prioritat diferida: L'observador, normalment, no es mou bruscament de lloc ni gira exageradament, per tant, realment no caldria recalcular la prioritat de tota la llista de diamants i triangles per cada nova posició de l'observador, ja que aquesta prioritat tampoc variarà de forma exagerada, per tant, recalcular només un tant per cent donat dels elements d'aquestes llistes pot ajudar a optimitzar l'algorisme, evidentment s'haurien de programar comprovacions que asseguressin que l'observador no s'ha mogut exageradament, ja que en aquest cas si seria necessari recalcular tota la llista de prioritats.
-\item Aturada del càlcul de prioritat per temps: Una altre característica que es pot afegir a l'algorisme ROAM és donar un límit de temps que volem que es trigui en obtenir la malla de triangles per la nova posició. Això es pot implementar fàcilment, ja que només cal posar la comprovació de temps al $while$ que va regenerant l'arbre de triangle fent les fusions i particions. El fet d'aturar la regeneració de l'arbre de triangles suposarà que no tindrem la malla òptima per la posició, però el que si serà és la millor malla possible en el temps donat, ja que la regeneració es va fent fusionant els pitjors diamants i partint els millors triangles. Aquesta optimització encara que simple de fer no s'ha implementat ja als ordinadors disponibles a l'actualitat la part de regeneració de la malla de triangles no és costosa, sent el pintat per pantalla dels triangles la part que triga més temps.
+\item Aturada del càlcul de prioritat per temps: Una altra característica que es pot afegir a l'algorisme ROAM és donar un límit de temps que volem que es trigui en obtenir la malla de triangles per la nova posició. Això es pot implementar fàcilment, ja que només cal posar la comprovació de temps al $while$ que va regenerant l'arbre de triangle fent les fusions i particions. El fet d'aturar la regeneració de l'arbre de triangles suposarà que no tindrem la malla òptima per la posició, però el que si serà és la millor malla possible en el temps donat, ja que la regeneració es va fent fusionant els pitjors diamants i partint els millors triangles. Aquesta característica encara que és fàcil de fer, no s'ha implementat ja que als ordinadors disponibles a l'actualitat la part de regeneració de la malla de triangles no és costosa, sent el pintat per pantalla dels triangles la part que triga més temps.
 \end{itemize}
 
 
@@ -890,10 +894,10 @@ Els gràfics per computador tenen dos grans camps, els gràfics 2D i els gràfics 3
 Els gràfics 2D són aquells que representen imatges bidimensionals en pantalla. Hi ha dos tipus bàsics d'imatges 2D, els mapes de bits i les imatges vectorials.
 
 \paragraph{}
-Els mapes de bits són bàsicament una graella de píxels bidimensional. Cada píxel té una posició assignada dintre de la graella i emmagatzema el seu color. Un mapa de bits té una resolució finita determinada pel nombre de columnes i files, i per tant si es vol fer mostrar més gran del que realment és, sol aparèixer l'efecte de pixelació consistent en que l'observador de la imatge és capaç de distingir cada un dels píxels de forma separada, cosa que no passa quan la imatge es visualitza amb la seva mida real.
+Els mapes de bits són bàsicament una graella de píxels bidimensional. Cada píxel té una posició assignada dintre de la graella i emmagatzema el seu color. Un mapa de bits té una resolució finita determinada pel nombre de columnes i files, i per tant si es vol mostrar més gran del que realment és, sol aparèixer l'efecte de pixelació consistent en que l'observador és capaç de distingir cada un dels píxels de forma separada, cosa que no passa quan la imatge es visualitza amb la seva mida real.
 
 \paragraph{}
-Les imatges vectorials tenen les dades geomètriques de forma precisa. Els punts es donen en un sistema de coordenades, les dades de la imatge vectorial també contenen la descripció de les connexions entre els punts(per formar línies o rutes), el color de cada punt o línia, el gruix de cada línia o secció, etc. La majoria de sistemes gràfics vectorials també tenen primitives pels tipus de formes més bàsics com els cercles o rectangles. Aquestes dades permeten generar la imatge des de zero. El fet que la imatge estigui guardada amb una descripció de com s'ha de \textit{crear}, permet que les imatges vectorials no sofreixin mai de l'efecte de pixelació encara que també les fa més lentes de visualitzar. Per visualitzar una imatge vectorial s'ha d'acabar creant un mapa de bits.
+Les imatges vectorials tenen les dades geomètriques de forma precisa. Els punts es donen en un sistema de coordenades, les dades de la imatge vectorial també contenen la descripció de les connexions entre els punts(per formar línies o rutes), el color de cada punt o línia, el gruix de cada línia o secció, etc. La majoria de sistemes gràfics vectorials també tenen primitives pels tipus de formes més bàsics com els cercles o rectangles. Aquestes dades permeten generar la imatge des de zero. El fet que la imatge estigui guardada amb una descripció de com s'ha de \textit{crear}, permet que les imatges vectorials no sofreixin mai de l'efecte de pixelació encara que també les fa més lentes de visualitzar. Per mostrar per pantalla una imatge vectorial s'ha d'acabar creant un mapa de bits.
 
 
 \subsubsection{Gràfics 3D}
@@ -909,7 +913,7 @@ Els gràfics 3D es diferencien dels gràfics 2D principalment pel fet que en els g
 Dins dels gràfics generats per computador (ja siguin 2D o 3D) hi ha dos grans branques. Els gràfics interactius i els gràfics realistes.
 
 \paragraph{}
-Els gràfics interactius són aquells en els que l'observador pot influir en la generació dels gràfics. És a dir, l'usuari del programa pot rotar, moure, escalar, etc. els objectes de l'escena a voluntat. Això és útil per a jocs, simuladors i visualitzadors de dades en general. La característica principal que es demana a aquests gràfics és la velocitat de generació, que ha d'estar al voltant de les 25 actualitzacions per segons, de forma que l'observador vegi una suavitat en el moviment, per sota de les 15 actualitzacions per segon el moviment comença a semblar que vagi a salts. Per aquesta raó també se'ls sol anomenar gràfics en temps real. Degut a que la velocitat és el principal factor en aquests tipus de gràfics la qualitat no és molt gran, encara que gràcies a que les targetes acceleradores estan evolucionant molt ràpid, la qualitat ha pujat molt en poc temps. La base d'aquest tipus dels gràfics en el món 3D són els triangles, tot és genera a partir d'una acumulació de triangles, fins i tot les cercles.
+Els gràfics interactius són aquells en els que l'observador pot influir en la generació dels gràfics. És a dir, l'usuari del programa pot rotar, moure, escalar, etc. els objectes de l'escena a voluntat. Això és útil per a jocs, simuladors i visualitzadors de dades en general. La característica principal que es demana a aquests gràfics és la velocitat de generació, que ha d'estar al voltant de les 25 actualitzacions per segons, de forma que l'observador vegi una suavitat en el moviment, per sota de les 15 actualitzacions per segon el moviment comença a semblar que vagi a salts. Per aquesta raó també se'ls sol anomenar gràfics en temps real. Degut a que la velocitat és el principal factor en aquests tipus de gràfics la qualitat no és molt gran, encara que gràcies a que les targetes acceleradores estan evolucionant molt ràpid, la qualitat ha pujat molt en poc temps. La base d'aquest tipus dels gràfics en el món 3D són els triangles, tot és genera a partir d'una acumulació de triangles, fins i tot els cercles.
 
 \paragraph{}
 Els gràfics realistes són aquells on el que prima és que la imatge generada s'asembli el més possible a una imatge real. El destí principal d'aquest tipus de gràfics són les pel·lícules, anuncis, etc. que gràcies als gràfics realistes poden incloure imatges que abans serien o molt cares de fer o, fins i tot, impossibles de rodar. Aquest fet condiciona la velocitat de generació de les imatges i de vegades es triga hores en aconseguir una sola imatge estàtica, per tant, aquest mètode encara que aconsegueix imatges d'una qualitat espectacular no serveix per fer gràfics interactius. A la generació de gràfics 3D s'usen mètodes que utilitzen fórmules matemàtiques que intenten modelar el comportament real de la llum.
@@ -922,11 +926,11 @@ Els gràfics realistes són aquells on el que prima és que la imatge generada s'as
 Una API (\textbf{A}pplication \textbf{p}rogramming \textbf{i}nterface) és un conjunt de definicions de com un component de software interactua amb un altre. És un mètode per aconseguir abstracció entre capes diferents de software, ja sigui entre capes de diferents nivells d'abstracció com de capes del mateix nivell d'abstracció que es dediquen a tasques diferents.
 
 \paragraph{}
-Una API 3D és una API que defineix les funcions necessàries per crear gràfics tridimensionals. Avui en dia hi ha dos APIs 3D dominants per la generació de gràfics interactius, OpenGL i Direct3D. Totes les APIs 3D per generar gràfics interactius serveixen també per generar gràfics 2D interactius ja que només cal fer que tots els objectes 3D es situïn en un mateix pla per fer que el món 3D sigui bidimensional.
+Una API 3D és una API que defineix les funcions necessàries per crear gràfics tridimensionals. Avui en dia hi ha dos APIs 3D dominants per la generació de gràfics interactius: OpenGL i Direct3D. Totes les APIs 3D per generar gràfics interactius serveixen també per generar gràfics 2D interactius ja que només cal fer que tots els objectes 3D es situïn en un mateix pla per fer que el món 3D sigui bidimensional.
 
 \subsubsection{OpenGL}
 \paragraph{}
-OpenGL (\textbf{Open} \textbf{G}raphics \textbf{L}ibrary) és una especificació d'una API d'un llenguatge per escriure aplicacions que produeixen gràfics 3D. OpenGL és un estàndard definit per la \textit{OpenGL Architecture Review Board}, formada per molt membres de la indústria dels computadors, ja siguin constructors d'ordinadors, de sistemes operatius o de hardware gràfic. Alguns dels membres són Apple, ATI Technologies, Dell, Hewlett-Packard, IBM, Intel, Nvidia, SGI, etc. cosa que converteix OpenGL en un estàndard realment neutral i amb suport per la gran majoria de les plataformes gràfiques.
+OpenGL (\textbf{Open} \textbf{G}raphics \textbf{L}ibrary) és una especificació d'una API d'un llenguatge per escriure aplicacions que produeixen gràfics 3D. OpenGL és un estàndard definit per la \textit{OpenGL Architecture Review Board}, formada per molts membres de la indústria dels computadors, ja siguin constructors d'ordinadors, de sistemes operatius o de hardware gràfic. Alguns dels membres són: Apple, ATI Technologies, Dell, Hewlett-Packard, IBM, Intel, Nvidia, SGI, etc. cosa que converteix OpenGL en un estàndard realment neutral i amb suport per la gran majoria de les plataformes gràfiques.
 
 \paragraph{}
 OpenGL va ser introduït el 1992 com a evolució de la interfície 3D IRIS GL de SGI. Un dels problemes de IRIS GL era que tot el que implementava la llibrera havia d'estar suportat pel hardware i per tant si el hardware no suportava una característica que es feia servir al programa, aquest no es podia executar. OpenGL va solucionar aquest problema proporcionant suport software per a les característiques que el hardware no tenia, cosa que en aquell moment va permetre executar programes 3D en sistemes no tan cars com els que fabricava SGI.
@@ -943,7 +947,7 @@ Les característiques bàsiques d'OpenGL són:
 \paragraph{}
 Direct3D és la part que s'encarrega de la visualització tridimensional de l'API DirectX de Microsoft. Només hi ha versions de DirectX (i per tant de Direct3D) per als sistemes operatius de Microsoft (Windows 95 en endavant) encara que la consola XBox (produïda per Microsoft) té una API molt similar a la de DirectX.
 \paragraph{}
-Hi ha moltes versions de DirectX, cadascuna afegeix noves característiques sobre l'anterior. Això és útil en un món que es mou tan ràpidament com els dels gràfics per computador però també suposa que els programadors han d'anar readaptant el seu coneixement sobre la llibreria per poder programar per les últimes versions.
+Hi ha moltes versions de DirectX, cadascuna afegeix noves característiques sobre l'anterior. Això és útil en un món que es mou tan ràpidament com el dels gràfics per computador però també suposa que els programadors han d'anar readaptant el seu coneixement sobre la llibreria per poder programar per les últimes versions.
 
 \subsubsection{Primitives gràfiques 3D}
 La majoria d'API per la generació de gràfics 3D interactius tenen un conjunt similar de primitives, és a dir, \textit{d'objectes} que podem fer servir per construir una escena. En aquesta secció ens centrarem en les primitives que té OpenGL.
@@ -976,20 +980,20 @@ Podem veure exemples de les 10 primitives a la figura \ref{fig: primitives}
 La navegació d'escenes 3D té tres paradigmes fonamentals, Walk, Fly i Examine. Tota aplicació 3D implementa un d'aquests paradigmes, encara que no n'ha d'implementar només un.
 
 \subsubsection{Paradigma walk}
-Al paradigma walk, l'usuari del programa pot moure la càmera i per tant navegar per l'escena. L'usuari sol estar representat per una entitat dins de l'escena anomenada avatar. L'avatar està sotmés a la gravetat i per tant només pot caminar per terrenys plans, pujar pendents poc pronunciades i xoca contra les parets. Els moviments típics de l'avatar són desplaçar-se en qualsevol de les quatre direccions (endavant, endarrera, esquerra i dreta) i gir de la càmera per enfocar cap a qualsevol direcció possible. En aquest paradigma la visió pot ser en primera persona o en tercera persona. A la visió primera persona, la càmera es situa als ulls de l'avatar, veient-se allò que veuria l'avatar, per tant, de l'avatar només es sol veure les mans i peus. A la visió en tercera persona la càmera es situa fora de l'avatar, normalment per darrera d'ell, de forma que ens permet veure la situació de l'avatar d'una manera més global. Aquesta càmera té més problemes de gestió, ja que s'ha d'anar amb compte de que la càmera no atravesi parets quan l'avatar s'apropa a elles, ja que si ho fes no veuriem l'avatar, sinó la paret. A més a més la visió en primera persona sol donar més sensació d'inmersió, per tant la majoria de programes 3D que utilitzen el paradigma walk solen optar per ella.
+Al paradigma walk, l'usuari del programa pot moure la càmera i per tant navegar per l'escena. L'usuari sol estar representat per una entitat dins de l'escena anomenada avatar. L'avatar està sotmés a la gravetat i per tant només pot caminar per terrenys plans, pujar pendents poc pronunciades i xoca contra les parets. Els moviments típics de l'avatar són desplaçar-se en qualsevol de les quatre direccions (endavant, endarrera, esquerra i dreta) i gir de la càmera per enfocar cap a qualsevol direcció possible. En aquest paradigma la visió pot ser en primera persona o en tercera persona. A la visió primera persona, la càmera es situa als ulls de l'avatar, veient-se allò que veuria l'avatar, per tant, de l'avatar només es sol veure les mans i peus. A la visió en tercera persona la càmera es situa fora de l'avatar, normalment per darrera d'ell, de forma que ens permet veure la situació d'una manera més global. Aquesta càmera té més problemes de gestió, ja que s'ha d'anar amb compte de que la càmera no atravesi parets quan l'avatar s'apropa a elles, ja que si ho fes no veuriem l'avatar, sinó la paret. A més a més la visió en primera persona sol donar més sensació d'inmersió, per tant la majoria de programes 3D que utilitzen el paradigma walk solen optar per ella.
 
 \subsubsection{Paradigma fly}
 El paradigma fly és gairebé igual al paradigma walk, sent la no existència de la gravetat la diferència més gran. El paradigma fly se sol utilitzar en simuladors espaials o bé en els mateixos escenaris que utilitzen el paradigma walk per donar-li a l'usuari més llibertat a l'hora de reconèixer l'escena, per exemple és molt possible que als dissenyadors de pantalles els interessi poder volar per l'escenari per així poder desplaçar-se entre diferents alçades de forma més ràpida. Així mateix a vegades el paradigma fly desactiva la detecció de col·lisions permetent que l'avatar atravesi les parets.
 
 \subsubsection{Paradigma examine}
-Al paradigma examine l'observador no es mou, sempre està a la mateixa posició i mira en la mateixa direcció. La interactivitat d'aquest paradigma és a la part dels objectes i no a la de l'observador. Normalment hi ha uns quants objectes (de vegades només un) al punt on està enfocant la càmera i l'usuari put rotar, escalar, desplaçar els objectes de forma que pugui examinar l'objecte completament. Aquest paradigma es sol usar en aplicacions que permeten la visualització d'ossos, peces de maquinària, etc.
+Al paradigma examine l'observador no es mou, sempre està a la mateixa posició i mira en la mateixa direcció. La interactivitat d'aquest paradigma és a la part dels objectes i no a la de l'observador. Normalment hi ha uns quants objectes (de vegades només un) al punt on està enfocant la càmera i l'usuari pot rotar, escalar, desplaçar els objectes de forma que pugui examinar l'objecte completament. Aquest paradigma es sol usar en aplicacions que permeten la visualització d'ossos, peces de maquinària, etc.
 
 
 \newpage
 \subsection{Arbres binaris de triangles}
 \label{sec:abt}
 \paragraph{}
-Un arbre binari de triangles és un arbre que serveix per organitzar triangles de forma jeràrquica. El triangle arrel $T = (v_a, v_0, v_1)$ és un triangle isòsceles amb àpex $v_a$. Els fills de l'arrel es defineixen partint l'arrel en dos parts fent creant una nova aresta que va des del vèrtex $v_a$ al punt mig $v_c$ de l'aresta base (aresta entre $v_0$ i $v_1$). El fill esquerre de $T$ és $T_0 = (v_c, v_a, v_0)$ mentre que el fill dret és $T_1 = (v_c, v_1, v_a)$. La resta de de l'estructura de l'arbre de triangles és una repetició recursiva del procés de partició explicat anteriorment. Dins de l'arbre cada triangle té un nivell $l$ definit pel nombre de vegades que s'ha partit al triangle arrel per arribar a generar aquell triangle en concret. A la figura \ref{fig: triangles} podem veure una representació dels nivells 0 a 5 d'un arbre binari de triangles.
+Un arbre binari de triangles és un arbre que serveix per organitzar triangles de forma jeràrquica. El triangle arrel $T = (v_a, v_0, v_1)$ és un triangle isòsceles amb àpex $v_a$. Els fills de l'arrel es defineixen partint l'arrel en dos parts creant una nova aresta que va des del vèrtex $v_a$ al punt mig $v_c$ de l'aresta base (aresta entre $v_0$ i $v_1$). El fill esquerre de $T$ és $T_0 = (v_c, v_a, v_0)$ mentre que el fill dret és $T_1 = (v_c, v_1, v_a)$. La resta de l'estructura de l'arbre de triangles és una repetició recursiva del procés de partició explicat anteriorment. Dins de l'arbre cada triangle té un nivell $l$ definit pel nombre de vegades que s'ha partit al triangle arrel per arribar a generar aquell triangle en concret. A la figura \ref{fig: triangles} podem veure una representació dels nivells 0 a 5 d'un arbre binari de triangles.
 
 \begin{figure}[h]
 \centering
@@ -1063,7 +1067,7 @@ GPL (\textbf{G}eneral \textbf{P}ublic \textbf{L}icense) és una llicència de soft
 \item La llibertat de distribuir copies (ja siguin modificades o sense modificar)
 \end{itemize}
 \paragraph{}
-La llicència GPL és una de les llicències de software lliure més esteses, si visitem la pàgina de SourceForge (una pàgina web on es registren projectes de software lliure per tal de desenvolupar-los usant les serveis que aquesta proporciona) que llista el número de projectes registrats per cada tipus de llicència, veiem que un 69\% (43089 dels 62291) utilitzen la llicència GPL.
+La llicència GPL és una de les llicències de software lliure més esteses, si visitem la pàgina de SourceForge (una pàgina web on es registren projectes de software lliure per tal de desenvolupar-los usant els serveis que aquesta proporciona) que llista el número de projectes registrats per cada tipus de llicència, veiem que un 69\% (43089 dels 62291) utilitzen la llicència GPL.
 \paragraph{}
 El text complet de la llicència es troba a \textit{http://www.gnu.org/licenses/gpl.html}
 
