@@ -106,4 +106,4 @@ AC_SUBST(QT_LIB_LA)
 AC_SUBST(QT_INCLUDES)
 AC_SUBST(QT_BIN_PATH)
 
-AC_OUTPUT(Makefile src/Makefile src/libroam/Makefile src/translations/Makefile)
+AC_OUTPUT(Makefile src/Makefile src/libroam/Makefile src/translations/Makefile src/icon/Makefile)

@@ -1,4 +1,4 @@
-SUBDIRS = libroam translations
+SUBDIRS = libroam translations icon
 
 moc_%.cpp: %.h
 	$(QT_BIN_PATH)/moc $< -o $@ 
