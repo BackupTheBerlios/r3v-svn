@@ -10,6 +10,8 @@
 #ifndef ROAM_H
 #define ROAM_H
 
+#include <string>
+
 class diamondList;
 class frustum;
 class observer;

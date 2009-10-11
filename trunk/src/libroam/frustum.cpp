@@ -9,6 +9,7 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "frustum.h"
 #include "node.h"
