@@ -7,7 +7,9 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#ifndef QT4
 #include <config.h>
+#endif
 
 #include <qapplication.h>
 #include <qcursor.h>

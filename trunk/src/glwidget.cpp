@@ -7,7 +7,13 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
+#ifndef QT4
 #include <config.h>
+#endif
+
+#ifndef PREFIX
+#define PREFIX "/usr"
+#endif
 
 #include <math.h>
 
